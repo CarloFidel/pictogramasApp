@@ -7,10 +7,10 @@ SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
   const [fontsLoaded, error] = useFonts({
-    "work-blackHankenGrotesk-Bold": require("../assets/fonts/hanken-grotesk/HankenGrotesk-Bold.ttf"),
-    "work-lightHankenGrotesk": require("../assets/fonts/hanken-grotesk/HankenGrotesk-Light.ttf"),
-    "work-mediumHankenGrotesk": require("../assets/fonts/hanken-grotesk/HankenGrotesk-Medium.ttf"),
-    "work-regularHankenGrotesk": require("../assets/fonts/hanken-grotesk/HankenGrotesk-Regular.ttf"),
+    "hank-bold": require("../assets/fonts/hanken-grotesk/HankenGrotesk-Bold.ttf"),
+    "hank-light": require("../assets/fonts/hanken-grotesk/HankenGrotesk-Light.ttf"),
+    "hank-medium": require("../assets/fonts/hanken-grotesk/HankenGrotesk-Medium.ttf"),
+    "hank-regular": require("../assets/fonts/hanken-grotesk/HankenGrotesk-Regular.ttf"),
   });
 
   useEffect(() => {
