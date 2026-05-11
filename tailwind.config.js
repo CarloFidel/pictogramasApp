@@ -27,6 +27,9 @@ module.exports = {
         alertColor: "#FF3C3C",
         backGroundLight: "#F5F5F5",
         textColor: "#333333",
+        gray04: "#F5F5F5",
+        gray16: "#CECECE",
+        gray55: "#737373",
       },
       fontFamily: {
         "hank-light": ["Hanken Grotesk Light", "sans-serif"],
