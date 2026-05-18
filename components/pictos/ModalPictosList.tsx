@@ -1,7 +1,7 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useState } from "react";
-import { FlatList, Pressable, Text, TextInput, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
+import SearchBar from "../shared/SearchBar";
 import ItemPictos from "./ItemPictos";
 import { pictogramas as pictosfake } from "./picto.mock.data";
 
@@ -9,22 +9,28 @@ interface Props {
   visible: boolean;
 
   onCloseModal: (term: boolean) => void;
+  onSetPictos: (pictoId: number) => void;
 }
 
-const ModalPictosList = ({ visible, onCloseModal }: Props) => {
-  const [pictos, setPictos] = useState<number[]>([]);
+const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
+  const [pictoLibrary, setPictolibrary] = useState<"arasaac" | "myphotos">(
+    "arasaac",
+  );
 
-  const handleClose = () => {
-    if (visible) {
-      onCloseModal(false);
+  const handleShowPictoLibrary = () => {
+    if (pictoLibrary === "arasaac") {
+      setPictolibrary("myphotos");
+    } else {
+      setPictolibrary("arasaac");
     }
   };
 
+  const handleClose = () => {
+    if (visible) onCloseModal(false);
+  };
+
   const handlePictoPressed = (id: number) => {
-    if (pictos.length >= 10)
-      return alert("Has alcanzado el numero mxm de pictos");
-    //TODO: Un popUp que diga que no se puede agregar más pictos
-    setPictos((prev) => [...prev, id]);
+    onSetPictos(id);
   };
 
   return (
@@ -45,59 +51,67 @@ const ModalPictosList = ({ visible, onCloseModal }: Props) => {
         <MaterialCommunityIcons name="close" size={24} color="black" />
       </Pressable>
 
-      <View className="flex-row gap-2 justify-center mt-10">
-        <Pressable className="bg-black py-4 px-20 rounded-lg ">
-          <Text className="text-white">Arasaac</Text>
+      <View className="flex-row gap-2 justify-center mt-10 px-2">
+        <Pressable
+          className={
+            pictoLibrary === "arasaac"
+              ? "bg-black py-4 px-20 rounded-lg "
+              : "py-4 px-20 border border-gray-300 rounded-lg "
+          }
+          onPress={handleShowPictoLibrary}
+        >
+          <Text
+            className={pictoLibrary === "arasaac" ? "text-white" : "text-black"}
+          >
+            Arasaac
+          </Text>
         </Pressable>
 
         <Pressable
-          className=" py-4 px-20 borderounded-lg"
-          style={{ borderWidth: 1, borderColor: "#CECECE", borderRadius: 10 }}
+          className={
+            pictoLibrary === "arasaac"
+              ? "py-4 px-20 border border-gray-300 rounded-lg text-black"
+              : "bg-black py-4 px-20 rounded-lg text-white"
+          }
+          onPress={handleShowPictoLibrary}
         >
-          <Text>Mis Fotos</Text>
+          <Text
+            className={pictoLibrary === "arasaac" ? "text-black" : "text-white"}
+          >
+            Mis Fotos
+          </Text>
         </Pressable>
       </View>
-      <View className="mt-5">
-        <TextInput
-          placeholder="Buscar..."
-          className="font-hank-light"
-          style={{
-            paddingLeft: 40,
-            paddingTop: 15,
-            paddingBottom: 15,
-            backgroundColor: "#F5F5F5",
-            borderRadius: 20,
-          }}
-        ></TextInput>
-        <Ionicons
-          name="search-outline"
-          size={20}
-          color="gray"
-          className="absolute"
-          style={{ marginTop: 12, left: 10, opacity: 0.6 }}
-        />
-      </View>
-      <View className="justify-center my-5">
-        <FlatList
-          data={pictosfake}
-          renderItem={({ item }) => (
-            <ItemPictos
-              id={item._id}
-              word={item.keywords[0].keyword}
-              onPressed={handlePictoPressed}
-            />
-          )}
-          keyExtractor={(item) => item._id.toString()}
-          //horizontal
-          contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 20,
-          }}
-          numColumns={2}
-          className="h-3/4"
-        />
-      </View>
+
+      <SearchBar />
+
+      {pictoLibrary === "arasaac" ? (
+        <View className="justify-center my-5">
+          <FlatList
+            data={pictosfake}
+            renderItem={({ item }) => (
+              <ItemPictos
+                id={item._id}
+                word={item.keywords[0].keyword}
+                onPressed={handlePictoPressed}
+              />
+            )}
+            keyExtractor={(item) => item._id.toString()}
+            //horizontal
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 20,
+            }}
+            numColumns={2}
+            className="h-3/4"
+          />
+        </View>
+      ) : (
+        <View className="flex bg-red-200 flex-1 justify-center items-center mt-5">
+          <Text>Aquí las fotos</Text>
+        </View>
+      )}
     </View>
   );
 };

@@ -1,22 +1,31 @@
-import NavegationBar from "@/components/shared/NavegationBar";
-import React, { useState } from "react";
+import Feather from "@expo/vector-icons/Feather";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import { useState } from "react";
 import { Modal, Pressable, StatusBar, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import ModalPictosList from "@/components/pictos/ModalPictosList";
-import Feather from "@expo/vector-icons/Feather";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-
-let renderButtonsFlag = false;
+import NavegationBar from "@/components/shared/NavegationBar";
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [pictos, setPictos] = useState<number[]>([]);
+
+  const renderButtonsFlag = pictos.length >= 1;
 
   const handleOpenModal = () => {
     setModalVisible(true);
   };
   const handleCloseModal = (term: boolean) => {
     setModalVisible(term);
+  };
+
+  const handleSetPictos = (id: number) => {
+    if (pictos.length >= 10)
+      return alert("Has alcanzado el numero mxm de pictos");
+    //TODO: Un popUp que diga que no se puede agregar más pictos
+    setPictos((prev) => [...prev, id]);
+    setModalVisible(false);
   };
 
   const handleNavegationNav = () => {
@@ -28,13 +37,13 @@ export default function Home() {
       <StatusBar barStyle="light-content" />
 
       <View className=" bg-primary h-screen flex items-center">
-        <View className="flex-row gap-8 bg-primary-600 px-4 py-1  mt-10 mb-5 rounded-3xl shadow-md shadow-primary-600">
+        <View className="flex-row gap-2  bg-primary-600 px-4 py-2  mt-10 mb-5 rounded-3xl shadow-md shadow-primary-600">
           <Pressable onPress={handleOpenModal} className="px-4 py-2">
             <Feather name="plus" size={24} color="white" />
           </Pressable>
           {renderButtonsFlag && (
             <>
-              <Pressable>
+              <Pressable className="px-4 py-2">
                 <SimpleLineIcons
                   name="pencil"
                   size={18}
@@ -42,7 +51,7 @@ export default function Home() {
                   className="mt-1"
                 />
               </Pressable>
-              <Pressable>
+              <Pressable className="px-4 py-2">
                 <Feather name="play" size={20} color="white" className="mt-1" />
               </Pressable>
             </>
@@ -66,6 +75,7 @@ export default function Home() {
               <ModalPictosList
                 visible={modalVisible}
                 onCloseModal={handleCloseModal}
+                onSetPictos={handleSetPictos}
               />
             </Modal>
           )}
