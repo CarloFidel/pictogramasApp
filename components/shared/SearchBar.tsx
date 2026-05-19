@@ -7,14 +7,7 @@ const SearchBar = () => {
     <View className="mt-5">
       <TextInput
         placeholder="Buscar..."
-        className="font-hank-light"
-        style={{
-          paddingLeft: 40,
-          paddingTop: 15,
-          paddingBottom: 15,
-          backgroundColor: "#F5F5F5",
-          borderRadius: 20,
-        }}
+        className="flex-row rounded-3xl bg-gray-100 pl-10 py-4"
       ></TextInput>
       <Ionicons
         name="search-outline"

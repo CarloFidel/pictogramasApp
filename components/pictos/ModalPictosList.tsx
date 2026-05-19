@@ -1,15 +1,15 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useState } from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import PhotosModalList from "../fotos/PhotosModalList";
 import SearchBar from "../shared/SearchBar";
-import ItemPictos from "./ItemPictos";
-import { pictogramas as pictosfake } from "./picto.mock.data";
+import PictosModalList from "./PictosModalList";
 
 interface Props {
   visible: boolean;
 
   onCloseModal: (term: boolean) => void;
-  onSetPictos: (pictoId: number) => void;
+  onSetPictos: (pictoId: number, word: string, isPhoto: boolean) => void;
 }
 
 const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
@@ -29,8 +29,8 @@ const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
     if (visible) onCloseModal(false);
   };
 
-  const handlePictoPressed = (id: number) => {
-    onSetPictos(id);
+  const handlePictoPressed = (id: number, word: string, isPhoto?: boolean) => {
+    onSetPictos(id, word, isPhoto!);
   };
 
   return (
@@ -86,31 +86,9 @@ const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
       <SearchBar />
 
       {pictoLibrary === "arasaac" ? (
-        <View className="justify-center my-5">
-          <FlatList
-            data={pictosfake}
-            renderItem={({ item }) => (
-              <ItemPictos
-                id={item._id}
-                word={item.keywords[0].keyword}
-                onPressed={handlePictoPressed}
-              />
-            )}
-            keyExtractor={(item) => item._id.toString()}
-            //horizontal
-            contentContainerStyle={{
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 20,
-            }}
-            numColumns={2}
-            className="h-3/4"
-          />
-        </View>
+        <PictosModalList onPressedPictos={handlePictoPressed} />
       ) : (
-        <View className="flex bg-red-200 flex-1 justify-center items-center mt-5">
-          <Text>Aquí las fotos</Text>
-        </View>
+        <PhotosModalList onPressedPictos={handlePictoPressed} />
       )}
     </View>
   );
