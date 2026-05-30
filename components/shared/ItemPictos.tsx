@@ -3,7 +3,7 @@ import { Image, Text, View } from "react-native";
 
 interface Props {
   id: number;
-  word: string;
+  word?: string;
   isPhoto?: boolean;
   className: string;
   classnameText: string;

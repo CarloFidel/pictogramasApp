@@ -1,9 +1,9 @@
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import PhotosModalList from "../fotos/PhotosModalList";
 import SearchBar from "../shared/SearchBar";
-import PictosModalList from "./PictosModalList";
+import PictosInModalList from "./PictosInModalList";
 
 interface Props {
   visible: boolean;
@@ -25,10 +25,6 @@ const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
     }
   };
 
-  const handleClose = () => {
-    if (visible) onCloseModal(false);
-  };
-
   const handlePictoPressed = (id: number, word: string, isPhoto?: boolean) => {
     onSetPictos(id, word, isPhoto!);
   };
@@ -46,9 +42,9 @@ const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
       <Pressable
         className="flex-row w-fit justify-end absolute right-5"
         style={{ marginTop: 16 }}
-        onPress={handleClose}
+        onPress={() => onCloseModal(false)}
       >
-        <MaterialCommunityIcons name="close" size={24} color="black" />
+        <Feather name="x" size={24} color="black" />
       </Pressable>
 
       <View className="flex-row gap-2 justify-center mt-10 px-2">
@@ -86,7 +82,7 @@ const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
       <SearchBar />
 
       {pictoLibrary === "arasaac" ? (
-        <PictosModalList onPressedPictos={handlePictoPressed} />
+        <PictosInModalList onPressedPictos={handlePictoPressed} />
       ) : (
         <PhotosModalList onPressedPictos={handlePictoPressed} />
       )}

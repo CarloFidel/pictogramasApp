@@ -7,7 +7,7 @@ interface Props {
   onPressedPictos: (id: number, word: string, isPhoto: boolean) => void;
 }
 
-const PictosModalList = ({ onPressedPictos }: Props) => {
+const PictosInModalList = ({ onPressedPictos }: Props) => {
   return (
     <View className="justify-center my-5">
       <FlatList
@@ -41,4 +41,4 @@ const PictosModalList = ({ onPressedPictos }: Props) => {
   );
 };
 
-export default PictosModalList;
+export default PictosInModalList;
