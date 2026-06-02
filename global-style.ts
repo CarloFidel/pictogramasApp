@@ -27,7 +27,7 @@ export const globalStyles = {
       width: 0,
       height: 8,
     },
-    shadowOpacity: 0.23,
+    shadowOpacity: 0.18,
     shadowRadius: 2.62,
 
     elevation: 4,

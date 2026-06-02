@@ -3,7 +3,7 @@ import { globalStyles } from "@/global-style";
 import Feather from "@expo/vector-icons/Feather";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { BlurView } from "expo-blur";
-import { use, useEffect, useState } from "react";
+import { use, useState } from "react";
 import {
   Modal,
   Pressable,
@@ -12,12 +12,11 @@ import {
   Text,
   View,
 } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useToolBarAnimation } from "../animations/toolbar_transitions/toolBarSize";
+import { useIconFadeIn } from "../animations/toolbar_transitions/useIconFadeIn";
+import { useFadeInAnimation } from "../animations/useFadeInAnimation";
 import ItemPictos from "../components/pictos/ItemPictos";
 import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
@@ -49,6 +48,7 @@ export default function SheduleScreen() {
     setPictosOn(pictosFiltered);
     if (editMode && pictosOn.length === 1) {
       setEditMode(false);
+      setIsEditMode(false);
     }
   };
 
@@ -63,17 +63,9 @@ export default function SheduleScreen() {
     handleSaveMenuVisibility,
   } = useSetSelectedPictos();
 
-  const opacity = useSharedValue(0);
-
-  useEffect(() => {
-    const isOpen = modalVisible || saveModalVisible;
-
-    opacity.value = withTiming(isOpen ? 1 : 0, { duration: 300 });
-  }, [modalVisible, saveModalVisible, opacity]);
-
-  const fadeAnimated = useAnimatedStyle(() => {
-    return { opacity: opacity.value };
-  });
+  const { fadeAnimated } = useFadeInAnimation(modalVisible, saveModalVisible);
+  const { toolBarWitdt } = useToolBarAnimation(renderButtonsFlag);
+  const { iconsFadeIn } = useIconFadeIn(renderButtonsFlag);
 
   return (
     <>
@@ -89,9 +81,9 @@ export default function SheduleScreen() {
             />
           )}
           {!playMode && !editMode && (
-            <View
-              className="flex-row gap-2 bg-primary-600 px-4 py-2 rounded-3xl border border-primary-500"
-              style={globalStyles.shadow_md}
+            <Animated.View
+              className="flex-row gap-2 bg-primary-600 px-4 py-2 rounded-3xl border border-primary-500 justify-center items-center"
+              style={[globalStyles.shadow_md, toolBarWitdt]}
             >
               <Pressable
                 onPress={() => handleModalListVisibility(true)}
@@ -102,35 +94,41 @@ export default function SheduleScreen() {
               {renderButtonsFlag && (
                 <>
                   <Pressable className="px-4 py-2" onPress={handleEditMode}>
-                    <SimpleLineIcons
-                      name="pencil"
-                      size={18}
-                      color="white"
-                      className="mt-1"
-                    />
+                    <Animated.View style={iconsFadeIn}>
+                      <SimpleLineIcons
+                        name="pencil"
+                        size={18}
+                        color="white"
+                        className="mt-1"
+                      />
+                    </Animated.View>
                   </Pressable>
                   <Pressable
                     className="px-4 py-2"
                     onPress={() => handleSaveMenuVisibility(true)}
                   >
-                    <Feather
-                      name="crop"
-                      size={20}
-                      color="white"
-                      className="mt-1"
-                    />
+                    <Animated.View style={iconsFadeIn}>
+                      <Feather
+                        name="crop"
+                        size={20}
+                        color="white"
+                        className="mt-1"
+                      />
+                    </Animated.View>
                   </Pressable>
                   <Pressable className="px-4 py-2" onPress={handlePlayMode}>
-                    <Feather
-                      name="maximize-2"
-                      size={18}
-                      color="white"
-                      className="mt-1.5"
-                    />
+                    <Animated.View style={iconsFadeIn}>
+                      <Feather
+                        name="maximize-2"
+                        size={18}
+                        color="white"
+                        className="mt-1.5"
+                      />
+                    </Animated.View>
                   </Pressable>
                 </>
               )}
-            </View>
+            </Animated.View>
           )}
 
           {!renderButtonsFlag && (
@@ -152,7 +150,7 @@ export default function SheduleScreen() {
                   name="pause"
                   size={20}
                   color="white"
-                  className="p-4 bg-primary-600 rounded-full border border-primary-700"
+                  className="p-4 bg-primary-600 rounded-full border border-primary-700 "
                 />
               </Pressable>
             </View>
