@@ -1,7 +1,7 @@
 import React from "react";
 import { FlatList, Pressable, View } from "react-native";
-import ItemPictos from "../shared/ItemPictos";
-import { pictogramas as pictosfake } from "./picto.mock.data";
+import { pictogramas as pictosfake } from "../../data/picto.mock.data";
+import ItemPictos from "./ItemPictos";
 
 interface Props {
   onPressedPictos: (id: number, word: string, isPhoto: boolean) => void;

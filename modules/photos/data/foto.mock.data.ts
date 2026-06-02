@@ -1,4 +1,4 @@
-import { Photo } from "@/interfaces/Photos";
+import { Photo } from "@/modules/photos/interfaces/Photos";
 
 export const photos: Photo[] = [
   {

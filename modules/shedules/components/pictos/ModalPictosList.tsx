@@ -1,18 +1,18 @@
 import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import PhotosModalList from "../fotos/PhotosModalList";
-import SearchBar from "../shared/SearchBar";
+import PhotosModalList from "../../../photos/components/PhotosModalList";
+import SearchBar from "../searchbar/SearchBar";
 import PictosInModalList from "./PictosInModalList";
 
 interface Props {
   visible: boolean;
 
-  onCloseModal: (term: boolean) => void;
+  onVisibleModal: (term: boolean) => void;
   onSetPictos: (pictoId: number, word: string, isPhoto: boolean) => void;
 }
 
-const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
+const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
   const [pictoLibrary, setPictolibrary] = useState<"arasaac" | "myphotos">(
     "arasaac",
   );
@@ -42,19 +42,20 @@ const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
       <Pressable
         className="flex-row w-fit justify-end absolute right-5"
         style={{ marginTop: 16 }}
-        onPress={() => onCloseModal(false)}
+        onPress={() => onVisibleModal(false)}
       >
         <Feather name="x" size={24} color="black" />
       </Pressable>
 
-      <View className="flex-row gap-2 justify-center mt-10 px-2">
+      <View className="flex-row gap-4 justify-around items-center w-full mt-10">
         <Pressable
           className={
             pictoLibrary === "arasaac"
-              ? "bg-black py-4 px-20 rounded-lg "
-              : "py-4 px-20 border border-gray-300 rounded-lg "
+              ? "flex flex-row bg-black py-4 px-2 justify-center rounded-lg "
+              : "flex flex-row justify-center py-4 px-2 border border-gray-300 rounded-lg "
           }
           onPress={handleShowPictoLibrary}
+          style={{ width: 180 }}
         >
           <Text
             className={pictoLibrary === "arasaac" ? "text-white" : "text-black"}
@@ -66,10 +67,11 @@ const ModalPictosList = ({ visible, onCloseModal, onSetPictos }: Props) => {
         <Pressable
           className={
             pictoLibrary === "arasaac"
-              ? "py-4 px-20 border border-gray-300 rounded-lg text-black"
-              : "bg-black py-4 px-20 rounded-lg text-white"
+              ? "flex flex-row justify-center py-4 px-2 border border-gray-300 rounded-lg text-black"
+              : "flex flex-row bg-black py-4 px-2 justify-center rounded-lg text-white"
           }
           onPress={handleShowPictoLibrary}
+          style={{ width: 180 }}
         >
           <Text
             className={pictoLibrary === "arasaac" ? "text-black" : "text-white"}

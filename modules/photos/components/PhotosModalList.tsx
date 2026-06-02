@@ -1,8 +1,8 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
-import ItemPictos from "../shared/ItemPictos";
-import { photos as photosfake } from "./foto.mock.data";
+import ItemPictos from "../../shedules/components/pictos/ItemPictos";
+import { photos as photosfake } from "../data/foto.mock.data";
 
 interface Props {
   onPressedPictos: (id: number, word: string, isPhoto: boolean) => void;

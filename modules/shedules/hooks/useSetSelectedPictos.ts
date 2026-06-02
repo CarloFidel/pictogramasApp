@@ -46,5 +46,6 @@ export const useSetSelectedPictos = () => {
     setSaveModallVisible,
     handleModalListVisibility,
     handleSaveMenuVisibility,
+    setPictosOn,
   };
 };
