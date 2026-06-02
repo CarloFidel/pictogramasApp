@@ -22,7 +22,7 @@ const ItemPictos = ({
     <View className={className}>
       {isPhoto ? (
         <Image
-          source={require("../../static/fake-photo-user.jpg")}
+          source={require("../../../photos/data/fake-photo-user.jpg")}
           alt={word}
           className={imageDimenssion}
         />

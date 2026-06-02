@@ -3,8 +3,8 @@ import { Text, View } from "react-native";
 
 const Articles = () => {
   return (
-    <View>
-      <Text>Articles</Text>
+    <View className="flex flex-1 justify-center items-center">
+      <Text className="text-lg font-hank-bold">Articles</Text>
     </View>
   );
 };

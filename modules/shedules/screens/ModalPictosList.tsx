@@ -1,10 +1,9 @@
+import PhotosModalList from "@/modules/photos/components/PhotosModalList";
 import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import PhotosModalList from "../../../photos/components/PhotosModalList";
-import SearchBar from "../searchbar/SearchBar";
-import PictosInModalList from "./PictosInModalList";
-
+import PictosInModalList from "../components/pictos/PictosInModalList";
+import SearchBar from "../components/searchbar/SearchBar";
 interface Props {
   visible: boolean;
 
@@ -36,6 +35,11 @@ const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
         marginTop: 200,
+        shadowColor: "#000",
+        shadowOpacity: 0.82,
+        shadowRadius: 18,
+        shadowOffset: { width: 0, height: 8 },
+        elevation: 38,
       }}
     >
       <Text className="text-center mt-5">Añadir pictograma</Text>

@@ -1,3 +1,5 @@
+import { EditModeProvider } from "@/modules/shedules/context/edit-mode-context/EditModeProvider";
+import { PlayModeProvider } from "@/modules/shedules/context/play-mode-context/PlayModeProvider";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
@@ -19,7 +21,13 @@ const RootLayout = () => {
     if (fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded, error]);
 
-  return <Slot />;
+  return (
+    <PlayModeProvider>
+      <EditModeProvider>
+        <Slot />
+      </EditModeProvider>
+    </PlayModeProvider>
+  );
 };
 
 export default RootLayout;
