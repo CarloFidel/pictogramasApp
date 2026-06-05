@@ -1,5 +1,11 @@
-import React from "react";
-import { Image, Text, View } from "react-native";
+import { DAMPING_TOOLBAR_CONFIG } from "@/global-style";
+import { useEffect } from "react";
+import { Text, View } from "react-native";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
 interface Props {
   id: number;
@@ -7,32 +13,65 @@ interface Props {
   isPhoto?: boolean;
   className: string;
   classnameText: string;
-  imageDimenssion: string;
+  imageDimenssion?: number;
+  editMode?: boolean;
 }
 
 const ItemPictos = ({
   id,
   word,
   isPhoto,
+  editMode,
   className,
   classnameText,
   imageDimenssion,
 }: Props) => {
+  const width = useSharedValue(imageDimenssion);
+  const height = useSharedValue(imageDimenssion);
+
+  useEffect(() => {
+    width.value = withSpring(
+      editMode ? 140 : imageDimenssion!,
+      DAMPING_TOOLBAR_CONFIG,
+    );
+    height.value = withSpring(
+      editMode ? 140 : imageDimenssion!,
+      DAMPING_TOOLBAR_CONFIG,
+    );
+  }, [width, height, editMode, imageDimenssion]);
+
+  const reduceScaleInEditMode = useAnimatedStyle(() => {
+    return {
+      // transform: [{ scale: scale.value }],
+      width: width.value,
+      height: height.value,
+    };
+  });
+
   return (
-    <View className={className}>
+    <View
+      className={className}
+      //style={[{ width: 100, height: 100 }, reduceScaleInEditMode]}
+    >
       {isPhoto ? (
-        <Image
+        <Animated.Image
           source={require("../../../photos/data/fake-photo-user.jpg")}
           alt={word}
-          className={imageDimenssion}
+          style={[
+            { width: imageDimenssion, height: imageDimenssion },
+            reduceScaleInEditMode,
+          ]}
         />
       ) : (
-        <Image
+        <Animated.Image
           source={{
             uri: `https://api.arasaac.org/v1/pictograms/${id}?download=false`,
           }}
           alt={word}
-          className={imageDimenssion}
+          style={[
+            { width: imageDimenssion, height: imageDimenssion },
+            reduceScaleInEditMode,
+          ]}
         />
       )}
       <Text className={classnameText}>{word}</Text>

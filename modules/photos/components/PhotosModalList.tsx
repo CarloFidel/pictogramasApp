@@ -30,7 +30,7 @@ const PhotosModalList = ({ onPressedPictos }: Props) => {
                 isPhoto={true}
                 className="justify-center items-center mx-5 border border-gray-200 px-4 py-2 gap-2 rounded-xl"
                 classnameText=" bg-white text-left w-full"
-                imageDimenssion="w-40 h-40"
+                imageDimenssion={130}
               />
             </Pressable>
           </Animated.View>

@@ -1,4 +1,4 @@
-import { DAMPING_CONFIG } from "@/global-style";
+import { DAMPING_TOOLBAR_CONFIG } from "@/global-style";
 import { useEffect } from "react";
 import {
   interpolateColor,
@@ -24,11 +24,14 @@ export const useToolBarBehaviour = (
 
   useEffect(() => {
     if (playMode) {
-      translate.value = withDelay(200, withSpring(160, DAMPING_CONFIG));
+      translate.value = withDelay(200, withSpring(160, DAMPING_TOOLBAR_CONFIG));
     } else if (editMode) {
-      translate.value = withDelay(200, withSpring(-160, DAMPING_CONFIG));
+      translate.value = withDelay(
+        200,
+        withSpring(-160, DAMPING_TOOLBAR_CONFIG),
+      );
     } else {
-      translate.value = withDelay(200, withSpring(0, DAMPING_CONFIG));
+      translate.value = withDelay(200, withSpring(0, DAMPING_TOOLBAR_CONFIG));
     }
 
     borderRadius.value = withTiming(playMode ? 100 : 20, { duration: 300 });

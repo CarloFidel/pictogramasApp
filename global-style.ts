@@ -37,8 +37,8 @@ export const globalStyles = {
 /* ------------------
 Animations
 ---------------------*/
-export const DAMPING_CONFIG = {
-  damping: 6,
-  stiffness: 150,
+export const DAMPING_TOOLBAR_CONFIG = {
+  damping: 10,
+  stiffness: 180,
   mass: 0.5,
 };

@@ -25,7 +25,7 @@ const PictosInModalList = ({ onPressedPictos }: Props) => {
                 word={item.keywords[0].keyword}
                 className="justify-center items-center mx-5 border border-gray-200 px-4 py-2 gap-2 rounded-xl"
                 classnameText=" bg-white text-left w-full"
-                imageDimenssion="w-40 aspect-square"
+                imageDimenssion={140}
               />
             </Pressable>
           </Animated.View>

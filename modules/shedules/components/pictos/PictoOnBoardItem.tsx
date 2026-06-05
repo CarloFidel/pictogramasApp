@@ -1,8 +1,8 @@
 import { globalStyles } from "@/global-style";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
-import { Pressable, View } from "react-native";
-import Animated, { FadeInLeft, ZoomInEasyDown } from "react-native-reanimated";
+import { Pressable } from "react-native";
+import Animated, { FadeIn } from "react-native-reanimated";
 import { PictoOn } from "../../interfaces/PictoOn.interface";
 import ItemPictos from "./ItemPictos";
 
@@ -22,11 +22,9 @@ const PictoOnBoardItem = ({
   handleRemovePicto,
 }: Props) => {
   return (
-    <View className="flex flex-row justify-center items-center gap-4">
+    <Animated.View className="flex flex-row justify-center items-center gap-4">
       {editMode && (
-        <Animated.View
-          entering={ZoomInEasyDown.springify().delay(100).duration(500)}
-        >
+        <Animated.View entering={FadeIn.springify().delay(500).duration(800)}>
           <Pressable>
             <SimpleLineIcons
               name="cursor-move"
@@ -51,13 +49,12 @@ const PictoOnBoardItem = ({
           //onPressed={handlePictosOnPressed}
           className="relative w-fit bg-gray-100 border-4 border-white items-center rounded-lg"
           classnameText="absolute bg-white text-lg rounded-md border border-gray-400 px-2 py-1 bottom-[-25px] center"
-          imageDimenssion={`${picto.id === pictosOn[0].id && !editMode ? "w-56 h-56" : "w-40 h-40"}`}
+          imageDimenssion={picto.id === pictosOn[0].id ? 170 : 130}
+          editMode={editMode}
         />
       </Pressable>
       {editMode && (
-        <Animated.View
-          entering={FadeInLeft.springify().delay(200).duration(500)}
-        >
+        <Animated.View entering={FadeIn.springify().delay(500).duration(800)}>
           <Pressable>
             <SimpleLineIcons
               name="trash"
@@ -70,7 +67,7 @@ const PictoOnBoardItem = ({
           </Pressable>
         </Animated.View>
       )}
-    </View>
+    </Animated.View>
   );
 };
 
