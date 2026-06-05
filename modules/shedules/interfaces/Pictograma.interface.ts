@@ -1,4 +1,4 @@
-export interface Pictogramas {
+export interface Pictograma {
   schematic: boolean;
   sex: boolean;
   violence: boolean;

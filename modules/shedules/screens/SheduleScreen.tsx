@@ -1,7 +1,5 @@
-import { globalStyles } from "@/global-style";
+import BlurComponent from "@/components/shared/BlurComponent";
 import Feather from "@expo/vector-icons/Feather";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import { BlurView } from "expo-blur";
 import { use, useState } from "react";
 import {
   Modal,
@@ -11,14 +9,8 @@ import {
   Text,
   View,
 } from "react-native";
-import Animated, {
-  FadeIn,
-  FadeInLeft,
-  FadeOut,
-  ZoomInEasyDown,
-} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ItemPictos from "../components/pictos/ItemPictos";
+import PictoOnBoardItem from "../components/pictos/PictoOnBoardItem";
 import ToolBar from "../components/pictos/ToolBar";
 import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
@@ -108,70 +100,20 @@ export default function SheduleScreen() {
               showsVerticalScrollIndicator={false}
             >
               {pictosOn.map((picto) => (
-                <View
+                <PictoOnBoardItem
                   key={picto.id}
-                  className="flex flex-row justify-center items-center gap-4"
-                >
-                  {editMode && (
-                    <Animated.View
-                      entering={ZoomInEasyDown.springify()
-                        .delay(100)
-                        .duration(500)}
-                    >
-                      <Pressable>
-                        <SimpleLineIcons
-                          name="cursor-move"
-                          size={20}
-                          color="white"
-                          className="p-4 bg-primary-600 rounded-full border border-primary-700"
-                          style={globalStyles.shadow_sm}
-                        />
-                      </Pressable>
-                    </Animated.View>
-                  )}
-
-                  <Pressable
-                    onLongPress={() => setEditMode(true)}
-                    className="items-center"
-                    style={globalStyles.shadow_md}
-                  >
-                    <ItemPictos
-                      id={picto.id}
-                      word={picto.word}
-                      isPhoto={picto.isPhoto}
-                      //onPressed={handlePictosOnPressed}
-                      className="relative w-fit bg-gray-100 border-4 border-white items-center rounded-lg"
-                      classnameText="absolute bg-white text-lg rounded-md border border-gray-400 px-2 py-1 bottom-[-25px] center"
-                      imageDimenssion={`${picto.id === pictosOn[0].id && !editMode ? "w-56 h-56" : "w-40 h-40"}`}
-                    />
-                  </Pressable>
-                  {editMode && (
-                    <Animated.View
-                      entering={FadeInLeft.springify().delay(200).duration(500)}
-                    >
-                      <Pressable>
-                        <SimpleLineIcons
-                          name="trash"
-                          size={20}
-                          color="white"
-                          className="p-4 bg-primary-600 rounded-full border border-primary-700"
-                          style={globalStyles.shadow_sm}
-                          onPress={() => handleRemovePicto(picto.id)}
-                        />
-                      </Pressable>
-                    </Animated.View>
-                  )}
-                </View>
+                  picto={picto}
+                  editMode={editMode}
+                  setEditMode={setEditMode}
+                  pictosOn={pictosOn}
+                  handleRemovePicto={handleRemovePicto}
+                />
               ))}
             </ScrollView>
           </View>
           {modalVisible && (
             <>
-              <Modal
-                animationType="slide"
-                transparent
-                //TODO: Efecto blur al fondo, mirar react-native-blur
-              >
+              <Modal animationType="slide" transparent>
                 <ModalPictosList
                   visible={modalVisible}
                   onVisibleModal={handleModalListVisibility}
@@ -215,24 +157,7 @@ export default function SheduleScreen() {
         </Modal>
       )}
 
-      {(modalVisible || saveModalVisible) && (
-        <Animated.View
-          className="absolute inset-0 z-10"
-          /* style={fadeAnimated} */ entering={FadeIn.springify()}
-          exiting={FadeOut.springify().duration(300)}
-        >
-          <BlurView
-            intensity={80}
-            tint="dark"
-            experimentalBlurMethod="dimezisBlurView"
-            style={{
-              position: "absolute",
-              inset: 0,
-              zIndex: 10,
-            }}
-          ></BlurView>
-        </Animated.View>
-      )}
+      {(modalVisible || saveModalVisible) && <BlurComponent />}
     </>
   );
 }

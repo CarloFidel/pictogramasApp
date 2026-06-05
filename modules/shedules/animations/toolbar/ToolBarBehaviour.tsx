@@ -1,11 +1,12 @@
+import { DAMPING_CONFIG } from "@/global-style";
 import { useEffect } from "react";
 import {
-    interpolateColor,
-    useAnimatedStyle,
-    useSharedValue,
-    withDelay,
-    withSpring,
-    withTiming,
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+  withTiming,
 } from "react-native-reanimated";
 
 export const useToolBarBehaviour = (
@@ -23,37 +24,16 @@ export const useToolBarBehaviour = (
 
   useEffect(() => {
     if (playMode) {
-      translate.value = withDelay(
-        200,
-        withSpring(160, {
-          damping: 10,
-          stiffness: 120,
-          mass: 0.5,
-        }),
-      );
+      translate.value = withDelay(200, withSpring(160, DAMPING_CONFIG));
     } else if (editMode) {
-      translate.value = withDelay(
-        200,
-        withSpring(-160, {
-          damping: 10,
-          stiffness: 120,
-          mass: 0.5,
-        }),
-      );
+      translate.value = withDelay(200, withSpring(-160, DAMPING_CONFIG));
     } else {
-      translate.value = withDelay(
-        200,
-        withSpring(0, {
-          damping: 10,
-          stiffness: 120,
-          mass: 0.5,
-        }),
-      );
+      translate.value = withDelay(200, withSpring(0, DAMPING_CONFIG));
     }
 
     borderRadius.value = withTiming(playMode ? 100 : 20, { duration: 300 });
     width.value = withTiming(fullToolBar ? 245 : inicialWidth, {
-      duration: 300,
+      duration: 400,
     });
     progress.value = withSpring(editMode ? 1 : 0, { duration: 200 });
   }, [

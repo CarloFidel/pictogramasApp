@@ -2,19 +2,20 @@ import { globalStyles } from "@/global-style";
 import Feather from "@expo/vector-icons/Feather";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { Pressable } from "react-native";
-import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
+import Animated, {
+  FadeInLeft,
+  FadeOut,
+  FadeOutLeft,
+} from "react-native-reanimated";
 import { useToolBarBehaviour } from "../../animations/toolbar/ToolBarBehaviour";
-import { useToolBarEditMode } from "../../animations/toolbar/useToolBarEditMode";
-import { useToolBarPlayMode } from "../../animations/toolbar/useToolBarPlayMode";
-import { useToolBarWithPictos } from "../../animations/toolbar/useToolBarWithPictos";
-import { PictosOn } from "../../interfaces/PictosOn.interface";
+import { PictoOn } from "../../interfaces/PictoOn.interface";
 
 interface Props {
   playMode: boolean;
   editMode: boolean;
   startMode?: boolean;
 
-  pictosOn: PictosOn[];
+  pictosOn: PictoOn[];
   fullToolBar: boolean;
 
   handleModalListVisibility: (term: boolean) => void;
@@ -34,10 +35,6 @@ const ToolBar = ({
   handleSaveMenuVisibility,
   handleModalListVisibility,
 }: Props) => {
-  const { toolBarWidthExpand } = useToolBarWithPictos(pictosOn.length > 0);
-  const { toolBarPLayMode } = useToolBarPlayMode(playMode, fullToolBar);
-  const { toolBarEditMode } = useToolBarEditMode(editMode, fullToolBar);
-
   const { toolBarBehaviour } = useToolBarBehaviour(
     playMode,
     editMode,
@@ -55,7 +52,7 @@ const ToolBar = ({
           toolBarBehaviour,
         ]}
       >
-        {!playMode && !editMode && (
+        {!playMode && !editMode && !fullToolBar && (
           <Pressable
             onPress={() => handleModalListVisibility(true)}
             className="px-4 py-2"
@@ -75,10 +72,17 @@ const ToolBar = ({
         )}
         {fullToolBar && (
           <Animated.View
-            entering={FadeInLeft.springify().duration(300).delay(100)}
-            exiting={FadeOutRight.springify().duration(300)}
+            entering={FadeInLeft.springify().duration(500).delay(300)}
+            exiting={FadeOut.springify().duration(200)}
             className="flex-row gap-2 items-center"
           >
+            <Pressable
+              onPress={() => handleModalListVisibility(true)}
+              className="px-4 py-2"
+            >
+              <Feather name="plus" size={24} color="white" />
+            </Pressable>
+
             <Pressable className="px-4 py-2" onPress={handleEditMode}>
               <SimpleLineIcons
                 name="pencil"
@@ -107,6 +111,7 @@ const ToolBar = ({
       {playMode && (
         <Animated.View
           entering={FadeInLeft.springify().duration(800).delay(200)}
+          exiting={FadeOutLeft.springify().duration(800).delay(200)}
           className="border absolute border-white border-dashed w-15 aspect-square flex items-center justify-center p-4 left-5 top-5"
         >
           <Feather name="check" size={24} color="white" />

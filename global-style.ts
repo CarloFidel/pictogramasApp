@@ -33,3 +33,12 @@ export const globalStyles = {
     elevation: 4,
   },
 };
+
+/* ------------------
+Animations
+---------------------*/
+export const DAMPING_CONFIG = {
+  damping: 6,
+  stiffness: 150,
+  mass: 0.5,
+};

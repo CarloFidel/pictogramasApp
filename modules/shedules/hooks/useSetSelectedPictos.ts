@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { PictosOn } from "../interfaces/PictosOn.interface";
+import { PictoOn } from "../interfaces/PictoOn.interface";
 
 export const useSetSelectedPictos = () => {
-  const [pictosOn, setPictosOn] = useState<PictosOn[]>([]);
+  const [pictosOn, setPictosOn] = useState<PictoOn[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [saveModalVisible, setSaveModallVisible] = useState<boolean>(false);
   const [fullToolBar, setfullToolBar] = useState<boolean>(false);
