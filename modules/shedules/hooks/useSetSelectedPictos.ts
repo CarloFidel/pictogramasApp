@@ -1,29 +1,25 @@
 import { useState } from "react";
-
-interface PictosOn {
-  id: number;
-  word: string;
-  isPhoto?: boolean;
-}
+import { PictosOn } from "../interfaces/PictosOn.interface";
 
 export const useSetSelectedPictos = () => {
   const [pictosOn, setPictosOn] = useState<PictosOn[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [saveModalVisible, setSaveModallVisible] = useState<boolean>(false);
+  const [fullToolBar, setfullToolBar] = useState<boolean>(false);
 
   const renderButtonsFlag = pictosOn.length >= 1;
 
   const handleSetPictos = (id: number, word: string, isPhoto: boolean) => {
     if (pictosOn.length >= 10)
-      return alert("Has alcanzado el numero mxm de pictos");
-    //TODO: Un popUp que diga que no se puede agregar más pictos
+      return alert("Has alcanzado el numero mxm de pictos"); //TODO: Un popUp que diga que no se puede agregar más pictos
+
     setPictosOn((prev) => [...prev, { id, word, isPhoto }]);
     setModalVisible(false);
+    setfullToolBar(true);
   };
-
   /* -----------------
-    Open & Close modal list
-    --------------------*/
+  Open & Close modal list
+  --------------------*/
   const handleModalListVisibility = (term: boolean) => {
     setModalVisible(term);
   };
@@ -40,6 +36,8 @@ export const useSetSelectedPictos = () => {
     modalVisible,
     saveModalVisible,
     renderButtonsFlag,
+    fullToolBar,
+
     //methods
     handleSetPictos,
     setModalVisible,
@@ -47,5 +45,6 @@ export const useSetSelectedPictos = () => {
     handleModalListVisibility,
     handleSaveMenuVisibility,
     setPictosOn,
+    setfullToolBar,
   };
 };

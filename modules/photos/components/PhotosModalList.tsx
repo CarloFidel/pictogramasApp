@@ -1,6 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
+import Animated, { FadeInUp } from "react-native-reanimated";
 import ItemPictos from "../../shedules/components/pictos/ItemPictos";
 import { photos as photosfake } from "../data/foto.mock.data";
 
@@ -18,17 +19,21 @@ const PhotosModalList = ({ onPressedPictos }: Props) => {
 
       <FlatList
         data={photosfake}
-        renderItem={({ item }) => (
-          <Pressable onPress={() => onPressedPictos(item.id, item.word, true)}>
-            <ItemPictos
-              id={item.id}
-              word={item.word}
-              isPhoto={true}
-              className="justify-center items-center mx-5 border border-gray-200 px-4 py-2 gap-2 rounded-xl"
-              classnameText=" bg-white text-left w-full"
-              imageDimenssion="w-40 h-40"
-            />
-          </Pressable>
+        renderItem={({ item, index }) => (
+          <Animated.View entering={FadeInUp.delay(index * 100).springify()}>
+            <Pressable
+              onPress={() => onPressedPictos(item.id, item.word, true)}
+            >
+              <ItemPictos
+                id={item.id}
+                word={item.word}
+                isPhoto={true}
+                className="justify-center items-center mx-5 border border-gray-200 px-4 py-2 gap-2 rounded-xl"
+                classnameText=" bg-white text-left w-full"
+                imageDimenssion="w-40 h-40"
+              />
+            </Pressable>
+          </Animated.View>
         )}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{

@@ -1,4 +1,3 @@
-import Backbutton from "@/components/shared/Backbutton";
 import { globalStyles } from "@/global-style";
 import Feather from "@expo/vector-icons/Feather";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
@@ -12,18 +11,22 @@ import {
   Text,
   View,
 } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeInLeft,
+  FadeOut,
+  ZoomInEasyDown,
+} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useToolBarAnimation } from "../animations/toolbar_transitions/toolBarSize";
-import { useIconFadeIn } from "../animations/toolbar_transitions/useIconFadeIn";
-import { useFadeInAnimation } from "../animations/useFadeInAnimation";
 import ItemPictos from "../components/pictos/ItemPictos";
+import ToolBar from "../components/pictos/ToolBar";
 import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
 import { useSetSelectedPictos } from "../hooks/useSetSelectedPictos";
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
+  //const [startMode, setstartMode] = useState<boolean>(true);
   const [playMode, setPlayMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -34,13 +37,17 @@ export default function SheduleScreen() {
   const { setIsEditMode } = editContext!;
 
   const handlePlayMode = () => {
+    setEditMode(false);
     setPlayMode((term) => !term);
     setIsPlayMode((term) => !term);
+    setfullToolBar((prev) => !prev);
   };
 
   const handleEditMode = () => {
+    setPlayMode(false);
     setEditMode((term) => !term);
     setIsEditMode((term) => !term);
+    setfullToolBar((prev) => !prev);
   };
 
   const handleRemovePicto = (id: number) => {
@@ -58,104 +65,33 @@ export default function SheduleScreen() {
     modalVisible,
     saveModalVisible,
     renderButtonsFlag,
+    fullToolBar,
     handleSetPictos,
     handleModalListVisibility,
     handleSaveMenuVisibility,
+    setfullToolBar,
   } = useSetSelectedPictos();
-
-  const { fadeAnimated } = useFadeInAnimation(modalVisible, saveModalVisible);
-  const { toolBarWitdt } = useToolBarAnimation(renderButtonsFlag);
-  const { iconsFadeIn } = useIconFadeIn(renderButtonsFlag);
 
   return (
     <>
       <SafeAreaView className="flex-1 bg-primary">
         <StatusBar barStyle="light-content" />
         <View className="relative bg-primary h-screen flex items-center p-5">
-          {editMode && (
-            <Backbutton
-              onPress={() => {
-                setEditMode(false);
-                setIsEditMode(false);
-              }}
-            />
-          )}
-          {!playMode && !editMode && (
-            <Animated.View
-              className="flex-row gap-2 bg-primary-600 px-4 py-2 rounded-3xl border border-primary-500 justify-center items-center"
-              style={[globalStyles.shadow_md, toolBarWitdt]}
-            >
-              <Pressable
-                onPress={() => handleModalListVisibility(true)}
-                className="px-4 py-2"
-              >
-                <Feather name="plus" size={24} color="white" />
-              </Pressable>
-              {renderButtonsFlag && (
-                <>
-                  <Pressable className="px-4 py-2" onPress={handleEditMode}>
-                    <Animated.View style={iconsFadeIn}>
-                      <SimpleLineIcons
-                        name="pencil"
-                        size={18}
-                        color="white"
-                        className="mt-1"
-                      />
-                    </Animated.View>
-                  </Pressable>
-                  <Pressable
-                    className="px-4 py-2"
-                    onPress={() => handleSaveMenuVisibility(true)}
-                  >
-                    <Animated.View style={iconsFadeIn}>
-                      <Feather
-                        name="crop"
-                        size={20}
-                        color="white"
-                        className="mt-1"
-                      />
-                    </Animated.View>
-                  </Pressable>
-                  <Pressable className="px-4 py-2" onPress={handlePlayMode}>
-                    <Animated.View style={iconsFadeIn}>
-                      <Feather
-                        name="maximize-2"
-                        size={18}
-                        color="white"
-                        className="mt-1.5"
-                      />
-                    </Animated.View>
-                  </Pressable>
-                </>
-              )}
-            </Animated.View>
-          )}
-
+          <ToolBar
+            playMode={playMode}
+            editMode={editMode}
+            pictosOn={pictosOn}
+            fullToolBar={fullToolBar}
+            handleEditMode={handleEditMode}
+            handlePlayMode={handlePlayMode}
+            handleSaveMenuVisibility={handleSaveMenuVisibility}
+            handleModalListVisibility={handleModalListVisibility}
+          />
           {!renderButtonsFlag && (
             <Text className="text-white text-md font-hank-regular w-30 py-5 text-center">
               Empieza añadiendo un pictograma
             </Text>
           )}
-
-          {playMode && (
-            <View className="w-full flex flex-row justify-between mb-1.5">
-              <View className="border border-white border-dashed w-15 aspect-square flex items-center justify-center">
-                <Feather name="check" size={24} color="white" />
-              </View>
-              <Pressable
-                onPress={handlePlayMode}
-                style={globalStyles.shadow_sm}
-              >
-                <Feather
-                  name="pause"
-                  size={20}
-                  color="white"
-                  className="p-4 bg-primary-600 rounded-full border border-primary-700 "
-                />
-              </Pressable>
-            </View>
-          )}
-
           <View className="relative w-8 items-center bg-primary-400 rounded-lg mt-5">
             <ScrollView
               className="w-80 h-5/6 py-5 "
@@ -177,15 +113,21 @@ export default function SheduleScreen() {
                   className="flex flex-row justify-center items-center gap-4"
                 >
                   {editMode && (
-                    <Pressable>
-                      <SimpleLineIcons
-                        name="cursor-move"
-                        size={20}
-                        color="white"
-                        className="p-4 bg-primary-600 rounded-full border border-primary-700"
-                        style={globalStyles.shadow_sm}
-                      />
-                    </Pressable>
+                    <Animated.View
+                      entering={ZoomInEasyDown.springify()
+                        .delay(100)
+                        .duration(500)}
+                    >
+                      <Pressable>
+                        <SimpleLineIcons
+                          name="cursor-move"
+                          size={20}
+                          color="white"
+                          className="p-4 bg-primary-600 rounded-full border border-primary-700"
+                          style={globalStyles.shadow_sm}
+                        />
+                      </Pressable>
+                    </Animated.View>
                   )}
 
                   <Pressable
@@ -204,16 +146,20 @@ export default function SheduleScreen() {
                     />
                   </Pressable>
                   {editMode && (
-                    <Pressable>
-                      <SimpleLineIcons
-                        name="trash"
-                        size={20}
-                        color="white"
-                        className="p-4 bg-primary-600 rounded-full border border-primary-700"
-                        style={globalStyles.shadow_sm}
-                        onPress={() => handleRemovePicto(picto.id)}
-                      />
-                    </Pressable>
+                    <Animated.View
+                      entering={FadeInLeft.springify().delay(200).duration(500)}
+                    >
+                      <Pressable>
+                        <SimpleLineIcons
+                          name="trash"
+                          size={20}
+                          color="white"
+                          className="p-4 bg-primary-600 rounded-full border border-primary-700"
+                          style={globalStyles.shadow_sm}
+                          onPress={() => handleRemovePicto(picto.id)}
+                        />
+                      </Pressable>
+                    </Animated.View>
                   )}
                 </View>
               ))}
@@ -234,47 +180,47 @@ export default function SheduleScreen() {
               </Modal>
             </>
           )}
-
-          {saveModalVisible && (
-            <Modal
-              animationType="slide"
-              transparent
-              //TODO: Efecto blur al fondo, mirar react-native-blur
-            >
-              <View
-                className="bg-white w-screen px-4 relative flex-1 py-10 gap-8"
-                style={{
-                  borderTopRightRadius: 30,
-                  borderTopLeftRadius: 30,
-                  marginTop: 700,
-                  shadowColor: "#000",
-                  shadowOpacity: 0.82,
-                  shadowRadius: 18,
-                  shadowOffset: { width: 0, height: 8 },
-                  elevation: 20,
-                }}
-              >
-                <Pressable
-                  className="z-10 absolute top-6 right-6"
-                  onPress={() => handleSaveMenuVisibility(false)}
-                >
-                  <Feather name="x" size={24} color="black" />
-                </Pressable>
-                <Pressable className="flex flex-row items-center gap-4">
-                  <Feather name="save" size={24} color="grey" />
-                  <Text>Guardar horario</Text>
-                </Pressable>
-                <Pressable className="flex flex-row items-center gap-4">
-                  <Feather name="folder" size={24} color="grey" />
-                  <Text>Abrir horario</Text>
-                </Pressable>
-              </View>
-            </Modal>
-          )}
         </View>
       </SafeAreaView>
+      {saveModalVisible && (
+        <Modal animationType="slide" transparent>
+          <View
+            className="bg-white w-screen px-4 relative flex-1 py-10 gap-8"
+            style={{
+              borderTopRightRadius: 30,
+              borderTopLeftRadius: 30,
+              marginTop: 700,
+              shadowColor: "#000",
+              shadowOpacity: 0.82,
+              shadowRadius: 18,
+              shadowOffset: { width: 0, height: 8 },
+              elevation: 20,
+            }}
+          >
+            <Pressable
+              className="z-10 absolute top-6 right-6"
+              onPress={() => handleSaveMenuVisibility(false)}
+            >
+              <Feather name="x" size={24} color="black" />
+            </Pressable>
+            <Pressable className="flex flex-row items-center gap-4">
+              <Feather name="save" size={24} color="grey" />
+              <Text>Guardar horario</Text>
+            </Pressable>
+            <Pressable className="flex flex-row items-center gap-4">
+              <Feather name="folder" size={24} color="grey" />
+              <Text>Abrir horario</Text>
+            </Pressable>
+          </View>
+        </Modal>
+      )}
+
       {(modalVisible || saveModalVisible) && (
-        <Animated.View className="absolute inset-0 z-10" style={fadeAnimated}>
+        <Animated.View
+          className="absolute inset-0 z-10"
+          /* style={fadeAnimated} */ entering={FadeIn.springify()}
+          exiting={FadeOut.springify().duration(300)}
+        >
           <BlurView
             intensity={80}
             tint="dark"
