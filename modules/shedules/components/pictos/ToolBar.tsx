@@ -47,9 +47,8 @@ const ToolBar = ({
         className="flex-row gap-2 bg-primary-600 py-3 rounded-3xl border border-primary-500 justify-center items-center"
         style={[
           globalStyles.shadow_md,
-          //toolBarWidthExpand,
-          //toolBarBehaviour,
           toolBarBehaviour,
+          { zIndex: 9999999999 },
         ]}
       >
         {!playMode && !editMode && !fullToolBar && (
@@ -112,7 +111,7 @@ const ToolBar = ({
         <Animated.View
           entering={FadeInLeft.springify().duration(800).delay(200)}
           exiting={FadeOutLeft.springify().duration(800).delay(200)}
-          className="border absolute border-white border-dashed w-15 aspect-square flex items-center justify-center p-4 left-5 top-5"
+          className="border absolute border-white border-dashed w-15 aspect-square flex items-center justify-center p-4 left-5 top-8"
         >
           <Feather name="check" size={24} color="white" />
         </Animated.View>

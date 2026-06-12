@@ -7,6 +7,7 @@ import {
   ScrollView,
   StatusBar,
   Text,
+  useWindowDimensions,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,7 +19,6 @@ import { useSetSelectedPictos } from "../hooks/useSetSelectedPictos";
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
-  //const [startMode, setstartMode] = useState<boolean>(true);
   const [playMode, setPlayMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -50,6 +50,8 @@ export default function SheduleScreen() {
       setIsEditMode(false);
     }
   };
+
+  const { width, height } = useWindowDimensions();
 
   const {
     pictosOn,
@@ -84,33 +86,82 @@ export default function SheduleScreen() {
               Empieza añadiendo un pictograma
             </Text>
           )}
-          <View className="relative w-8 items-center bg-primary-400 rounded-lg mt-5">
-            <ScrollView
-              className="w-80 h-5/6 py-5 "
-              contentContainerStyle={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              contentContainerClassName="gap-10 w-fit bg-transparent"
-              maintainVisibleContentPosition={{
-                minIndexForVisible: 0,
-              }}
-              showsVerticalScrollIndicator={false}
-            >
-              {pictosOn.map((picto) => (
+          <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 ">
+            {/*             {!playMode ? (
+              <ScrollView
+                className="w-80 h-5/6"
+                contentContainerStyle={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                contentContainerClassName="gap-10 w-fit bg-transparent"
+                maintainVisibleContentPosition={{
+                  minIndexForVisible: 0,
+                }}
+                showsVerticalScrollIndicator={false}
+              >
+                {pictosOn.map((picto) => (
+                  <PictoOnBoardItem
+                    key={picto.id}
+                    picto={picto}
+                    editMode={editMode}
+                    playMode={playMode}
+                    setEditMode={setEditMode}
+                    pictosOn={pictosOn}
+                    handleRemovePicto={handleRemovePicto}
+                  />
+                ))}
+              </ScrollView>
+            ) : (
+              <GestureDetector gesture={panGesture}>
                 <PictoOnBoardItem
-                  key={picto.id}
-                  picto={picto}
+                  style={moveStyle}
+                  key={pictosOn[0].id}
+                  picto={pictosOn[0]}
                   editMode={editMode}
+                  playMode={playMode}
                   setEditMode={setEditMode}
                   pictosOn={pictosOn}
                   handleRemovePicto={handleRemovePicto}
                 />
-              ))}
-            </ScrollView>
+              </GestureDetector>
+            )}
+ */}
           </View>
+          <ScrollView
+            scrollEnabled={false}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              // backgroundColor: "red",
+              width: width,
+              height: height,
+            }}
+            contentContainerStyle={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: 100,
+            }}
+            contentContainerClassName="gap-10 w-fit bg-transparent"
+            showsVerticalScrollIndicator={false}
+          >
+            {pictosOn.map((picto) => (
+              <PictoOnBoardItem
+                key={picto.id}
+                picto={picto}
+                editMode={editMode}
+                setEditMode={setEditMode}
+                pictosOn={pictosOn}
+                handleRemovePicto={handleRemovePicto}
+                dragable={picto.id === pictosOn[0].id ? true : false}
+              />
+            ))}
+          </ScrollView>
           {modalVisible && (
             <>
               <Modal animationType="slide" transparent>

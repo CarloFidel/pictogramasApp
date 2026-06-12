@@ -5,8 +5,8 @@ import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 const BlurComponent = () => {
   return (
     <Animated.View
-      className="absolute inset-0 z-10"
-      /* style={fadeAnimated} */ entering={FadeIn.springify()}
+      className="absolute inset-0"
+      entering={FadeIn.springify()}
       exiting={FadeOut.springify().duration(300)}
     >
       <BlurView

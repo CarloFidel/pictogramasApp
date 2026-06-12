@@ -1,5 +1,7 @@
 import { EditModeProvider } from "@/modules/shedules/context/edit-mode-context/EditModeProvider";
 import { PlayModeProvider } from "@/modules/shedules/context/play-mode-context/PlayModeProvider";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
@@ -22,11 +24,13 @@ const RootLayout = () => {
   }, [fontsLoaded, error]);
 
   return (
-    <PlayModeProvider>
-      <EditModeProvider>
-        <Slot />
-      </EditModeProvider>
-    </PlayModeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PlayModeProvider>
+        <EditModeProvider>
+          <Slot />
+        </EditModeProvider>
+      </PlayModeProvider>
+    </GestureHandlerRootView>
   );
 };
 
