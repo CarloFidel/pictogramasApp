@@ -10,6 +10,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PictoOnBoardItem from "../components/pictos/PictoOnBoardItem";
 import ToolBar from "../components/pictos/ToolBar";
@@ -21,6 +22,8 @@ import ModalPictosList from "./ModalPictosList";
 export default function SheduleScreen() {
   const [playMode, setPlayMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+
+  const [deleteZoneActive, setDeleteZoneActive] = useState<boolean>(false);
 
   const playContext = use(PlayModeContext);
   const { setIsPlayMode } = playContext!;
@@ -48,6 +51,17 @@ export default function SheduleScreen() {
     if (editMode && pictosOn.length === 1) {
       setEditMode(false);
       setIsEditMode(false);
+    } else if (playMode && pictosOn.length === 1) {
+      setPlayMode(false);
+      setIsPlayMode(false);
+    }
+  };
+
+  const handleIsInDeleteZone = (term: boolean) => {
+    if (term) {
+      setDeleteZoneActive(true);
+    } else {
+      setDeleteZoneActive(false);
     }
   };
 
@@ -76,60 +90,23 @@ export default function SheduleScreen() {
             editMode={editMode}
             pictosOn={pictosOn}
             fullToolBar={fullToolBar}
+            deleteZone={deleteZoneActive}
             handleEditMode={handleEditMode}
             handlePlayMode={handlePlayMode}
             handleSaveMenuVisibility={handleSaveMenuVisibility}
             handleModalListVisibility={handleModalListVisibility}
           />
           {!renderButtonsFlag && (
-            <Text className="text-white text-md font-hank-regular w-30 py-5 text-center">
-              Empieza añadiendo un pictograma
-            </Text>
+            <Animated.View
+              entering={FadeIn.springify().delay(500).duration(800)}
+              exiting={FadeOut.springify().duration(200)}
+            >
+              <Text className="text-white text-md font-hank-regular w-30 py-5 text-center">
+                Empieza añadiendo un pictograma
+              </Text>
+            </Animated.View>
           )}
-          <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 ">
-            {/*             {!playMode ? (
-              <ScrollView
-                className="w-80 h-5/6"
-                contentContainerStyle={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                contentContainerClassName="gap-10 w-fit bg-transparent"
-                maintainVisibleContentPosition={{
-                  minIndexForVisible: 0,
-                }}
-                showsVerticalScrollIndicator={false}
-              >
-                {pictosOn.map((picto) => (
-                  <PictoOnBoardItem
-                    key={picto.id}
-                    picto={picto}
-                    editMode={editMode}
-                    playMode={playMode}
-                    setEditMode={setEditMode}
-                    pictosOn={pictosOn}
-                    handleRemovePicto={handleRemovePicto}
-                  />
-                ))}
-              </ScrollView>
-            ) : (
-              <GestureDetector gesture={panGesture}>
-                <PictoOnBoardItem
-                  style={moveStyle}
-                  key={pictosOn[0].id}
-                  picto={pictosOn[0]}
-                  editMode={editMode}
-                  playMode={playMode}
-                  setEditMode={setEditMode}
-                  pictosOn={pictosOn}
-                  handleRemovePicto={handleRemovePicto}
-                />
-              </GestureDetector>
-            )}
- */}
-          </View>
+          <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 "></View>
           <ScrollView
             scrollEnabled={false}
             style={{
@@ -159,6 +136,7 @@ export default function SheduleScreen() {
                 pictosOn={pictosOn}
                 handleRemovePicto={handleRemovePicto}
                 dragable={picto.id === pictosOn[0].id ? true : false}
+                handleIsInDeleteZone={handleIsInDeleteZone}
               />
             ))}
           </ScrollView>
@@ -175,6 +153,7 @@ export default function SheduleScreen() {
           )}
         </View>
       </SafeAreaView>
+
       {saveModalVisible && (
         <Modal animationType="slide" transparent>
           <View

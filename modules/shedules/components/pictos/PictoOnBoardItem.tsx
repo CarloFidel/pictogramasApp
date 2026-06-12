@@ -2,13 +2,10 @@ import { globalStyles } from "@/global-style";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
 import { Pressable } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, {
-  FadeIn,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
+import { GestureDetector } from "react-native-gesture-handler";
+import Animated, { FadeIn, useAnimatedReaction } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
+import { useDragDrop } from "../../animations/drag_drop/useDragDrop";
 import { PictoOn } from "../../interfaces/PictoOn.interface";
 import ItemPictos from "./ItemPictos";
 
@@ -24,93 +21,43 @@ interface Props {
   dragable?: boolean;
 
   handleRemovePicto: (id: number) => void;
+  handleIsInDeleteZone: (term: boolean) => void;
 }
 
 const PictoOnBoardItem = ({
   picto,
   editMode,
+  setEditMode,
   className,
   pictosOn,
   handleRemovePicto,
+  handleIsInDeleteZone,
   dragable = false,
 }: Props) => {
-  const inicialPosition = 0;
-  const x = useSharedValue(inicialPosition);
-  const y = useSharedValue(inicialPosition);
+  const { panGesture, moveStyle, isInDeleteZone, onDelete } = useDragDrop(
+    picto.id,
+  );
 
-  const startX = useSharedValue(0);
-  const startY = useSharedValue(0);
-
-  const pressed = useSharedValue(false);
-
-  const scrollAble = useSharedValue(true);
-
-  const panGesture = Gesture.Pan()
-    .onBegin(() => {
-      pressed.value = true;
-      startX.value = x.value;
-      startY.value = y.value;
-      scrollAble.value = false;
-    })
-    .onUpdate((event) => {
-      x.value = startX.value + event.translationX;
-      y.value = startY.value + event.translationY;
-      //console.log(x.value, y.value);
-      const fingerX = event.absoluteX;
-      const fingerY = event.absoluteY;
-
-      const insideX = fingerX >= 20 && fingerX <= 120; // left 20, right 120
-      const insideY = fingerY >= 60 && fingerY <= 160; // top 60, bottom 160
-
-      if (insideX && insideY) {
-        console.log("estoy en zona");
-      } else {
+  useAnimatedReaction(
+    () => isInDeleteZone.value,
+    (current, previous) => {
+      if (current !== previous) {
+        scheduleOnRN(handleIsInDeleteZone, current);
       }
-    })
-    .onFinalize((event) => {
-      pressed.value = false;
+    },
+    [handleIsInDeleteZone],
+  );
 
-      scrollAble.value = true;
-
-      const fingerX = event.absoluteX;
-      const fingerY = event.absoluteY;
-
-      const insideX = fingerX >= 20 && fingerX <= 120; // left 20, right 120
-      const insideY = fingerY >= 60 && fingerY <= 160; // top 60, bottom 160
-
-      if (insideX && insideY) {
-        console.log("estoy en zona");
-      } else {
-        x.value = withSpring(inicialPosition, {
-          damping: 10,
-          stiffness: 180,
-          mass: 0.5,
-        });
-        y.value = withSpring(inicialPosition, {
-          damping: 10,
-          stiffness: 180,
-          mass: 0.5,
-        });
+  useAnimatedReaction(
+    () => onDelete.value,
+    (current, previous) => {
+      if (current && !previous) {
+        scheduleOnRN(handleRemovePicto, picto.id);
+        onDelete.value = false;
       }
-    });
-
-  const moveStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: x.value },
-        { translateY: y.value },
-        { scale: withSpring(pressed.value ? 0.8 : 1, { duration: 100 }) },
-      ],
-    };
-  });
-
-  /* ----------------------/* ----------------------/* ---------------------- */
-
-  /* ----------------------/* ----------------------/* ---------------------- */
-
-  /*----------------------------------------------------------------------  
-
-  ------------------------------------------------------------------------*/
+    },
+    [handleRemovePicto, picto.id, setEditMode],
+  );
 
   return (
     <GestureDetector gesture={panGesture}>

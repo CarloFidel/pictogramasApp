@@ -1,4 +1,4 @@
-import { DAMPING_TOOLBAR_CONFIG } from "@/global-style";
+import { DAMPING_TOOLBAR_CONFIG } from "@/constants/global-constatnt";
 import { useEffect } from "react";
 import {
   interpolateColor,

@@ -33,12 +33,3 @@ export const globalStyles = {
     elevation: 4,
   },
 };
-
-/* ------------------
-Animations
----------------------*/
-export const DAMPING_TOOLBAR_CONFIG = {
-  damping: 10,
-  stiffness: 180,
-  mass: 0.5,
-};
