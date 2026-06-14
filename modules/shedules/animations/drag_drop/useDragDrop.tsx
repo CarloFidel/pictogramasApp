@@ -7,6 +7,7 @@ import {
 
 export const useDragDrop = (draggedId?: number) => {
   const inicialPosition = 0;
+
   const x = useSharedValue(inicialPosition);
   const y = useSharedValue(inicialPosition);
 
@@ -18,11 +19,20 @@ export const useDragDrop = (draggedId?: number) => {
   const isInDeleteZone = useSharedValue(false);
   const onDelete = useSharedValue(false);
 
-  const panGesture = Gesture.Pan()
+  const tapGesture = Gesture.Tap()
+    .maxDuration(20000)
     .onBegin(() => {
       pressed.value = true;
+    })
+    .onFinalize(() => {
+      pressed.value = false;
+    });
+
+  const panGesture = Gesture.Pan()
+    .onBegin(() => {
       startX.value = x.value;
       startY.value = y.value;
+      pressed.value = true;
     })
     .onUpdate((event) => {
       x.value = startX.value + event.translationX;
@@ -30,20 +40,19 @@ export const useDragDrop = (draggedId?: number) => {
       const fingerX = event.absoluteX;
       const fingerY = event.absoluteY;
 
-      const insideX = fingerX >= 60 && fingerX <= 160; // left 20, right 120
-      const insideY = fingerY >= 100 && fingerY <= 200; // top 60, bottom 160
+      const insideX = fingerX >= 50 && fingerX <= 170; // left 20, right 120
+      const insideY = fingerY >= 90 && fingerY <= 210; // top 60, bottom 160
 
       if (insideX && insideY) {
         isInDeleteZone.value = true;
       } else {
         isInDeleteZone.value = false;
-        pressed.value = true;
       }
+      pressed.value = true;
     })
-
     .onFinalize((event) => {
-      pressed.value = false;
       isInDeleteZone.value = false;
+      pressed.value = false;
 
       const fingerX = event.absoluteX;
       const fingerY = event.absoluteY;
@@ -75,7 +84,7 @@ export const useDragDrop = (draggedId?: number) => {
         {
           scale: withSpring(
             pressed.value ? (isInDeleteZone.value ? 0.5 : 0.8) : 1,
-            { duration: 300 },
+            { damping: 10, stiffness: 180, mass: 0.5 },
           ),
         },
       ],
@@ -103,5 +112,6 @@ export const useDragDrop = (draggedId?: number) => {
     isInDeleteZone,
     onDelete,
     draggedId,
+    tapGesture,
   };
 };

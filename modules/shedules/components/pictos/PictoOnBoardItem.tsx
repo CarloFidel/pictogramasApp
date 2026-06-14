@@ -2,7 +2,7 @@ import { globalStyles } from "@/global-style";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
 import { Pressable } from "react-native";
-import { GestureDetector } from "react-native-gesture-handler";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { FadeIn, useAnimatedReaction } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 import { useDragDrop } from "../../animations/drag_drop/useDragDrop";
@@ -34,9 +34,9 @@ const PictoOnBoardItem = ({
   handleIsInDeleteZone,
   dragable = false,
 }: Props) => {
-  const { panGesture, moveStyle, isInDeleteZone, onDelete } = useDragDrop(
-    picto.id,
-  );
+  const { panGesture, moveStyle, isInDeleteZone, onDelete, tapGesture } =
+    useDragDrop(picto.id);
+  const gesture = Gesture.Simultaneous(tapGesture, panGesture);
 
   useAnimatedReaction(
     () => isInDeleteZone.value,
@@ -60,7 +60,7 @@ const PictoOnBoardItem = ({
   );
 
   return (
-    <GestureDetector gesture={panGesture}>
+    <GestureDetector gesture={gesture}>
       <Animated.View
         style={dragable && moveStyle}
         className={`flex flex-row justify-start items-center gap-4 ${className}`}

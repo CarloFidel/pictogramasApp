@@ -5,15 +5,12 @@ import {
 import { globalStyles } from "@/global-style";
 import Feather from "@expo/vector-icons/Feather";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import { use, useEffect } from "react";
+import { use } from "react";
 import { Pressable } from "react-native";
 import Animated, {
   FadeInLeft,
   FadeOut,
   FadeOutLeft,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
 } from "react-native-reanimated";
 import { useToolBarBehaviour } from "../../animations/toolbar/ToolBarBehaviour";
 import { PlayModeContext } from "../../context/play-mode-context/PlayModeContext";
@@ -36,7 +33,6 @@ interface Props {
 
 const ToolBar = ({
   editMode,
-  pictosOn,
   fullToolBar,
   deleteZone,
 
@@ -48,31 +44,12 @@ const ToolBar = ({
   const playMode = use(PlayModeContext);
   const { isPlayMode } = playMode!;
 
-  const { toolBarBehaviour } = useToolBarBehaviour(
+  const { toolBarBehaviour, deleteZoneStyle } = useToolBarBehaviour(
     isPlayMode,
     editMode,
     fullToolBar,
+    deleteZone,
   );
-
-  const flagToScale = useSharedValue(false);
-
-  useEffect(() => {
-    flagToScale.value = deleteZone;
-  }, [deleteZone, flagToScale]);
-
-  const deleteZoneStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          scale: withSpring(flagToScale.value ? 2 : 1, {
-            damping: 10,
-            stiffness: 180,
-            mass: 0.5,
-          }),
-        },
-      ],
-    };
-  });
 
   return (
     <>
@@ -136,6 +113,7 @@ const ToolBar = ({
           </Animated.View>
         )}
       </Animated.View>
+
       {isPlayMode && (
         <Animated.View
           entering={FadeInLeft.springify().duration(800).delay(200)}

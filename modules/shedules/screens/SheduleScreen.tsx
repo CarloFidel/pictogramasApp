@@ -135,7 +135,9 @@ export default function SheduleScreen() {
                 setEditMode={setEditMode}
                 pictosOn={pictosOn}
                 handleRemovePicto={handleRemovePicto}
-                dragable={picto.id === pictosOn[0].id ? true : false}
+                dragable={
+                  picto.id === pictosOn[0].id && playMode ? true : false
+                }
                 handleIsInDeleteZone={handleIsInDeleteZone}
               />
             ))}

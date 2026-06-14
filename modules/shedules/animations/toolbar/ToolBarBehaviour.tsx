@@ -13,6 +13,7 @@ export const useToolBarBehaviour = (
   playMode: boolean,
   editMode: boolean,
   fullToolBar: boolean,
+  deleteZone: boolean,
 ) => {
   let inicialWidth = fullToolBar ? 245 : 65;
 
@@ -21,6 +22,8 @@ export const useToolBarBehaviour = (
   const paddingX = useSharedValue(0);
   const borderRadius = useSharedValue(20);
   const progress = useSharedValue(0);
+
+  const flagToScale = useSharedValue(false);
 
   useEffect(() => {
     if (playMode) {
@@ -34,6 +37,7 @@ export const useToolBarBehaviour = (
       translate.value = withDelay(200, withSpring(0, DAMPING_TOOLBAR_CONFIG));
     }
 
+    flagToScale.value = deleteZone;
     borderRadius.value = withTiming(playMode ? 100 : 20, { duration: 300 });
     width.value = withTiming(fullToolBar ? 245 : inicialWidth, {
       duration: 400,
@@ -48,6 +52,8 @@ export const useToolBarBehaviour = (
     fullToolBar,
     inicialWidth,
     progress,
+    deleteZone,
+    flagToScale,
   ]);
 
   const toolBarBehaviour = useAnimatedStyle(() => {
@@ -65,7 +71,22 @@ export const useToolBarBehaviour = (
     };
   });
 
+  const deleteZoneStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          scale: withSpring(flagToScale.value ? 2 : 1, {
+            damping: 10,
+            stiffness: 180,
+            mass: 0.5,
+          }),
+        },
+      ],
+    };
+  });
+
   return {
     toolBarBehaviour,
+    deleteZoneStyle,
   };
 };
