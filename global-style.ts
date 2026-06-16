@@ -13,19 +13,19 @@ export const globalStyles = {
   shadow_md: {
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
+      width: 1,
       height: 10,
     },
-    shadowOpacity: 0.39,
-    shadowRadius: 8.3,
+    shadowOpacity: 0.4,
+    shadowRadius: 5.3,
     elevation: 13,
   },
 
   shadow_sm: {
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 8,
+      width: 1,
+      height: 5,
     },
     shadowOpacity: 0.18,
     shadowRadius: 2.62,
