@@ -1,17 +1,23 @@
 import Feather from "@expo/vector-icons/Feather";
+import * as SecureStore from "expo-secure-store";
 import React from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { useAuthState } from "../store/authState";
+
+console.log(SecureStore.getItem("auth-store"));
 
 const ProfileScreen = () => {
+  const { logOut } = useAuthState();
+
+  const { email, name } = useAuthState();
+
   return (
     <View className=" bg-primary-600">
       <View className="items-starttext-lg mt-20 mb-10 px-5 gap-2">
         <Text className="text-white font-hank-light text-3xl mt-10">
-          User.Name
+          {name}
         </Text>
-        <Text className="text-white font-hank-light text-md">
-          user@gmail.com
-        </Text>
+        <Text className="text-white font-hank-light text-md">{email}</Text>
       </View>
       <View className="px-2 bg-white rounded-t-3xl ">
         <View className="p-5 gap-4 ">
@@ -103,10 +109,14 @@ const ProfileScreen = () => {
             <Feather name="chevron-right" size={15} />
           </View>
         </View>
-        <View className="flex flex-row ml-5 mt-10 gap-4 items-center">
-          <Feather name="arrow-right-circle" size={20} color="red" />
-          <Text className="font-hank-regular text-md text-red-600">Logout</Text>
-        </View>
+        <Pressable onPress={() => logOut()}>
+          <View className="flex flex-row ml-5 mt-10 gap-4 items-center">
+            <Feather name="arrow-right-circle" size={20} color="red" />
+            <Text className="font-hank-regular text-md text-red-600">
+              Logout
+            </Text>
+          </View>
+        </Pressable>
       </View>
     </View>
   );

@@ -1,9 +1,11 @@
 import { globalStyles } from "@/global-style";
+import { useAuthState } from "@/modules/auth/store/authState";
 import { EditModeContext } from "@/modules/shedules/context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "@/modules/shedules/context/play-mode-context/PlayModeContext";
 import Feather from "@expo/vector-icons/Feather";
+import { useRouter } from "expo-router";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
-import React, { use } from "react";
+import React, { use, useEffect } from "react";
 import { Text, View } from "react-native";
 
 const Layout = () => {
@@ -13,11 +15,23 @@ const Layout = () => {
   const editContext = use(EditModeContext);
   const { isEditMode } = editContext!;
 
+  const router = useRouter();
+
+  const { isLoggedIn } = useAuthState();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace("/profile");
+    } else {
+      router.replace("/login");
+    }
+  }, [isLoggedIn, router]);
+
   return (
     <Tabs>
       <TabSlot />
       <TabList
-        className="z-20 absolute py-2 left-20 right-20 px-8 bottom-10 bg-gray-100/80 rounded-3xl border border-gray-200 flex flex-row items-center gap-2 justify-center"
+        className="z-20 absolute py-2 left-20 right-20 px-8 bottom-10 bg-gray-50 rounded-3xl border border-gray-200 flex flex-row items-center gap-2 justify-center"
         style={[
           globalStyles.shadow_md,
           { opacity: isPlayMode || isEditMode ? 0 : 1 },

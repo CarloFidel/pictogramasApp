@@ -143,15 +143,13 @@ export default function SheduleScreen() {
             ))}
           </ScrollView>
           {modalVisible && (
-            <>
-              <Modal animationType="slide" transparent>
-                <ModalPictosList
-                  visible={modalVisible}
-                  onVisibleModal={handleModalListVisibility}
-                  onSetPictos={handleSetPictos}
-                />
-              </Modal>
-            </>
+            <Modal animationType="slide" transparent>
+              <ModalPictosList
+                visible={modalVisible}
+                onVisibleModal={handleModalListVisibility}
+                onSetPictos={handleSetPictos}
+              />
+            </Modal>
           )}
         </View>
       </SafeAreaView>

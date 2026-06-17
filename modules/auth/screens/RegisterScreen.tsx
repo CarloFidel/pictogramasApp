@@ -2,9 +2,8 @@ import useButtonPress from "@/animations/useButtonPress";
 import Backbutton from "@/components/shared/Backbutton";
 import { globalStyles } from "@/global-style";
 import Feather from "@expo/vector-icons/Feather";
-import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import {
   KeyboardAvoidingView,
   Pressable,
@@ -18,51 +17,13 @@ import {
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, { FadeIn } from "react-native-reanimated";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod"; // or 'zod/v4'
-
-type FormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-};
-
-const schema = z.object({
-  firstName: z
-    .string({ message: "Ingresa un nombre válido" })
-    .regex(/^[A-Za-zÀ-ÿ\s]+$/, {
-      message: "El nombre solo puede contener letras",
-    }),
-
-  lastName: z
-    .string({ message: "Ingresa un apellido válido" })
-    .regex(/^[A-Za-zÀ-ÿ\s]+$/, {
-      message: "El apellido solo puede contener letras",
-    }),
-
-  email: z.email({
-    message: "Ingresa un email válido",
-  }),
-
-  password: z
-    .string({ message: "Ingresa una contraseña válida" })
-    .regex(/^(?=.*[A-Z]).{8,}$/, {
-      message: "La contraseña debe tener al menos 8 caracteres y una mayúscula",
-    }),
-});
+import { useRegister } from "../hooks/useRegister";
 
 const Register = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter();
+  const { width, height } = useWindowDimensions();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
-
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const { control, errors, onSubmit, router } = useRegister();
 
   const handleToRegister = () => {
     router.push("/login");
@@ -71,8 +32,6 @@ const Register = () => {
   const handleOnpress = () => {
     console.log("back-press");
   };
-
-  const { width, height } = useWindowDimensions();
 
   const { pressedStyle, tapGesture } = useButtonPress();
 
@@ -85,18 +44,18 @@ const Register = () => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Backbutton onPress={handleOnpress}></Backbutton>
             <Text
-              className="w-full justify-left text-3xl mt-5"
+              className="w-full justify-left text-3xl mt-10 mb-2"
               style={{ marginTop: height * 0.12 }}
             >
               Registro
             </Text>
             <View
-              style={{ height: height * 0.45, gap: 20 }}
-              className="justify-center items-center w-full mt-12"
+              style={{ height: height * 0.5, gap: 20 }}
+              className="justify-center items-center w-full"
             >
               <Controller
                 control={control}
-                name="firstName"
+                name="fullName"
                 render={({ field: { onChange, value } }) => (
                   <View>
                     <TextInput
@@ -105,14 +64,14 @@ const Register = () => {
                       onChangeText={onChange}
                       value={value}
                     />
-                    {errors.firstName && (
+                    {errors.fullName && (
                       <Animated.View
                         entering={FadeIn}
                         className="flex-row justify-start items-center gap-2 mt-2"
                       >
                         <Feather name="alert-circle" size={18} color={"red"} />
                         <Text style={{ color: "red" }} className="text-left">
-                          {errors.firstName.message!}
+                          {errors.fullName.message!}
                         </Text>
                       </Animated.View>
                     )}
