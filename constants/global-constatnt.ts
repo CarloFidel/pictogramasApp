@@ -6,7 +6,7 @@ export const DAMPING_TOOLBAR_CONFIG = {
 
 export const COORDINATES_DELETE_ZONE_IN_PLAYMODE = {
   top: 12,
-  left: 20,
+  left: 10,
 };
 
 export const WIDTH_DELETE_ZONE = {

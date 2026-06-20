@@ -1,8 +1,7 @@
-import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
-import React, { useEffect, useState } from "react";
-import { FlatList, Pressable, View } from "react-native";
+import { ActivityIndicator, Pressable, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import Animated, { FadeInUp } from "react-native-reanimated";
-import { getAllPictosfromArasaac } from "../../services/axios-pictograms";
+import { usePictos } from "../../hooks/usePictos";
 import ItemPictos from "./ItemPictos";
 
 interface Props {
@@ -15,21 +14,20 @@ interface Props {
 }
 
 const PictosInModalList = ({ onPressedPictos }: Props) => {
-  const [pictos, setPictos] = useState<Pictograma[]>();
+  const { getAllPictosQuery } = usePictos();
 
-  useEffect(() => {
-    const pictosArasaacAll = async () => {
-      const pictos = await getAllPictosfromArasaac();
-      setPictos(pictos);
-    };
-
-    pictosArasaacAll();
-  }, []);
+  if (getAllPictosQuery.isFetching) {
+    return (
+      <View className="flex-1 justify-center items-center mt-40">
+        <ActivityIndicator size={40} />
+      </View>
+    );
+  }
 
   return (
     <View className="justify-center my-5 h-3/4">
       <FlatList
-        data={pictos}
+        data={getAllPictosQuery.data}
         renderItem={({ item, index }) => (
           <Animated.View entering={FadeInUp.delay(index * 100).springify()}>
             <Pressable

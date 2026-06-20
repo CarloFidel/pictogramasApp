@@ -108,7 +108,7 @@ export default function SheduleScreen() {
           )}
           <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 "></View>
           <ScrollView
-            scrollEnabled={false}
+            //scrollEnabled={false}
             style={{
               position: "absolute",
               top: 0,

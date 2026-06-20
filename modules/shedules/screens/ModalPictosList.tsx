@@ -64,6 +64,7 @@ const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
 
         <View className="flex-row gap-4 justify-around items-center w-full mt-10">
           <Pressable
+            disabled={pictoLibrary === "arasaac" ? true : false}
             className={
               pictoLibrary === "arasaac"
                 ? "flex flex-row bg-black py-4 px-2 justify-center rounded-lg "
@@ -82,10 +83,11 @@ const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
           </Pressable>
 
           <Pressable
+            disabled={pictoLibrary === "myphotos" ? true : false}
             className={
-              pictoLibrary === "arasaac"
-                ? "flex flex-row justify-center py-4 px-2 border border-gray-300 rounded-lg text-black"
-                : "flex flex-row bg-black py-4 px-2 justify-center rounded-lg text-white"
+              pictoLibrary === "myphotos"
+                ? "flex flex-row bg-black py-4 px-2 justify-center rounded-lg "
+                : "flex flex-row justify-center py-4 px-2 border border-gray-300 rounded-lg "
             }
             onPress={handleShowPictoLibrary}
             style={{ width: 180 }}

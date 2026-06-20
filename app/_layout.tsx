@@ -1,5 +1,6 @@
 import { EditModeProvider } from "@/modules/shedules/context/edit-mode-context/EditModeProvider";
 import { PlayModeProvider } from "@/modules/shedules/context/play-mode-context/PlayModeProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useFonts } from "expo-font";
@@ -22,13 +23,17 @@ const RootLayout = () => {
     if (fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded, error]);
 
+  const queryClient = new QueryClient();
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <PlayModeProvider>
-        <EditModeProvider>
-          <Slot />
-        </EditModeProvider>
-      </PlayModeProvider>
+      <QueryClientProvider client={queryClient}>
+        <PlayModeProvider>
+          <EditModeProvider>
+            <Slot />
+          </EditModeProvider>
+        </PlayModeProvider>
+      </QueryClientProvider>
     </GestureHandlerRootView>
   );
 };

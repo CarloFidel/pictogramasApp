@@ -40,8 +40,8 @@ export const useDragDrop = (draggedId?: number) => {
       const fingerX = event.absoluteX;
       const fingerY = event.absoluteY;
 
-      const insideX = fingerX >= 50 && fingerX <= 170; // left 20, right 120
-      const insideY = fingerY >= 90 && fingerY <= 210; // top 60, bottom 160
+      const insideX = fingerX >= 20 && fingerX <= 140; // left 20, right 120
+      const insideY = fingerY >= 40 && fingerY <= 210; // top 60, bottom 160
 
       if (insideX && insideY) {
         isInDeleteZone.value = true;
@@ -57,8 +57,8 @@ export const useDragDrop = (draggedId?: number) => {
       const fingerX = event.absoluteX;
       const fingerY = event.absoluteY;
 
-      const insideX = fingerX >= 60 && fingerX <= 160; // left 20, right 120
-      const insideY = fingerY >= 100 && fingerY <= 200; // top 60, bottom 160
+      const insideX = fingerX >= 20 && fingerX <= 140; // left 20, right 120
+      const insideY = fingerY >= 40 && fingerY <= 200; // top 60, bottom 160
 
       if (insideX && insideY) {
         onDelete.value = true;
@@ -95,7 +95,10 @@ export const useDragDrop = (draggedId?: number) => {
     return {
       transform: [
         {
-          scale: withSpring(isInDeleteZone.value ? 1.4 : 1, {
+          translateX: 100,
+        },
+        {
+          scale: withSpring(isInDeleteZone.value ? 1.7 : 1, {
             damping: 10,
             stiffness: 180,
             mass: 0.5,
