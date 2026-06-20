@@ -7,9 +7,7 @@ import { useAuthState } from "../store/authState";
 //console.log(SecureStore.getItem("auth-store"));
 
 const ProfileScreen = () => {
-  const { logOut } = useAuthState();
-
-  const { email, name } = useAuthState();
+  const { email, name, logOut, token } = useAuthState();
 
   return (
     <View className=" bg-primary-600">

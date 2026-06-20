@@ -50,6 +50,8 @@ const ItemPictos = ({
     };
   });
 
+  //rconsole.log(uri);
+
   return (
     <View
       className={className}
@@ -57,7 +59,7 @@ const ItemPictos = ({
     >
       {isPhoto ? (
         <Animated.Image
-          source={require("../../../photos/data/fake-photo-user.jpg")}
+          source={{ uri }}
           alt={word}
           style={[
             { width: imageDimenssion, height: imageDimenssion },

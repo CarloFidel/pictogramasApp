@@ -16,7 +16,7 @@ interface Props {
 const PictosInModalList = ({ onPressedPictos }: Props) => {
   const { getAllPictosQuery } = usePictos();
 
-  if (getAllPictosQuery.isFetching) {
+  if (getAllPictosQuery.isLoading) {
     return (
       <View className="flex-1 justify-center items-center mt-40">
         <ActivityIndicator size={40} />

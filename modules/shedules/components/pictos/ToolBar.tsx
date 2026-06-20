@@ -11,7 +11,7 @@ import { Pressable } from "react-native";
 import Animated, {
   FadeInLeft,
   FadeOut,
-  FadeOutLeft,
+  ZoomOutRotate
 } from "react-native-reanimated";
 import { useToolBarBehaviour } from "../../animations/toolbar/ToolBarBehaviour";
 import { PlayModeContext } from "../../context/play-mode-context/PlayModeContext";
@@ -117,7 +117,7 @@ const ToolBar = ({
       {isPlayMode && (
         <Animated.View
           entering={FadeInLeft.springify().duration(800).delay(200)}
-          exiting={FadeOutLeft.springify().duration(800).delay(200)}
+          exiting={ZoomOutRotate.springify().duration(200)}
           className={"absolute"}
           style={COORDINATES_DELETE_ZONE_IN_PLAYMODE}
         >
