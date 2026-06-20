@@ -4,6 +4,6 @@ export type AuthState = {
   email: string;
   token: string;
 
-  logIn: (name: string, email: string, token: string) => void;
+  logIn: (name: string, email: string, token: string, roles: string[]) => void;
   logOut: () => void;
 };

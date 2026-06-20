@@ -1,6 +1,6 @@
 import * as axios from "axios";
 import { User } from "../interfaces/User.interface";
-import { movieMate } from "./api/api-movie-mate";
+import { pictoApi } from "./api/api-movie-mate";
 
 export interface AuthResponse {
   fullName: string;
@@ -10,7 +10,7 @@ export interface AuthResponse {
 
 export const register = async (data: User) => {
   try {
-    const response = await movieMate.post("/auth/register", data);
+    const response = await pictoApi.post("/auth/register", data);
 
     return response.data;
   } catch (error) {
@@ -24,21 +24,17 @@ export const register = async (data: User) => {
 
 export const login = async (data: User) => {
   try {
-    const response = await movieMate.post("/auth/login", data);
+    const response = await pictoApi.post("/auth/login", data);
 
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || "Error en login");
-    }
-
-    throw new Error(`Problem with login ${error}`);
+    console.error("Login error:", error);
   }
 };
 
 export const getOneUserbyId = async (id: string, token: string) => {
   try {
-    const response = await movieMate.get(`auth/user/${id}`, {
+    const response = await pictoApi.get(`/auth/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -53,7 +49,7 @@ export const getOneUserbyId = async (id: string, token: string) => {
 
 export const deleteUser = async (id: string, token: string) => {
   try {
-    const response = await movieMate.delete(`auth/user/${id}`, {
+    const response = await pictoApi.delete(`/auth/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

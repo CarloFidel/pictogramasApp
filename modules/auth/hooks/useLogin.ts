@@ -18,14 +18,18 @@ export const useLogin = () => {
   const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
+    console.log(data);
+
     try {
       const res = await login(data);
+
+      console.log(res);
 
       if (res) {
         router.push("/profile");
       }
 
-      logIn(res.fullName, res.email, res.token);
+      logIn(res.name, res.email, res.token, res.roles);
     } catch (error) {
       throw new Error(`${error}`);
     }

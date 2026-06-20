@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const RegisterSchema = z.object({
-  fullName: z
+  name: z
     .string({ message: "Ingresa un nombre válido" })
     .min(2, { message: "El nombre tiene que tener más de una letras" })
     .regex(/^[A-Za-zÀ-ÿ\s]+$/, {

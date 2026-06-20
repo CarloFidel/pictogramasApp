@@ -1,5 +1,5 @@
 export interface FormDataRegister {
-  fullName: string;
+  name: string;
   lastName: string;
   email: string;
   password: string;

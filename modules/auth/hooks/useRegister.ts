@@ -18,16 +18,14 @@ export const useRegister = () => {
   const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
-    const { lastName, ...registerData } = data; //Esto lo hago para probar con un backend real !!!!!!No es necesario
-
     try {
-      const res = await register(registerData);
+      const res = await register(data);
 
       if (res) {
         router.push("/profile");
       }
 
-      logIn(res.fullName, res.email, res.token);
+      logIn(res.name, res.email, res.token, res.roles);
     } catch (error) {
       throw new Error(`${error}`);
     }

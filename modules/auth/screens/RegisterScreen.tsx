@@ -26,7 +26,7 @@ const Register = () => {
   const { control, errors, onSubmit, router } = useRegister();
 
   const handleToRegister = () => {
-    router.push("/login");
+    router.replace("/login");
   };
 
   const handleOnpress = () => {
@@ -55,7 +55,7 @@ const Register = () => {
             >
               <Controller
                 control={control}
-                name="fullName"
+                name="name"
                 render={({ field: { onChange, value } }) => (
                   <View>
                     <TextInput
@@ -64,14 +64,14 @@ const Register = () => {
                       onChangeText={onChange}
                       value={value}
                     />
-                    {errors.fullName && (
+                    {errors.name && (
                       <Animated.View
                         entering={FadeIn}
                         className="flex-row justify-start items-center gap-2 mt-2"
                       >
                         <Feather name="alert-circle" size={18} color={"red"} />
                         <Text style={{ color: "red" }} className="text-left">
-                          {errors.fullName.message!}
+                          {errors.name.message!}
                         </Text>
                       </Animated.View>
                     )}
