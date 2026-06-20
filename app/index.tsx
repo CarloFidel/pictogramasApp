@@ -1,11 +1,7 @@
-import { Text, View } from "react-native";
+import { Redirect } from "expo-router";
 
 const AppPicto = () => {
-  return (
-    <View>
-      <Text>AppPicto</Text>
-    </View>
-  );
+  return <Redirect href="/profile" />;
 };
 
 export default AppPicto;
