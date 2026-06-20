@@ -1,4 +1,4 @@
-export interface Pictograma {
+export interface ResponseFromArasaac {
   schematic: boolean;
   sex: boolean;
   violence: boolean;

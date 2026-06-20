@@ -1,4 +1,5 @@
 import { globalStyles } from "@/global-style";
+import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import React from "react";
 import { Pressable } from "react-native";
@@ -6,12 +7,11 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { FadeIn, useAnimatedReaction } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 import { useDragDrop } from "../../animations/drag_drop/useDragDrop";
-import { PictoOn } from "../../interfaces/PictoOn.interface";
 import ItemPictos from "./ItemPictos";
 
 interface Props {
-  picto: PictoOn;
-  pictosOn: PictoOn[];
+  picto: Pictograma;
+  pictosOn: Pictograma[];
 
   className?: string;
 
@@ -82,7 +82,8 @@ const PictoOnBoardItem = ({
         <Pressable className="items-center" style={globalStyles.shadow_md}>
           <ItemPictos
             id={picto.id}
-            word={picto.word}
+            word={picto.keyword}
+            uri={picto.imageUrl}
             isPhoto={picto.isPhoto}
             className="relative w-fit bg-gray-100 border-4 border-white items-center rounded-lg"
             classnameText="absolute bg-white text-lg rounded-md border border-gray-400 px-2 py-1 bottom-[-25px] center"

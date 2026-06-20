@@ -1,3 +1,4 @@
+import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
 import PhotosModalList from "@/modules/photos/components/PhotosModalList";
 import { Stagger } from "@animatereactnative/stagger";
 import Feather from "@expo/vector-icons/Feather";
@@ -11,7 +12,7 @@ interface Props {
   visible: boolean;
 
   onVisibleModal: (term: boolean) => void;
-  onSetPictos: (pictoId: number, word: string, isPhoto: boolean) => void;
+  onSetPictos: ({ id, imageUrl, keyword, isPhoto }: Pictograma) => void;
 }
 
 const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
@@ -27,8 +28,13 @@ const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
     }
   };
 
-  const handlePictoPressed = (id: number, word: string, isPhoto?: boolean) => {
-    onSetPictos(id, word, isPhoto!);
+  const handlePictoPressed = (
+    id: number,
+    keyword: string,
+    imageUrl: string,
+    isPhoto: boolean,
+  ) => {
+    onSetPictos({ id, keyword, isPhoto, imageUrl });
   };
 
   return (

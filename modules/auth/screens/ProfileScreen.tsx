@@ -1,10 +1,10 @@
 import Feather from "@expo/vector-icons/Feather";
-import * as SecureStore from "expo-secure-store";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import { useAuthState } from "../store/authState";
 
-console.log(SecureStore.getItem("auth-store"));
+//import * as SecureStore from "expo-secure-store";
+//console.log(SecureStore.getItem("auth-store"));
 
 const ProfileScreen = () => {
   const { logOut } = useAuthState();

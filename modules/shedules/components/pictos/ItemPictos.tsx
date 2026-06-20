@@ -10,6 +10,7 @@ import Animated, {
 interface Props {
   id: number;
   word?: string;
+  uri: string;
   isPhoto?: boolean;
   className: string;
   classnameText: string;
@@ -20,6 +21,7 @@ interface Props {
 const ItemPictos = ({
   id,
   word,
+  uri,
   isPhoto,
   editMode,
   className,
@@ -65,7 +67,7 @@ const ItemPictos = ({
       ) : (
         <Animated.Image
           source={{
-            uri: `https://api.arasaac.org/v1/pictograms/${id}?download=false`,
+            uri: uri,
           }}
           alt={word}
           style={[

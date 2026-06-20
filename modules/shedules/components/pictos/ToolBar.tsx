@@ -3,6 +3,7 @@ import {
   WIDTH_DELETE_ZONE,
 } from "@/constants/global-constatnt";
 import { globalStyles } from "@/global-style";
+import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
 import Feather from "@expo/vector-icons/Feather";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { use } from "react";
@@ -14,7 +15,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { useToolBarBehaviour } from "../../animations/toolbar/ToolBarBehaviour";
 import { PlayModeContext } from "../../context/play-mode-context/PlayModeContext";
-import { PictoOn } from "../../interfaces/PictoOn.interface";
 
 interface Props {
   playMode: boolean;
@@ -22,7 +22,7 @@ interface Props {
   startMode?: boolean;
   deleteZone: boolean;
 
-  pictosOn: PictoOn[];
+  pictosOn: Pictograma[];
   fullToolBar: boolean;
 
   handleModalListVisibility: (term: boolean) => void;
