@@ -20,3 +20,5 @@ export const PICTO_DIMENTIONS = {
 
   sm: {},
 };
+
+export const SESSION_DURATION = 1000 * 60 * 60 * 2; //2 HORAS

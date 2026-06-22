@@ -3,6 +3,7 @@ import { PlayModeProvider } from "@/modules/shedules/context/play-mode-context/P
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import { SessinExipiredProvider } from "@/modules/auth/context/session-expired-provider/session-expired.provider";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
@@ -26,15 +27,19 @@ const RootLayout = () => {
   const queryClient = new QueryClient();
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <QueryClientProvider client={queryClient}>
-        <PlayModeProvider>
-          <EditModeProvider>
-            <Slot />
-          </EditModeProvider>
-        </PlayModeProvider>
-      </QueryClientProvider>
-    </GestureHandlerRootView>
+    <>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <QueryClientProvider client={queryClient}>
+          <SessinExipiredProvider>
+            <PlayModeProvider>
+              <EditModeProvider>
+                <Slot />
+              </EditModeProvider>
+            </PlayModeProvider>
+          </SessinExipiredProvider>
+        </QueryClientProvider>
+      </GestureHandlerRootView>
+    </>
   );
 };
 

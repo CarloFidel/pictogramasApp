@@ -1,5 +1,6 @@
 import { useAuthState } from "@/modules/auth/store/authState";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
 import React from "react";
 import {
   ActivityIndicator,
@@ -26,6 +27,10 @@ const PhotosModalList = ({ onPressedPictos }: Props) => {
 
   const { getAllPhotosQuery } = usePhotos(token);
 
+  const handleCamaraPress = () => {
+    router.push("/camara");
+  };
+
   if (getAllPhotosQuery.isLoading) {
     return (
       <View className="flex-1 justify-center items-center mt-40">
@@ -36,8 +41,16 @@ const PhotosModalList = ({ onPressedPictos }: Props) => {
 
   return (
     <View className="justify-center my-5">
-      <Pressable className="flex-row rounded-3xl bg-gray-200 py-3 items-center justify-center gap-2 mb-5 active:bg-gray-300">
-        <Ionicons name="camera-outline" size={22} color="gray" />
+      <Pressable
+        onPress={handleCamaraPress}
+        className="flex-row rounded-3xl bg-gray-200 py-3 items-center justify-center gap-2 mb-5 active:bg-gray-300"
+      >
+        <Ionicons
+          name="camera-outline"
+          size={22}
+          color="gray"
+          style={{ zIndex: 10 }}
+        />
         <Text className="text-gray-700">Tomar foto</Text>
       </Pressable>
 

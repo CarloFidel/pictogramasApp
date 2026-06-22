@@ -1,5 +1,5 @@
 import useButtonPress from "@/animations/useButtonPress";
-import Backbutton from "@/components/shared/Backbutton";
+import Backbutton from "@/common/components/Backbutton";
 import { globalStyles } from "@/global-style";
 import Feather from "@expo/vector-icons/Feather";
 import React, { useState } from "react";
@@ -31,6 +31,7 @@ const Register = () => {
 
   const handleOnpress = () => {
     console.log("back-press");
+    router.back();
   };
 
   const { pressedStyle, tapGesture } = useButtonPress();
@@ -42,7 +43,10 @@ const Register = () => {
           className={"flex-1 bg-white justify-between items-center pb-10 mt-4"}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Backbutton onPress={handleOnpress}></Backbutton>
+            <Backbutton
+              position={"top-10 left-2"}
+              onPress={handleOnpress}
+            ></Backbutton>
             <Text
               className="w-full justify-left text-3xl mt-10 mb-2"
               style={{ marginTop: height * 0.12 }}

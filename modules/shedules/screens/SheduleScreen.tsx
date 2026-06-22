@@ -1,4 +1,4 @@
-import BlurComponent from "@/components/shared/BlurComponent";
+import BlurComponent from "@/common/components/BlurComponent";
 import Feather from "@expo/vector-icons/Feather";
 import { use, useState } from "react";
 import {
