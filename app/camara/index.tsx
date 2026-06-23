@@ -1,38 +1,82 @@
 import React, { useRef, useState } from "react";
-import { Button, Image, StyleSheet, Text, View } from "react-native";
+import { Image, Linking, StyleSheet, View } from "react-native";
 
 import Backbutton from "@/common/components/Backbutton";
-import SavePhotoPopUp from "@/modules/photos/components/SevePhotoPopUp";
-import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import PopUp from "@/common/components/PopUp";
 import { router } from "expo-router";
+
+import SavePhotoPopUp from "@/modules/photos/components/SevePhotoPopUp";
+import { useCamaraStore } from "@/modules/photos/store/useCamaraStore";
+
+import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
+import * as MediaLibrary from "expo-media-library";
+
 import SecundaryButton from "./components/SecundaryButton";
 import ShutterButton from "./components/ShutterButton";
-
-import * as MediaLibrary from "expo-media-library";
 
 export default function CamaraScreen() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [camaraPermission, requestCamaraPermission] = useCameraPermissions();
-  const [mediaPermission, requestMediaPermission] =
-    MediaLibrary.usePermissions();
-
-  const [selectedImage, setselectedImage] = useState<string>();
+  const [, requestMediaPermission] = MediaLibrary.usePermissions();
 
   const camaraRef = useRef<CameraView>(null);
 
+  const { addPicture } = useCamaraStore();
+
+  const [selectedImage, setselectedImage] = useState<string>();
+
+  const [openPopUp, setOpenPopUp] = useState<boolean>(false);
+  const [popText, setPopText] = useState<string>("");
+
+  const onRequestPermission = async () => {
+    setOpenPopUp(false);
+
+    try {
+      const { status: camaraPermissionStatus } =
+        await requestCamaraPermission();
+
+      if (camaraPermissionStatus !== "granted") {
+        setPopText("Necesitamos permiso para usar la cámara");
+        setOpenPopUp(true);
+      }
+      const { status: mediaPermission } = await requestMediaPermission();
+
+      if (mediaPermission !== "granted") {
+        setPopText("Necesitamos permiso para acceder a la galería");
+        setOpenPopUp(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setPopText("Algo ha salido mal");
+      setOpenPopUp(true);
+    }
+  };
+
+  // Camera permissions are still loading.
   if (!camaraPermission) {
-    // Camera permissions are still loading.
     return <View />;
   }
 
-  if (!camaraPermission.granted) {
-    // Camera permissions are not granted yet.
+  if (camaraPermission.status === "denied") {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>
-          Necesitamos su permiso para acceder a la camara y la galería
-        </Text>
-        <Button onPress={requestCamaraPermission} title="grant permission" />
+        <PopUp
+          onPress={() => Linking.openSettings()}
+          text="Activa la cámara en Ajustes para continuar"
+        />
+      </View>
+    );
+  }
+
+  //Camera permissions are not granted yet.
+  if (!camaraPermission.granted) {
+    return (
+      <View style={styles.container}>
+        <PopUp
+          onPress={onRequestPermission}
+          text="Necesitamos algunos permisos"
+        />
       </View>
     );
   }
@@ -47,15 +91,29 @@ export default function CamaraScreen() {
     const picture = await camaraRef.current.takePictureAsync({
       quality: 0.7,
     });
+
     console.log(picture);
 
     if (!picture.uri) return;
 
     setselectedImage(picture.uri);
-
-    //TODO: Guardar img
   };
 
+  const onPickImages = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.5,
+      allowsMultipleSelection: false,
+    });
+
+    if (result.canceled) return;
+
+    console.log(result.assets);
+
+    setselectedImage(result.assets[0].uri);
+  };
   const handleOnPressBack = () => {
     router.dismiss();
   };
@@ -64,7 +122,14 @@ export default function CamaraScreen() {
     setselectedImage("");
   };
 
-  const handleSavePhoto = () => {};
+  const handleSavePhoto = async () => {
+    if (!selectedImage) return;
+    await MediaLibrary.createAssetAsync(selectedImage);
+    addPicture(selectedImage);
+    setselectedImage("");
+
+    return selectedImage;
+  };
 
   if (selectedImage) {
     return (
@@ -76,6 +141,7 @@ export default function CamaraScreen() {
           icon="x"
         />
         <SavePhotoPopUp
+          photo={selectedImage}
           onCanselPress={handleClosePress}
           onOkPress={handleSavePhoto}
         />
@@ -93,13 +159,16 @@ export default function CamaraScreen() {
         position="right-4 top-24"
       ></SecundaryButton>
 
-      <Backbutton onPress={handleOnPressBack} position={"top-20 left-4"} />
+      <Backbutton onPress={handleOnPressBack} position={"top-24 left-4"} />
       <ShutterButton onPress={handleOnShutter} />
       <SecundaryButton
         icon={"image-outline"}
-        onPress={toggleCameraFacing}
+        onPress={onPickImages}
         position="right-4 bottom-12"
       ></SecundaryButton>
+      {openPopUp && (
+        <PopUp onPress={() => setOpenPopUp(false)} text={popText} />
+      )}
     </View>
   );
 }
@@ -115,68 +184,5 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
-  },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "transparent",
-    margin: 64,
-  },
-  button: {
-    flex: 1,
-    alignSelf: "flex-end",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-  },
-
-  shutterButton: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: "white",
-    borderColor: "red",
-    borderWidth: 4,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  flipCameraButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 32,
-    backgroundColor: "#17202A",
-    position: "absolute",
-    bottom: 40,
-    right: 32,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  galleryButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 32,
-    backgroundColor: "#17202A",
-    position: "absolute",
-    bottom: 40,
-    left: 32,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  returnCancelButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 32,
-    backgroundColor: "#17202A",
-    position: "absolute",
-    top: 40,
-    left: 32,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });

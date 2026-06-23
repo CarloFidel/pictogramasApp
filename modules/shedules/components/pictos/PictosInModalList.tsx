@@ -1,3 +1,5 @@
+import PopUp from "@/common/components/PopUp";
+import { router } from "expo-router";
 import { ActivityIndicator, Pressable, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, { FadeInUp } from "react-native-reanimated";
@@ -21,6 +23,15 @@ const PictosInModalList = ({ onPressedPictos }: Props) => {
       <View className="flex-1 justify-center items-center mt-40">
         <ActivityIndicator size={40} />
       </View>
+    );
+  }
+  if (getAllPictosQuery.error) {
+    console.log(getAllPictosQuery.error);
+    return (
+      <PopUp
+        onPress={() => router.back()}
+        text={"Algo ha salido mal, intente más tarde"}
+      />
     );
   }
 

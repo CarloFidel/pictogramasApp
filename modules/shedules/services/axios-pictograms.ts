@@ -12,7 +12,6 @@ export const getAllPictosfromArasaac = async (): Promise<Pictograma[]> => {
 
     return pictos;
   } catch (error) {
-    console.log(error);
     throw `Problem with pictograms ${error}`;
   }
 };

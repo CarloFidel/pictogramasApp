@@ -5,16 +5,17 @@ import { Pressable, StyleSheet, Text, useWindowDimensions } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 interface Props {
+  text: string;
   buttonText?: string;
   onPress: () => void;
 }
-const PopUp = ({ onPress, buttonText = "Ok" }: Props) => {
+const PopUp = ({ onPress, buttonText = "Ok", text }: Props) => {
   const { width } = useWindowDimensions();
 
   return (
     <Animated.View
       entering={FadeInDown.springify().duration(800)}
-      className="absolute bg-white justify-center items-center p-2 py-8 rounded-xl gap-5"
+      className="absolute bg-white justify-center border border-gray-200 items-center p-2 py-8 rounded-xl gap-5 mt-2"
       style={{
         top: "40%",
         right: width - width * 0.92,
@@ -22,13 +23,13 @@ const PopUp = ({ onPress, buttonText = "Ok" }: Props) => {
     >
       <Ionicons name="warning-outline" size={30} color="black" />
       <Text className="text-center" style={{ width: width * 0.5 }}>
-        Su sesión ha expirado, por favor ingrese de nuevo
+        {text}
       </Text>
       <Pressable
         style={[
           styles.button,
           globalStyles.shadow_sm,
-          { marginVertical: 20, width: width * 0.8 },
+          { marginVertical: 20, width: width * 0.75 },
         ]}
         onPress={onPress}
       >

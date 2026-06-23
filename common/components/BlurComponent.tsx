@@ -11,7 +11,7 @@ const BlurComponent = () => {
     >
       <BlurView
         intensity={80}
-        tint="dark"
+        tint="default"
         experimentalBlurMethod="dimezisBlurView"
         style={{
           position: "absolute",

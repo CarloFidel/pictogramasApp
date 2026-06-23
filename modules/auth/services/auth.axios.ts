@@ -27,8 +27,7 @@ export const login = async (data: User) => {
     const response = await pictoApi.post("/auth/login", data);
 
     return response.data;
-  } catch (error) {
-    console.error("Login error:", error);
+  } catch (error: any) {
     throw `Problem with login ${error}`;
   }
 };

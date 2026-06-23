@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   FlatList,
   Pressable,
+  RefreshControl,
   Text,
   View,
 } from "react-native";
@@ -55,6 +56,14 @@ const PhotosModalList = ({ onPressedPictos }: Props) => {
       </Pressable>
 
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={getAllPhotosQuery.isFetching}
+            onRefresh={async () => {
+              await getAllPhotosQuery.refetch();
+            }}
+          />
+        }
         data={getAllPhotosQuery.data}
         renderItem={({ item, index }) => (
           <Animated.View entering={FadeInUp.delay(index * 100).springify()}>

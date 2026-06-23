@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllPhotosFromUser } from "../services/axios-userPhotos";
+import { getAllPhotosFromUser } from "../services/axios-UserPhotos";
 
 export const usePhotos = (token: string) => {
   const getAllPhotosQuery = useQuery({
