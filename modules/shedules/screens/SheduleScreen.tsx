@@ -1,4 +1,5 @@
 import BlurComponent from "@/common/components/BlurComponent";
+import { useAuthState } from "@/modules/auth/store/authState";
 import Feather from "@expo/vector-icons/Feather";
 import { use, useState } from "react";
 import {
@@ -30,6 +31,8 @@ export default function SheduleScreen() {
 
   const editContext = use(EditModeContext);
   const { setIsEditMode } = editContext!;
+
+  const { token } = useAuthState();
 
   const handlePlayMode = () => {
     setEditMode(false);
@@ -65,6 +68,21 @@ export default function SheduleScreen() {
     }
   };
 
+  const handleSavePress = async () => {
+    const scheduleItems = pictosOn.map((scheduleItem) => {
+      return {
+        position: pictosOn.indexOf(scheduleItem),
+        visualitem: {
+          url: scheduleItem.imageUrl,
+          type: scheduleItem.isPhoto ? "photo" : "picto",
+          word: scheduleItem.keyword,
+        },
+      };
+    });
+
+    console.log(scheduleItems);
+  };
+
   const { width, height } = useWindowDimensions();
 
   const {
@@ -79,6 +97,8 @@ export default function SheduleScreen() {
     handleSaveMenuVisibility,
     setfullToolBar,
   } = useSetSelectedPictos();
+
+  console.log(pictosOn);
 
   return (
     <>
@@ -175,7 +195,10 @@ export default function SheduleScreen() {
             >
               <Feather name="x" size={24} color="black" />
             </Pressable>
-            <Pressable className="flex flex-row items-center gap-4">
+            <Pressable
+              className="flex flex-row items-center gap-4"
+              onPress={handleSavePress}
+            >
               <Feather name="save" size={24} color="grey" />
               <Text>Guardar horario</Text>
             </Pressable>

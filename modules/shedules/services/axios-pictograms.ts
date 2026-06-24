@@ -15,3 +15,30 @@ export const getAllPictosfromArasaac = async (): Promise<Pictograma[]> => {
     throw `Problem with pictograms ${error}`;
   }
 };
+
+interface Props {
+  title: string;
+  token: string;
+  items: [];
+}
+
+export const saveSchedule = async ({ title, items, token }: Props) => {
+  try {
+    const { data } = await arasaacApi.post(
+      "/shedules/create",
+      {
+        title: title,
+        items: items,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    console.log(data);
+  } catch (error) {
+    throw `Problem saving schedule ${error}`;
+  }
+};

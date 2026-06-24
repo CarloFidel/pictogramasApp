@@ -32,4 +32,24 @@ export const globalStyles = {
 
     elevation: 4,
   },
+
+  input: {
+    width: 360,
+    height: 50,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#F5F5F5",
+  },
+
+  button: {
+    width: 360,
+    height: 55,
+    backgroundColor: "#0F5CB3",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+  },
 };
