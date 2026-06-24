@@ -7,18 +7,19 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, useWindowDimensions, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeOutDown,
+} from "react-native-reanimated";
+import { SaveSchedule } from "../../interfaces/save-schedules.interfaces";
 import { SaveScheduleSchema } from "../../schema/save-schecule";
 import { saveSchedule } from "../../services/axios-pictograms";
 
 interface Props {
-  items: [];
+  items: SaveSchedule[];
   onCanselPress: () => void;
   onOkPress: () => void;
-}
-
-interface SaveScheduleData {
-  title: string;
 }
 
 const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
@@ -28,7 +29,7 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<SaveScheduleData>({ resolver: zodResolver(SaveScheduleSchema) });
+  } = useForm<{ title: string }>({ resolver: zodResolver(SaveScheduleSchema) });
 
   const onSubmit = handleSubmit(async ({ title }) => {
     try {
@@ -43,6 +44,7 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
   return (
     <Animated.View
       entering={FadeInDown.springify().duration(400)}
+      exiting={FadeOutDown.springify().duration(100)}
       className="absolute bg-white justify-center items-center p-2 py-8 rounded-xl gap-5 px-5"
       style={{
         top: "20%",
@@ -50,7 +52,7 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
       }}
     >
       <Text className="text-center" style={{ width: width * 0.5 }}>
-        Escriba una palabra que representa la acción de la imagen
+        Escriba un título para el horario
       </Text>
       <Controller
         control={control}

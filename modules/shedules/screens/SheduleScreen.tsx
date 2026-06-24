@@ -1,5 +1,4 @@
 import BlurComponent from "@/common/components/BlurComponent";
-import { useAuthState } from "@/modules/auth/store/authState";
 import Feather from "@expo/vector-icons/Feather";
 import { use, useState } from "react";
 import {
@@ -14,15 +13,20 @@ import {
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PictoOnBoardItem from "../components/pictos/PictoOnBoardItem";
+import SaveSchedulePopUp from "../components/pictos/SaveSchedulePopUp";
 import ToolBar from "../components/pictos/ToolBar";
 import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
 import { useSetSelectedPictos } from "../hooks/useSetSelectedPictos";
+import { SaveSchedule } from "../interfaces/save-schedules.interfaces";
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
   const [playMode, setPlayMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+
+  const [openSaveSchedule, setOpenSaveSchedule] = useState<boolean>();
+  const [schedulesItems, setSchedulesItems] = useState<SaveSchedule[]>([]);
 
   const [deleteZoneActive, setDeleteZoneActive] = useState<boolean>(false);
 
@@ -31,8 +35,6 @@ export default function SheduleScreen() {
 
   const editContext = use(EditModeContext);
   const { setIsEditMode } = editContext!;
-
-  const { token } = useAuthState();
 
   const handlePlayMode = () => {
     setEditMode(false);
@@ -70,6 +72,7 @@ export default function SheduleScreen() {
 
   const handleSavePress = async () => {
     const scheduleItems = pictosOn.map((scheduleItem) => {
+      setSaveModallVisible(false);
       return {
         position: pictosOn.indexOf(scheduleItem),
         visualitem: {
@@ -81,6 +84,8 @@ export default function SheduleScreen() {
     });
 
     console.log(scheduleItems);
+
+    setOpenSaveSchedule(true);
   };
 
   const { width, height } = useWindowDimensions();
@@ -90,6 +95,7 @@ export default function SheduleScreen() {
     setPictosOn,
     modalVisible,
     saveModalVisible,
+    setSaveModallVisible,
     renderButtonsFlag,
     fullToolBar,
     handleSetPictos,
@@ -209,8 +215,17 @@ export default function SheduleScreen() {
           </View>
         </Modal>
       )}
+      {openSaveSchedule && (
+        <SaveSchedulePopUp
+          items={schedulesItems}
+          onCanselPress={() => setOpenSaveSchedule(false)}
+          onOkPress={() => setOpenSaveSchedule(false)}
+        />
+      )}
 
-      {(modalVisible || saveModalVisible) && <BlurComponent />}
+      {(modalVisible || saveModalVisible || openSaveSchedule) && (
+        <BlurComponent />
+      )}
     </>
   );
 }

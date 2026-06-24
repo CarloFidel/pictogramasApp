@@ -1,6 +1,7 @@
 import { arasaacApi } from "@/config/api-arasaac/api-arassac.config";
 import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
 import { PictoMapper } from "@/infrastructure/mapper/picto.mapper";
+import { SaveSchedule } from "../interfaces/save-schedules.interfaces";
 
 export const getAllPictosfromArasaac = async (): Promise<Pictograma[]> => {
   try {
@@ -19,7 +20,7 @@ export const getAllPictosfromArasaac = async (): Promise<Pictograma[]> => {
 interface Props {
   title: string;
   token: string;
-  items: [];
+  items: SaveSchedule[];
 }
 
 export const saveSchedule = async ({ title, items, token }: Props) => {

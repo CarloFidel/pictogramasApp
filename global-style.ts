@@ -1,3 +1,5 @@
+import { StyleSheet } from "react-native";
+
 export const globalStyles = {
   shadow_lg: {
     shadowColor: "#000",
@@ -51,5 +53,9 @@ export const globalStyles = {
     display: "flex",
     flexDirection: "row",
     gap: 10,
+  },
+
+  BlurViewAnimatedContainer: {
+    ...StyleSheet.absoluteFillObject,
   },
 };

@@ -1,3 +1,4 @@
+import { globalStyles } from "@/global-style";
 import { BlurView } from "expo-blur";
 import React from "react";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
@@ -5,20 +6,16 @@ import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 const BlurComponent = () => {
   return (
     <Animated.View
-      className="absolute inset-0"
-      entering={FadeIn.springify()}
-      exiting={FadeOut.springify().duration(300)}
+      style={globalStyles.BlurViewAnimatedContainer}
+      entering={FadeIn.springify().duration(200)}
+      exiting={FadeOut.springify().duration(200)}
     >
       <BlurView
-        intensity={80}
-        tint="default"
+        intensity={40}
+        tint="dark"
         experimentalBlurMethod="dimezisBlurView"
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 10,
-        }}
-      ></BlurView>
+        style={{ ...globalStyles.BlurViewAnimatedContainer, zIndex: 10 }}
+      />
     </Animated.View>
   );
 };
