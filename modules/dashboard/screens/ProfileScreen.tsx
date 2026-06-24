@@ -1,10 +1,13 @@
 import { useAuthState } from "@/modules/auth/store/authState";
 import Feather from "@expo/vector-icons/Feather";
+import { router } from "expo-router";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
+import { useSchedules } from "../hooks/useSchedules";
 
 const ProfileScreen = () => {
   const { email, name, logOut, token } = useAuthState();
+  const { getAllSchedulesQuery } = useSchedules(token);
 
   return (
     <View className=" bg-primary-600">
@@ -47,11 +50,16 @@ const ProfileScreen = () => {
             <Feather name="chevron-right" size={15} />
           </View>
           <View className="flex flex-row gap-5 items-center justify-between">
-            <View className="flex flex-row gap-5 items-center">
-              <Feather name="calendar" size={20} />
-              <Text className="text-black font-hank-regular text-md">
-                Mis horarios
-              </Text>
+            <View>
+              <Pressable
+                className="flex flex-row gap-5 items-center"
+                onPress={() => router.push("/schedules")}
+              >
+                <Feather name="calendar" size={20} />
+                <Text className="text-black font-hank-regular text-md">
+                  Mis horarios
+                </Text>
+              </Pressable>
             </View>
             <Feather name="chevron-right" size={15} />
           </View>
