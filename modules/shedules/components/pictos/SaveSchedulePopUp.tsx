@@ -1,8 +1,11 @@
+import Loading from "@/common/components/loading";
+import PopUp from "@/common/components/PopUp";
 import PrimaryButton from "@/common/components/PrimaryButton";
 import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
 import Feather from "@expo/vector-icons/Feather";
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as axios from "axios";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, useWindowDimensions, View } from "react-native";
@@ -19,10 +22,11 @@ import { saveSchedule } from "../../services/axios-pictograms";
 interface Props {
   items: SheduleItems[];
   onCanselPress: () => void;
-  onOkPress: () => void;
 }
 
 const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [statusCode, setStatusCode] = React.useState<number>();
   const { width } = useWindowDimensions();
   const { token } = useAuthState();
   const {
@@ -33,13 +37,42 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
 
   const onSubmit = handleSubmit(async ({ title }) => {
     try {
+      setIsLoading(true);
       const res = await saveSchedule({ title, token, items });
-
-      console.log(res);
-    } catch (error) {
-      throw error;
+      setIsLoading(false);
+      setStatusCode(res.status);
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        setStatusCode(error.response?.data.statusCode);
+      }
+    } finally {
+      setIsLoading(false);
     }
   });
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (statusCode === 201) {
+    return (
+      <PopUp
+        onPress={onCanselPress}
+        buttonText="OK"
+        text="Horario guardado con éxito"
+      />
+    );
+  }
+  if (statusCode === 400) {
+    return (
+      <PopUp
+        onPress={onCanselPress}
+        buttonText="OK"
+        text="Ya tiene un horario con ese título, por favor escoja otro"
+        warning={true}
+      />
+    );
+  }
 
   return (
     <Animated.View

@@ -26,7 +26,7 @@ interface Props {
 
 export const saveSchedule = async ({ title, token, items }: Props) => {
   try {
-    const data = await pictoApi.post(
+    const res = await pictoApi.post(
       "/shedules/create",
       {
         title: title,
@@ -39,8 +39,11 @@ export const saveSchedule = async ({ title, token, items }: Props) => {
       },
     );
 
-    console.log(data);
+    return {
+      res: res.data,
+      status: res.status,
+    };
   } catch (error) {
-    throw `Problem saving schedule ${error}`;
+    throw error;
   }
 };

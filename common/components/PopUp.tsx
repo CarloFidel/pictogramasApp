@@ -1,15 +1,22 @@
-import { globalStyles } from "@/global-style";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { Pressable, StyleSheet, Text, useWindowDimensions } from "react-native";
+import { Text, useWindowDimensions } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import PrimaryButton from "./PrimaryButton";
 
 interface Props {
+  icon?: boolean;
+  warning?: boolean;
   text: string;
   buttonText?: string;
   onPress: () => void;
 }
-const PopUp = ({ onPress, buttonText = "Ok", text }: Props) => {
+const PopUp = ({
+  onPress,
+  buttonText = "Ok",
+  text,
+  warning = false,
+}: Props) => {
   const { width } = useWindowDimensions();
 
   return (
@@ -21,36 +28,22 @@ const PopUp = ({ onPress, buttonText = "Ok", text }: Props) => {
         right: width - width * 0.92,
       }}
     >
-      <Ionicons name="warning-outline" size={30} color="black" />
+      {warning ? (
+        <Ionicons name="warning-outline" size={30} color="black" />
+      ) : (
+        <Ionicons name="checkmark-circle-outline" size={30} color="black" />
+      )}
       <Text className="text-center" style={{ width: width * 0.5 }}>
         {text}
       </Text>
-      <Pressable
-        style={[
-          styles.button,
-          globalStyles.shadow_sm,
-          { marginVertical: 20, width: width * 0.75 },
-        ]}
+      <PrimaryButton
         onPress={onPress}
-      >
-        <Text className="text-white ">{buttonText}</Text>
-      </Pressable>
+        text={buttonText}
+        backGroundColor="#0F5CB3"
+        textColor="white"
+      />
     </Animated.View>
   );
 };
 
 export default PopUp;
-
-const styles = StyleSheet.create({
-  button: {
-    width: 360,
-    height: 55,
-    backgroundColor: "#0F5CB3",
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "row",
-    gap: 10,
-  },
-});

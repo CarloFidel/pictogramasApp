@@ -19,6 +19,7 @@ import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
 import { useSetSelectedPictos } from "../hooks/useSetSelectedPictos";
 import { SheduleItems } from "../interfaces/save-schedules.interfaces";
+import { prepareDataSaveSchedules } from "../utility/prepareDatatoSaveSchedules";
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
@@ -71,22 +72,9 @@ export default function SheduleScreen() {
   };
 
   const handleSavePress = async () => {
-    const scheduleItems = pictosOn.map((scheduleItem) => {
-      setSaveModallVisible(false);
-      return {
-        position: pictosOn.indexOf(scheduleItem),
-        visualitem: {
-          url: scheduleItem.imageUrl,
-          type: scheduleItem.isPhoto ? "photo" : "picto",
-          word: scheduleItem.keyword,
-        },
-      };
-    });
-
-    console.log(JSON.stringify(scheduleItems, null, 2));
-
+    const scheduleItems = prepareDataSaveSchedules(pictosOn);
     setSchedulesItems(scheduleItems);
-
+    setSaveModallVisible(false);
     setOpenSaveSchedule(true);
   };
 
@@ -105,8 +93,6 @@ export default function SheduleScreen() {
     handleSaveMenuVisibility,
     setfullToolBar,
   } = useSetSelectedPictos();
-
-  console.log(pictosOn);
 
   return (
     <>
@@ -225,7 +211,6 @@ export default function SheduleScreen() {
         <SaveSchedulePopUp
           items={schedulesItems}
           onCanselPress={() => setOpenSaveSchedule(false)}
-          onOkPress={() => setOpenSaveSchedule(false)}
         />
       )}
     </>
