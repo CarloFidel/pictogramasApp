@@ -1,13 +1,15 @@
 export interface SaveSchedule {
   title: string;
-  items: [
-    {
-      position: number;
-      visualitems: {
-        url: string;
-        type: "photo" | "picto";
-        word: string;
-      };
-    },
-  ];
+  items: SheduleItems[];
+}
+
+export interface SheduleItems {
+  position: number;
+  visualitem: VisualItem;
+}
+
+export interface VisualItem {
+  url: string;
+  type: string;
+  word: string;
 }

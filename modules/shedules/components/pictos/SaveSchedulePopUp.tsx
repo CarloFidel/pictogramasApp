@@ -12,12 +12,12 @@ import Animated, {
   FadeInDown,
   FadeOutDown,
 } from "react-native-reanimated";
-import { SaveSchedule } from "../../interfaces/save-schedules.interfaces";
+import { SheduleItems } from "../../interfaces/save-schedules.interfaces";
 import { SaveScheduleSchema } from "../../schema/save-schecule";
 import { saveSchedule } from "../../services/axios-pictograms";
 
 interface Props {
-  items: SaveSchedule[];
+  items: SheduleItems[];
   onCanselPress: () => void;
   onOkPress: () => void;
 }

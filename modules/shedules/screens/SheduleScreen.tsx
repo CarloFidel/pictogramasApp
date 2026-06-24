@@ -18,7 +18,7 @@ import ToolBar from "../components/pictos/ToolBar";
 import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
 import { useSetSelectedPictos } from "../hooks/useSetSelectedPictos";
-import { SaveSchedule } from "../interfaces/save-schedules.interfaces";
+import { SheduleItems } from "../interfaces/save-schedules.interfaces";
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
@@ -26,7 +26,7 @@ export default function SheduleScreen() {
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const [openSaveSchedule, setOpenSaveSchedule] = useState<boolean>();
-  const [schedulesItems, setSchedulesItems] = useState<SaveSchedule[]>([]);
+  const [schedulesItems, setSchedulesItems] = useState<SheduleItems[]>([]);
 
   const [deleteZoneActive, setDeleteZoneActive] = useState<boolean>(false);
 
@@ -83,7 +83,9 @@ export default function SheduleScreen() {
       };
     });
 
-    console.log(scheduleItems);
+    console.log(JSON.stringify(scheduleItems, null, 2));
+
+    setSchedulesItems(scheduleItems);
 
     setOpenSaveSchedule(true);
   };
@@ -215,16 +217,16 @@ export default function SheduleScreen() {
           </View>
         </Modal>
       )}
+
+      {(modalVisible || saveModalVisible || openSaveSchedule) && (
+        <BlurComponent />
+      )}
       {openSaveSchedule && (
         <SaveSchedulePopUp
           items={schedulesItems}
           onCanselPress={() => setOpenSaveSchedule(false)}
           onOkPress={() => setOpenSaveSchedule(false)}
         />
-      )}
-
-      {(modalVisible || saveModalVisible || openSaveSchedule) && (
-        <BlurComponent />
       )}
     </>
   );
