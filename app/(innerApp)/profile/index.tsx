@@ -1,4 +1,4 @@
-import ProfileScreen from "@/modules/auth/screens/ProfileScreen";
+import ProfileScreen from "@/modules/dashboard/screens/ProfileScreen";
 
 const Profile = () => {
   return <ProfileScreen />;

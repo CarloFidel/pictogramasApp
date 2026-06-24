@@ -1,10 +1,7 @@
+import { useAuthState } from "@/modules/auth/store/authState";
 import Feather from "@expo/vector-icons/Feather";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
-import { useAuthState } from "../store/authState";
-
-//import * as SecureStore from "expo-secure-store";
-//console.log(SecureStore.getItem("auth-store"));
 
 const ProfileScreen = () => {
   const { email, name, logOut, token } = useAuthState();

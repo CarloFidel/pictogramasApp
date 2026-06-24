@@ -6,7 +6,7 @@ import { useAuthState } from "@/modules/auth/store/authState";
 import Feather from "@expo/vector-icons/Feather";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, useWindowDimensions, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
@@ -26,7 +26,7 @@ interface Props {
 
 const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [statusCode, setStatusCode] = React.useState<number>();
+  const [statusCode, setStatusCode] = useState<number>();
   const { width } = useWindowDimensions();
   const { token } = useAuthState();
   const {

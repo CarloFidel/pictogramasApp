@@ -16,13 +16,13 @@ export const savePhoto = async ({ picture, word, token }: Props) => {
   formData.append("word", word);
 
   try {
-    const { data } = await pictoApi.post("/photo/upload", formData, {
+    const res = await pictoApi.post("/photo/upload", formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return data;
+    return res;
   } catch (error) {
-    throw Error(`Problem saving photos ${error}`);
+    throw error;
   }
 };

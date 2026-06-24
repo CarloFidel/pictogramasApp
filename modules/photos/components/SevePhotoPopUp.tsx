@@ -1,8 +1,11 @@
+import Loading from "@/common/components/loading";
+import PopUp from "@/common/components/PopUp";
 import PrimaryButton from "@/common/components/PrimaryButton";
 import { useAuthState } from "@/modules/auth/store/authState";
 import Feather from "@expo/vector-icons/Feather";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import * as axios from "axios";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   StyleSheet,
@@ -12,7 +15,6 @@ import {
   View,
 } from "react-native";
 import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
-import { usePhotos } from "../hooks/usePhotos";
 import { SavePhotoSchema } from "../schema/scheme-picture";
 import { savePhoto } from "../services/axios-SavePhoto";
 
@@ -27,9 +29,11 @@ interface SavePhotData {
 }
 
 const SavePhotoPopUp = ({ onCanselPress, onOkPress, photo }: Props) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<number>();
+
   const { width } = useWindowDimensions();
   const { token } = useAuthState();
-  const { getAllPhotosQuery } = usePhotos(token);
   const {
     control,
     handleSubmit,
@@ -38,17 +42,35 @@ const SavePhotoPopUp = ({ onCanselPress, onOkPress, photo }: Props) => {
 
   const onSubmit = handleSubmit(async ({ word }) => {
     try {
-      await savePhoto({ picture: photo, word, token });
-      const refreshData = getAllPhotosQuery.refetch;
-      console.log(refreshData);
+      setIsLoading(true);
+      const res = await savePhoto({ picture: photo, word, token });
+      setIsLoading(false);
+      setStatusCode(res.status);
 
-      onOkPress();
+      //onOkPress();
       return;
-    } catch (error) {
-      throw error;
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        console.log(error);
+        setStatusCode(error.response?.data.statusCode);
+      }
+    } finally {
+      setIsLoading(false);
     }
   });
 
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (statusCode === 201) {
+    return (
+      <PopUp
+        onPress={onCanselPress}
+        buttonText="OK"
+        text="Foto guardada con éxito"
+      />
+    );
+  }
   return (
     <Animated.View
       entering={FadeInDown.springify().duration(400)}
