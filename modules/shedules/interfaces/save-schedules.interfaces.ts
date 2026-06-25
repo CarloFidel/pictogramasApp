@@ -1,4 +1,5 @@
 export interface SaveSchedule {
+  id?: string;
   title: string;
   items: SheduleItems[];
 }

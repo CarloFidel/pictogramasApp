@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { LoadSchedule } from "../interfaces/LoadSchedule.interface";
 import { getSchedulesFromUser } from "../services/axios-UserSchedules";
 
 export const useSchedules = (token: string) => {
-  const getAllSchedulesQuery = useQuery({
+  const getAllSchedulesQuery = useQuery<LoadSchedule>({
     queryKey: ["schedulesAll", "getSchedulesFromUser"],
     queryFn: () => getSchedulesFromUser(token),
     staleTime: 1000 * 60 * 60 * 24, //la data estará activa durante 24 horas
