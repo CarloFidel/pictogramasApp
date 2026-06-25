@@ -2,7 +2,7 @@ import Backbutton from "@/common/components/Backbutton";
 import Loading from "@/common/components/loading";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { router } from "expo-router";
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   Pressable,
@@ -14,24 +14,54 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSchedules } from "../hooks/useSchedules";
 
+import BlurComponent from "@/common/components/BlurComponent";
+import PopUp from "@/common/components/PopUp";
 import Feather from "@expo/vector-icons/Feather";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { ICarouselInstance } from "react-native-reanimated-carousel";
+import DeleteSchedulePopUp from "../components/DeleteSchedulePopUp";
 import PictoInSchedule from "../components/PictoInSchedule";
+import { deleteSchedule } from "../services/axios-UserSchedules";
 
 const MySchedulesScreen = () => {
-  const ref = useRef<ICarouselInstance>(null);
-
+  const [openDeleteSchedulePopUp, setOpenDeleteSchedulePopUp] =
+    useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<number>(0);
+  const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(
+    null,
+  );
   const { token } = useAuthState();
   const { getAllSchedulesQuery } = useSchedules(token);
 
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const schedulesResponse = getAllSchedulesQuery.data;
 
   if (getAllSchedulesQuery.isLoading) {
     return <Loading />;
   }
+
+  const handleDeleteOpenPopUp = (id: string) => {
+    setSelectedScheduleId(id);
+    setStatusCode(0);
+    setOpenDeleteSchedulePopUp(true);
+  };
+
+  const handleDeleteSchedule = async () => {
+    if (!selectedScheduleId) return;
+
+    try {
+      setIsLoading(true);
+      const res = await deleteSchedule(token, selectedScheduleId);
+      setStatusCode(res?.status ?? 200);
+      await getAllSchedulesQuery.refetch();
+    } catch (error) {
+      console.error(error);
+      setStatusCode(500);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!schedulesResponse || schedulesResponse.schedule.length === 0) {
     return (
@@ -72,18 +102,21 @@ const MySchedulesScreen = () => {
             />
           }
           data={schedulesResponse.schedule}
-          renderItem={({ item }) => (
-            <View
+          renderItem={({ item, index }) => (
+            <Animated.View
+              entering={FadeIn.duration(500).delay(index * 200)}
               className="w-full px-5 py-2 border border-gray-300 rounded-lg"
               style={{ marginBottom: 20, width: width }}
             >
               <View className="flex-row items-center justify-between mb-2">
-                <Text className="text-2xl mb-4">{item.title}</Text>
+                <Text className="text-2xl mb-4">
+                  {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
+                </Text>
                 <View className="flex-row items-center justify-between mb-2 gap-6">
                   <Pressable>
                     <Feather name="play" size={20} color="black" />
                   </Pressable>
-                  <Pressable>
+                  <Pressable onPress={() => handleDeleteOpenPopUp(item.id)}>
                     <Feather name="trash" size={20} color="black" />
                   </Pressable>
                 </View>
@@ -97,7 +130,7 @@ const MySchedulesScreen = () => {
                 )}
                 ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
               />
-            </View>
+            </Animated.View>
           )}
           keyExtractor={(item) => item.id.toString()}
           style={{ marginVertical: 20 }}
@@ -108,6 +141,26 @@ const MySchedulesScreen = () => {
           showsVerticalScrollIndicator={false}
         />
       </Animated.View>
+      {openDeleteSchedulePopUp && (
+        <>
+          <BlurComponent />
+          {isLoading && <Loading />}
+          {statusCode === 200 && (
+            <PopUp
+              text="Su hprario se ha eliminado con éxito"
+              buttonText="Ok"
+              warning={false}
+              onPress={() => setOpenDeleteSchedulePopUp(false)}
+            />
+          )}
+          {!isLoading && statusCode !== 200 && (
+            <DeleteSchedulePopUp
+              onOkPress={handleDeleteSchedule}
+              onCanselPress={() => setOpenDeleteSchedulePopUp(false)}
+            />
+          )}
+        </>
+      )}
     </SafeAreaView>
   );
 };

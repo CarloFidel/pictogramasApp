@@ -5,7 +5,6 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import PrimaryButton from "./PrimaryButton";
 
 interface Props {
-  icon?: boolean;
   warning?: boolean;
   text: string;
   buttonText?: string;

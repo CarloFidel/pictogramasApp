@@ -3,6 +3,7 @@ import PopUp from "@/common/components/PopUp";
 import PrimaryButton from "@/common/components/PrimaryButton";
 import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
+import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
 import Feather from "@expo/vector-icons/Feather";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as axios from "axios";
@@ -29,6 +30,7 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
   const [statusCode, setStatusCode] = useState<number>();
   const { width } = useWindowDimensions();
   const { token } = useAuthState();
+  const { getAllSchedulesQuery } = useSchedules(token);
   const {
     control,
     handleSubmit,
@@ -41,6 +43,7 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
       const res = await saveSchedule({ title, token, items });
       setIsLoading(false);
       setStatusCode(res.status);
+      await getAllSchedulesQuery.refetch();
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         setStatusCode(error.response?.data.statusCode);

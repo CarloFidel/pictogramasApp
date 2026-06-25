@@ -13,3 +13,18 @@ export const getSchedulesFromUser = async (token: string) => {
     throw error;
   }
 };
+export const deleteSchedule = async (token: string, id: string) => {
+  try {
+    const res = await pictoApi.delete(`/shedules/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log(res);
+
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};

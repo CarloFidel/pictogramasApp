@@ -36,7 +36,7 @@ const PrimaryButton = ({
         onPress={onPress}
       >
         <Text style={{ color: textColor }}>{text}</Text>
-        <Feather name={icon} size={24} color={iconColor} />
+        {icon && <Feather name={icon} size={24} color={iconColor} />}
       </Pressable>
     </Animated.View>
   );
