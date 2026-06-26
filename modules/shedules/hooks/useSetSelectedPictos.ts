@@ -1,19 +1,27 @@
+import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
 import { useState } from "react";
-import { PictoOn } from "../interfaces/PictoOn.interface";
 
 export const useSetSelectedPictos = () => {
-  const [pictosOn, setPictosOn] = useState<PictoOn[]>([]);
+  const [pictosOn, setPictosOn] = useState<Pictograma[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [saveModalVisible, setSaveModallVisible] = useState<boolean>(false);
   const [fullToolBar, setfullToolBar] = useState<boolean>(false);
 
   const renderButtonsFlag = pictosOn.length >= 1;
 
-  const handleSetPictos = (id: number, word: string, isPhoto: boolean) => {
+  const handleSetPictos = (data: Pictograma) => {
     if (pictosOn.length >= 10)
       return alert("Has alcanzado el numero mxm de pictos"); //TODO: Un popUp que diga que no se puede agregar más pictos
 
-    setPictosOn((prev) => [...prev, { id, word, isPhoto }]);
+    setPictosOn((prev) => [
+      ...prev,
+      {
+        id: data.id,
+        keyword: data.keyword,
+        isPhoto: data.isPhoto,
+        imageUrl: data.imageUrl,
+      },
+    ]);
     setModalVisible(false);
     setfullToolBar(true);
   };

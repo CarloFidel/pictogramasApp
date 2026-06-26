@@ -1,9 +1,9 @@
+import { pictoApi } from "@/config/api-picto/api-picto.config";
 import * as axios from "axios";
 import { User } from "../interfaces/User.interface";
-import { pictoApi } from "./api/api-movie-mate";
 
 export interface AuthResponse {
-  fullName: string;
+  name: string;
   email: string;
   token: string;
 }
@@ -15,10 +15,10 @@ export const register = async (data: User) => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || "Error en register");
+      throw error.response?.data?.message || "Error en register";
     }
 
-    throw new Error(`Problem with registration ${error}`);
+    throw `Problem with registration ${error}`;
   }
 };
 
@@ -27,8 +27,8 @@ export const login = async (data: User) => {
     const response = await pictoApi.post("/auth/login", data);
 
     return response.data;
-  } catch (error) {
-    console.error("Login error:", error);
+  } catch (error: any) {
+    throw `Problem with login ${error}`;
   }
 };
 

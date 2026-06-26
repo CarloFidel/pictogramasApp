@@ -5,20 +5,22 @@ import { GestureDetector } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 
 interface Props {
+  icon?: React.ComponentProps<typeof Feather>["name"];
+  position: string;
   onPress: () => void;
 }
 
-const Backbutton = ({ onPress }: Props) => {
+const Backbutton = ({ onPress, position, icon = "arrow-left" }: Props) => {
   const { pressedStyle, tapGesture } = useButtonPress();
 
   return (
     <GestureDetector gesture={tapGesture}>
-      <Pressable onPress={onPress} className="absolute left-0 top-10 my-4">
+      <Pressable onPress={onPress} className={`absolute ${position} my-4`}>
         <Animated.View
-          className=" w-12 aspect-square rounded-lg bg-white border border-gray-200 flex justify-center items-center"
-          style={pressedStyle}
+          className="p-3 aspect-square rounded-lg bg-white flex justify-center items-center"
+          style={[pressedStyle, { zIndex: 10, elevation: 10 }]}
         >
-          <Feather name="arrow-left" size={20} color="black" />
+          <Feather name={icon} size={23} color="black" />
         </Animated.View>
       </Pressable>
     </GestureDetector>

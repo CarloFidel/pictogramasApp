@@ -1,6 +1,7 @@
-import BlurComponent from "@/components/shared/BlurComponent";
+import BlurComponent from "@/common/components/BlurComponent";
+import { LoadPictosContext } from "@/modules/dashboard/context/LoadPictosContext";
 import Feather from "@expo/vector-icons/Feather";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
   Modal,
   Pressable,
@@ -13,15 +14,21 @@ import {
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PictoOnBoardItem from "../components/pictos/PictoOnBoardItem";
+import SaveSchedulePopUp from "../components/pictos/SaveSchedulePopUp";
 import ToolBar from "../components/pictos/ToolBar";
 import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
 import { useSetSelectedPictos } from "../hooks/useSetSelectedPictos";
+import { SheduleItems } from "../interfaces/save-schedules.interfaces";
+import { prepareDataSaveSchedules } from "../utility/prepareDatatoSaveSchedules";
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
   const [playMode, setPlayMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+
+  const [openSaveSchedule, setOpenSaveSchedule] = useState<boolean>();
+  const [schedulesItems, setSchedulesItems] = useState<SheduleItems[]>([]);
 
   const [deleteZoneActive, setDeleteZoneActive] = useState<boolean>(false);
 
@@ -65,6 +72,13 @@ export default function SheduleScreen() {
     }
   };
 
+  const handleSavePress = async () => {
+    const scheduleItems = prepareDataSaveSchedules(pictosOn);
+    setSchedulesItems(scheduleItems);
+    setSaveModallVisible(false);
+    setOpenSaveSchedule(true);
+  };
+
   const { width, height } = useWindowDimensions();
 
   const {
@@ -72,6 +86,7 @@ export default function SheduleScreen() {
     setPictosOn,
     modalVisible,
     saveModalVisible,
+    setSaveModallVisible,
     renderButtonsFlag,
     fullToolBar,
     handleSetPictos,
@@ -79,6 +94,23 @@ export default function SheduleScreen() {
     handleSaveMenuVisibility,
     setfullToolBar,
   } = useSetSelectedPictos();
+
+  /* ----------------------------------------------------------
+Carga de horario. ///////////////////////////////////////////
+ ------------------------------------------------------------*/
+  const loadPictosContext = use(LoadPictosContext);
+  const { pictosLoaded, setPictosLoaded } = loadPictosContext!;
+
+  useEffect(() => {
+    if (pictosLoaded.length === 0) return;
+
+    setPictosOn([]);
+    pictosLoaded.forEach((picto) => handleSetPictos(picto));
+    setPictosLoaded([]);
+  }, [pictosLoaded, handleSetPictos, setPictosLoaded, setPictosOn]);
+  /* ----------------------------------------------------------
+////////////////////////////////////////////////////////////////
+ ------------------------------------------------------------*/
 
   return (
     <>
@@ -108,7 +140,7 @@ export default function SheduleScreen() {
           )}
           <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 "></View>
           <ScrollView
-            scrollEnabled={false}
+            //scrollEnabled={false}
             style={{
               position: "absolute",
               top: 0,
@@ -129,7 +161,7 @@ export default function SheduleScreen() {
           >
             {pictosOn.map((picto) => (
               <PictoOnBoardItem
-                key={picto.id}
+                key={`${picto.id}-${pictosOn.indexOf(picto)}`}
                 picto={picto}
                 editMode={editMode}
                 setEditMode={setEditMode}
@@ -175,7 +207,10 @@ export default function SheduleScreen() {
             >
               <Feather name="x" size={24} color="black" />
             </Pressable>
-            <Pressable className="flex flex-row items-center gap-4">
+            <Pressable
+              className="flex flex-row items-center gap-4"
+              onPress={handleSavePress}
+            >
               <Feather name="save" size={24} color="grey" />
               <Text>Guardar horario</Text>
             </Pressable>
@@ -187,7 +222,15 @@ export default function SheduleScreen() {
         </Modal>
       )}
 
-      {(modalVisible || saveModalVisible) && <BlurComponent />}
+      {(modalVisible || saveModalVisible || openSaveSchedule) && (
+        <BlurComponent />
+      )}
+      {openSaveSchedule && (
+        <SaveSchedulePopUp
+          items={schedulesItems}
+          onCanselPress={() => setOpenSaveSchedule(false)}
+        />
+      )}
     </>
   );
 }

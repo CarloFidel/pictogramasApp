@@ -1,5 +1,0 @@
-//getImageById
-
-//getAll
-
-//getWord

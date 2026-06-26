@@ -6,7 +6,7 @@ export const DAMPING_TOOLBAR_CONFIG = {
 
 export const COORDINATES_DELETE_ZONE_IN_PLAYMODE = {
   top: 12,
-  left: 20,
+  left: 15,
 };
 
 export const WIDTH_DELETE_ZONE = {
@@ -20,3 +20,5 @@ export const PICTO_DIMENTIONS = {
 
   sm: {},
 };
+
+export const SESSION_DURATION = 1000 * 60 * 60 * 2; //2 HORAS
