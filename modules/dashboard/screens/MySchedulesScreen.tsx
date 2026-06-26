@@ -2,7 +2,7 @@ import Backbutton from "@/common/components/Backbutton";
 import Loading from "@/common/components/loading";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { use } from "react";
 import {
   FlatList,
   Pressable,
@@ -20,48 +20,57 @@ import Feather from "@expo/vector-icons/Feather";
 import Animated, { FadeIn } from "react-native-reanimated";
 import DeleteSchedulePopUp from "../components/DeleteSchedulePopUp";
 import PictoInSchedule from "../components/PictoInSchedule";
-import { deleteSchedule } from "../services/axios-UserSchedules";
+import { LoadPictosContext } from "../context/LoadPictosContext";
+import { useDeleteSchedule } from "../hooks/useDeleteSchedule";
 
 const MySchedulesScreen = () => {
-  const [openDeleteSchedulePopUp, setOpenDeleteSchedulePopUp] =
-    useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [statusCode, setStatusCode] = useState<number>(0);
-  const [selectedScheduleId, setSelectedScheduleId] = useState<string | null>(
-    null,
-  );
   const { token } = useAuthState();
-  const { getAllSchedulesQuery } = useSchedules(token);
-
   const { width } = useWindowDimensions();
 
+  const getIdFromUrl = (url: string) => {
+    const parts = url.split("/").filter(Boolean);
+    console.log(parts);
+    return Number(parts[parts.length - 2]);
+  };
+
+  const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
 
+  const {
+    isLoading,
+    statusCode,
+    openDeleteSchedulePopUp,
+
+    handleDeleteOpenPopUp,
+    handleDeleteSchedule,
+    setOpenDeleteSchedulePopUp,
+  } = useDeleteSchedule();
+
+  const loadPictosContext = use(LoadPictosContext);
+  const { setPictosLoaded } = loadPictosContext!;
+
+  const handleSetPictosOn = (id: string) => {
+    setPictosLoaded([]);
+    const schedules = schedulesResponse?.schedule;
+    const scheduleTarget = schedules?.find((sched) => sched.id === id);
+
+    const pictos = scheduleTarget?.scheduleItems.map((item) => ({
+      id: item.id,
+      keyword: item.visualItem.word,
+      isPhoto: item.visualItem.type === "photo",
+      imageUrl: item.visualItem.url,
+    }));
+
+    pictos?.forEach((picto) => setPictosLoaded((prev) => [...prev, picto]));
+    router.push("/(innerApp)/horario");
+  };
+  const handleClosingPopUp = async () => {
+    setOpenDeleteSchedulePopUp(false);
+    await getAllSchedulesQuery.refetch();
+  };
   if (getAllSchedulesQuery.isLoading) {
     return <Loading />;
   }
-
-  const handleDeleteOpenPopUp = (id: string) => {
-    setSelectedScheduleId(id);
-    setStatusCode(0);
-    setOpenDeleteSchedulePopUp(true);
-  };
-
-  const handleDeleteSchedule = async () => {
-    if (!selectedScheduleId) return;
-
-    try {
-      setIsLoading(true);
-      const res = await deleteSchedule(token, selectedScheduleId);
-      setStatusCode(res?.status ?? 200);
-      await getAllSchedulesQuery.refetch();
-    } catch (error) {
-      console.error(error);
-      setStatusCode(500);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   if (!schedulesResponse || schedulesResponse.schedule.length === 0) {
     return (
@@ -113,7 +122,7 @@ const MySchedulesScreen = () => {
                   {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
                 </Text>
                 <View className="flex-row items-center justify-between mb-2 gap-6">
-                  <Pressable>
+                  <Pressable onPress={() => handleSetPictosOn(item.id)}>
                     <Feather name="play" size={20} color="black" />
                   </Pressable>
                   <Pressable onPress={() => handleDeleteOpenPopUp(item.id)}>
@@ -150,7 +159,7 @@ const MySchedulesScreen = () => {
               text="Su hprario se ha eliminado con éxito"
               buttonText="Ok"
               warning={false}
-              onPress={() => setOpenDeleteSchedulePopUp(false)}
+              onPress={handleClosingPopUp}
             />
           )}
           {!isLoading && statusCode !== 200 && (

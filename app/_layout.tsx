@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { SessinExipiredProvider } from "@/modules/auth/context/session-expired-provider/session-expired.provider";
+import { LoadPictosProvider } from "@/modules/dashboard/context/LoadPictosProvider";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
 import { useEffect } from "react";
@@ -31,11 +32,13 @@ const RootLayout = () => {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <SessinExipiredProvider>
-            <PlayModeProvider>
-              <EditModeProvider>
-                <Slot />
-              </EditModeProvider>
-            </PlayModeProvider>
+            <LoadPictosProvider>
+              <PlayModeProvider>
+                <EditModeProvider>
+                  <Slot />
+                </EditModeProvider>
+              </PlayModeProvider>
+            </LoadPictosProvider>
           </SessinExipiredProvider>
         </QueryClientProvider>
       </GestureHandlerRootView>

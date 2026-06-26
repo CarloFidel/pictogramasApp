@@ -1,6 +1,7 @@
 import BlurComponent from "@/common/components/BlurComponent";
+import { LoadPictosContext } from "@/modules/dashboard/context/LoadPictosContext";
 import Feather from "@expo/vector-icons/Feather";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
   Modal,
   Pressable,
@@ -94,6 +95,23 @@ export default function SheduleScreen() {
     setfullToolBar,
   } = useSetSelectedPictos();
 
+  /* ----------------------------------------------------------
+Carga de horario. ///////////////////////////////////////////
+ ------------------------------------------------------------*/
+  const loadPictosContext = use(LoadPictosContext);
+  const { pictosLoaded, setPictosLoaded } = loadPictosContext!;
+
+  useEffect(() => {
+    if (pictosLoaded.length === 0) return;
+
+    setPictosOn([]);
+    pictosLoaded.forEach((picto) => handleSetPictos(picto));
+    setPictosLoaded([]);
+  }, [pictosLoaded, handleSetPictos, setPictosLoaded, setPictosOn]);
+  /* ----------------------------------------------------------
+////////////////////////////////////////////////////////////////
+ ------------------------------------------------------------*/
+
   return (
     <>
       <SafeAreaView className="flex-1 bg-primary">
@@ -143,7 +161,7 @@ export default function SheduleScreen() {
           >
             {pictosOn.map((picto) => (
               <PictoOnBoardItem
-                key={picto.id}
+                key={`${picto.id}-${pictosOn.indexOf(picto)}`}
                 picto={picto}
                 editMode={editMode}
                 setEditMode={setEditMode}
