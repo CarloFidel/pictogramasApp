@@ -1,13 +1,10 @@
 import MySchedulesScreen from "@/modules/dashboard/screens/MySchedulesScreen";
 import { StatusBar } from "expo-status-bar";
-import { Platform } from "react-native";
 
 const Profile = () => {
   return (
     <>
-      {Platform.OS === "android" ? (
-        <StatusBar style="dark" backgroundColor="white" />
-      ) : null}
+      <StatusBar style="dark" backgroundColor="white" />
       <MySchedulesScreen />
     </>
   );

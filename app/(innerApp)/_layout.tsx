@@ -1,5 +1,6 @@
 import { useTabBarAnimation } from "@/common/animations/useTabBar";
 import SessionExpired from "@/common/components/SessionExpired";
+import { usetabBarBehaviour } from "@/common/hooks/usetabBarBehaviour";
 import { globalStyles } from "@/global-style";
 import { SessioExpiredContext } from "@/modules/auth/context/session-expired-provider/session-expired.context";
 import { useAuthState } from "@/modules/auth/store/authState";
@@ -18,6 +19,7 @@ const Layout = () => {
   const [isArticle, setIsArticle] = useState<boolean>(false);
 
   const { width, height } = useWindowDimensions();
+  const path = usePathname();
 
   const playContext = use(PlayModeContext);
   const { isPlayMode } = playContext!;
@@ -38,30 +40,6 @@ const Layout = () => {
     }
   }, [isLoggedIn]);
 
-  const path = usePathname();
-  console.log(path);
-
-  const handleItemSelected = (item: number) => {
-    if (item === 3) {
-      setIsProffile(false);
-      setIsHorario(false);
-      setIsArticle(true);
-      return;
-    }
-    if (item === 2) {
-      setIsProffile(false);
-      setIsHorario(true);
-      setIsArticle(false);
-      return;
-    }
-
-    setIsProffile(true);
-    setIsHorario(false);
-    setIsArticle(false);
-  };
-
-  const { movementStyle } = useTabBarAnimation({ isArticle, isHorario });
-
   useEffect(() => {
     if (path === "/horario") {
       setIsProffile(false);
@@ -75,6 +53,13 @@ const Layout = () => {
     }
   }, [path]);
 
+  const { handleItemSelected } = usetabBarBehaviour({
+    setIsArticle,
+    setIsProffile,
+    setIsHorario,
+  });
+
+  const { movementStyle } = useTabBarAnimation({ isArticle, isHorario });
   return (
     <>
       <Tabs>

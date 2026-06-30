@@ -1,5 +1,4 @@
 import Backbutton from "@/common/components/Backbutton";
-import BlurComponent from "@/common/components/BlurComponent";
 import Loading from "@/common/components/loading";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { usePhotos } from "@/modules/photos/hooks/usePhotos";
@@ -19,6 +18,7 @@ const MyPhotosScreen = () => {
   const { token } = useAuthState();
 
   const { getAllPhotosQuery } = usePhotos(token);
+  const photoResponse = getAllPhotosQuery.data;
 
   useEffect(() => {
     if (getAllPhotosQuery.isFetching) {
@@ -27,6 +27,31 @@ const MyPhotosScreen = () => {
       setIsLoading(false);
     }
   }, [setIsLoading, getAllPhotosQuery]);
+
+  if (isLoading) {
+    return (
+      <>
+        <Loading />
+      </>
+    );
+  }
+
+  if (!photoResponse || photoResponse.length === 0) {
+    return (
+      <SafeAreaView
+        className="flex-1 w-screen h-screen"
+        accessibilityIgnoresInvertColors
+      >
+        <View className="flex-1 items-center mb-30">
+          <Backbutton onPress={() => router.back()} position="top-2 left-5" />
+          <Text className="text-3xl w-full text-start p-6 mt-20">
+            Mis fotos
+          </Text>
+          <Text className="mt-10 text-xl">No tienes fotos para mostrar</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <>
@@ -87,12 +112,6 @@ const MyPhotosScreen = () => {
             />
           </View>
         </SafeAreaView>
-        {isLoading && (
-          <>
-            <BlurComponent />
-            <Loading />
-          </>
-        )}
       </View>
     </>
   );
