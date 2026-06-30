@@ -16,21 +16,21 @@ const PopUp = ({
   text,
   warning = false,
 }: Props) => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   return (
     <Animated.View
       entering={FadeInDown.springify().duration(800)}
       className="absolute bg-white justify-center border border-gray-200 items-center p-2 py-8 rounded-xl gap-5 mt-2"
       style={{
-        top: "40%",
+        top: height * 0.35,
         right: width - width * 0.92,
       }}
     >
       {warning ? (
-        <Ionicons name="warning-outline" size={30} color="black" />
+        <Ionicons name="warning-outline" size={40} color="#f0b30c" />
       ) : (
-        <Ionicons name="checkmark-circle-outline" size={30} color="black" />
+        <Ionicons name="checkmark-circle-outline" size={40} color="green" />
       )}
       <Text className="text-center" style={{ width: width * 0.5 }}>
         {text}

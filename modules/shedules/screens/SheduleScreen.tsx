@@ -1,19 +1,18 @@
 import BlurComponent from "@/common/components/BlurComponent";
 import { LoadPictosContext } from "@/modules/dashboard/context/LoadPictosContext";
-import Feather from "@expo/vector-icons/Feather";
 import { use, useEffect, useState } from "react";
 import {
   Modal,
-  Pressable,
   ScrollView,
   StatusBar,
   Text,
   useWindowDimensions,
   View,
 } from "react-native";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import Animated, { FadeIn, FadeInUp, FadeOut } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PictoOnBoardItem from "../components/pictos/PictoOnBoardItem";
+import SaveMenuModal from "../components/pictos/SaveMenuModal";
 import SaveSchedulePopUp from "../components/pictos/SaveSchedulePopUp";
 import ToolBar from "../components/pictos/ToolBar";
 import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
@@ -27,7 +26,7 @@ export default function SheduleScreen() {
   const [playMode, setPlayMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
 
-  const [openSaveSchedule, setOpenSaveSchedule] = useState<boolean>();
+  const [openSaveSchedule, setOpenSaveSchedule] = useState<boolean>(false);
   const [schedulesItems, setSchedulesItems] = useState<SheduleItems[]>([]);
 
   const [deleteZoneActive, setDeleteZoneActive] = useState<boolean>(false);
@@ -52,7 +51,7 @@ export default function SheduleScreen() {
     setfullToolBar((prev) => !prev);
   };
 
-  const handleRemovePicto = (id: number) => {
+  const handleRemovePicto = (id: number | string) => {
     const pictosFiltered = pictosOn.filter((picto) => picto.id !== id);
     setPictosOn(pictosFiltered);
     if (editMode && pictosOn.length === 1) {
@@ -147,7 +146,7 @@ Carga de horario. ///////////////////////////////////////////
               left: 0,
               // backgroundColor: "red",
               width: width,
-              height: height,
+              height: height * 0.9,
             }}
             contentContainerStyle={{
               display: "flex",
@@ -155,23 +154,28 @@ Carga de horario. ///////////////////////////////////////////
               justifyContent: "center",
               alignItems: "center",
               paddingTop: 100,
+              paddingBottom: 40,
             }}
             contentContainerClassName="gap-10 w-fit bg-transparent"
             showsVerticalScrollIndicator={false}
           >
-            {pictosOn.map((picto) => (
-              <PictoOnBoardItem
+            {pictosOn.map((picto, index) => (
+              <Animated.View
+                entering={FadeInUp.delay(80 * index)}
                 key={`${picto.id}-${pictosOn.indexOf(picto)}`}
-                picto={picto}
-                editMode={editMode}
-                setEditMode={setEditMode}
-                pictosOn={pictosOn}
-                handleRemovePicto={handleRemovePicto}
-                dragable={
-                  picto.id === pictosOn[0].id && playMode ? true : false
-                }
-                handleIsInDeleteZone={handleIsInDeleteZone}
-              />
+              >
+                <PictoOnBoardItem
+                  picto={picto}
+                  editMode={editMode}
+                  setEditMode={setEditMode}
+                  pictosOn={pictosOn}
+                  handleRemovePicto={handleRemovePicto}
+                  dragable={
+                    picto.id === pictosOn[0].id && playMode ? true : false
+                  }
+                  handleIsInDeleteZone={handleIsInDeleteZone}
+                />
+              </Animated.View>
             ))}
           </ScrollView>
           {modalVisible && (
@@ -187,39 +191,11 @@ Carga de horario. ///////////////////////////////////////////
       </SafeAreaView>
 
       {saveModalVisible && (
-        <Modal animationType="slide" transparent>
-          <View
-            className="bg-white w-screen px-4 relative flex-1 py-10 gap-8"
-            style={{
-              borderTopRightRadius: 30,
-              borderTopLeftRadius: 30,
-              marginTop: 700,
-              shadowColor: "#000",
-              shadowOpacity: 0.82,
-              shadowRadius: 18,
-              shadowOffset: { width: 0, height: 8 },
-              elevation: 20,
-            }}
-          >
-            <Pressable
-              className="z-10 absolute top-6 right-6"
-              onPress={() => handleSaveMenuVisibility(false)}
-            >
-              <Feather name="x" size={24} color="black" />
-            </Pressable>
-            <Pressable
-              className="flex flex-row items-center gap-4"
-              onPress={handleSavePress}
-            >
-              <Feather name="save" size={24} color="grey" />
-              <Text>Guardar horario</Text>
-            </Pressable>
-            <Pressable className="flex flex-row items-center gap-4">
-              <Feather name="folder" size={24} color="grey" />
-              <Text>Abrir horario</Text>
-            </Pressable>
-          </View>
-        </Modal>
+        <SaveMenuModal
+          handleSaveMenuVisibility={handleSaveMenuVisibility}
+          handleSavePress={handleSavePress}
+          setSaveModallVisible={setSaveModallVisible}
+        />
       )}
 
       {(modalVisible || saveModalVisible || openSaveSchedule) && (

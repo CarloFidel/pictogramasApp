@@ -1,15 +1,18 @@
 import PrimaryButton from "@/common/components/PrimaryButton";
+import { globalStyles } from "@/global-style";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { Text, useWindowDimensions, View } from "react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 
 interface Props {
+  text: string;
+
   onOkPress: () => void;
   onCanselPress: () => void;
 }
 
-const DeleteSchedulePopUp = ({ onOkPress, onCanselPress }: Props) => {
+const DeletePopUp = ({ text, onOkPress, onCanselPress }: Props) => {
   const { width } = useWindowDimensions();
 
   return (
@@ -24,14 +27,14 @@ const DeleteSchedulePopUp = ({ onOkPress, onCanselPress }: Props) => {
     >
       <Ionicons name="warning-outline" size={30} color="black" />
       <Text className="text-center" style={{ width: width * 0.5 }}>
-        Seguro quiere elimiar este horario ?
+        {text}
       </Text>
       <View className="gap-5">
         <PrimaryButton
           onPress={onOkPress}
           text="Ok"
           textColor="white"
-          backGroundColor="#EB512F"
+          backGroundColor={globalStyles.colors.warning}
         />
         <PrimaryButton
           onPress={onCanselPress}
@@ -44,4 +47,4 @@ const DeleteSchedulePopUp = ({ onOkPress, onCanselPress }: Props) => {
   );
 };
 
-export default DeleteSchedulePopUp;
+export default DeletePopUp;

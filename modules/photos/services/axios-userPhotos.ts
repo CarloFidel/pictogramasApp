@@ -13,6 +13,6 @@ export const getAllPhotosFromUser = async (token: string): Promise<Photo[]> => {
 
     return data;
   } catch (error) {
-    throw `Problem loading photos ${error}`;
+    throw error;
   }
 };

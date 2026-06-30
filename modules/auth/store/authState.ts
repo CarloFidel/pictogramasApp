@@ -8,13 +8,17 @@ export const useAuthState = create(
     (set) => ({
       isLoggedIn: false,
       name: "",
+      lastName: "",
       email: "",
+      roles: [],
       token: "",
-      logIn(name, email, token) {
+      logIn(name, lastName, email, roles, token) {
         set((state) => {
           return {
             name,
+            lastName,
             email,
+            roles,
             token,
             isLoggedIn: true,
           };
@@ -23,10 +27,12 @@ export const useAuthState = create(
       logOut() {
         set((state) => ({
           ...state,
-          token: "",
-          name: "",
-          email: "",
           isLoggedIn: false,
+          name: "",
+          lastName: "",
+          email: "",
+          roles: [],
+          token: "",
         }));
       },
     }),
