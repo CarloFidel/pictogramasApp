@@ -1,3 +1,4 @@
+import { useTabBarAnimation } from "@/common/animations/useTabBar";
 import SessionExpired from "@/common/components/SessionExpired";
 import { globalStyles } from "@/global-style";
 import { SessioExpiredContext } from "@/modules/auth/context/session-expired-provider/session-expired.context";
@@ -5,20 +6,18 @@ import { useAuthState } from "@/modules/auth/store/authState";
 import { EditModeContext } from "@/modules/shedules/context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "@/modules/shedules/context/play-mode-context/PlayModeContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
+import { router, usePathname } from "expo-router";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
 import React, { use, useEffect, useState } from "react";
 import { Text, useWindowDimensions, View } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 const Layout = () => {
-  const [isProffile, setIsProffile] = useState<boolean>(true);
+  const [, setIsProffile] = useState<boolean>(true);
   const [isHorario, setIsHorario] = useState<boolean>(false);
   const [isArticle, setIsArticle] = useState<boolean>(false);
+
+  const { width, height } = useWindowDimensions();
 
   const playContext = use(PlayModeContext);
   const { isPlayMode } = playContext!;
@@ -29,10 +28,6 @@ const Layout = () => {
   const sessionContext = use(SessioExpiredContext);
   const { sessionExpired } = sessionContext!;
 
-  const { width, height } = useWindowDimensions();
-
-  const router = useRouter();
-
   const { isLoggedIn } = useAuthState();
 
   useEffect(() => {
@@ -41,7 +36,10 @@ const Layout = () => {
     } else {
       router.replace("/login");
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn]);
+
+  const path = usePathname();
+  console.log(path);
 
   const handleItemSelected = (item: number) => {
     if (item === 3) {
@@ -62,28 +60,20 @@ const Layout = () => {
     setIsArticle(false);
   };
 
-  /* ------------------------------------------------------
-
-  ---------------------------------------------------------*/
-  const leftValue = useSharedValue(width * 0.14);
+  const { movementStyle } = useTabBarAnimation({ isArticle, isHorario });
 
   useEffect(() => {
-    if (isHorario) {
-      leftValue.value = withSpring(width * 0.397, { duration: 400 });
-    } else if (isArticle) {
-      leftValue.value = withSpring(width * 0.67, { duration: 400 });
-    } else {
-      leftValue.value = withSpring(width * 0.142, { duration: 400 });
+    if (path === "/horario") {
+      setIsProffile(false);
+      setIsHorario(true);
+      setIsArticle(false);
     }
-  }, [isHorario, isArticle, width, leftValue]);
-
-  const movementStyle = useAnimatedStyle(() => ({
-    left: leftValue.value,
-  }));
-
-  /* ------------------------------------------------------
-
-  ---------------------------------------------------------*/
+    if (path === "/article") {
+      setIsProffile(false);
+      setIsHorario(false);
+      setIsArticle(true);
+    }
+  }, [path]);
 
   return (
     <>
