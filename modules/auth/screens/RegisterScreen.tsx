@@ -2,7 +2,7 @@ import useButtonPress from "@/animations/useButtonPress";
 import Backbutton from "@/common/components/Backbutton";
 import { globalStyles } from "@/global-style";
 import Feather from "@expo/vector-icons/Feather";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   KeyboardAvoidingView,
@@ -17,13 +17,21 @@ import {
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, { FadeIn } from "react-native-reanimated";
 
+import BlurComponent from "@/common/components/BlurComponent";
+import Loading from "@/common/components/loading";
+import PopUp from "@/common/components/PopUp";
+import { router } from "expo-router";
+import { useLogin } from "../hooks/useLogin";
 import { useRegister } from "../hooks/useRegister";
 
 const Register = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [popUpVisible, setPopUpVisible] = useState(false);
+
   const { width, height } = useWindowDimensions();
 
-  const { control, errors, onSubmit, router } = useRegister();
+  const { control, errors, onSubmit, resError, setResError, isLoading } =
+    useRegister();
 
   const handleToRegister = () => {
     router.replace("/login");
@@ -34,7 +42,20 @@ const Register = () => {
     router.back();
   };
 
+  const handleClosePopUp = () => {
+    setPopUpVisible(false);
+    setResError(undefined);
+  };
+
   const { pressedStyle, tapGesture } = useButtonPress();
+
+  useLogin();
+
+  useEffect(() => {
+    if (resError) {
+      setPopUpVisible(true);
+    }
+  }, [resError, setPopUpVisible]);
 
   return (
     <>
@@ -187,7 +208,6 @@ const Register = () => {
                   <Pressable
                     style={[
                       styles.button,
-                      globalStyles.shadow_sm,
                       { marginVertical: 10, width: width * 0.85 },
                     ]}
                     onPress={onSubmit}
@@ -209,6 +229,23 @@ const Register = () => {
           </Pressable>
         </View>
       </KeyboardAvoidingView>
+      {isLoading && (
+        <>
+          <BlurComponent />
+          <Loading />
+        </>
+      )}
+      {popUpVisible && (
+        <>
+          <BlurComponent />
+          <PopUp
+            onPress={handleClosePopUp}
+            warning={true}
+            text={resError!}
+            buttonText="Ok"
+          />
+        </>
+      )}
     </>
   );
 };
@@ -227,7 +264,7 @@ const styles = StyleSheet.create({
   button: {
     width: 360,
     height: 55,
-    backgroundColor: "#0F5CB3",
+    backgroundColor: globalStyles.colors.primary[600],
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",

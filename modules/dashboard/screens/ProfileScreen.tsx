@@ -1,5 +1,6 @@
 import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
+import { usePhotos } from "@/modules/photos/hooks/usePhotos";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
@@ -7,11 +8,17 @@ import React from "react";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import Animated, { FadeInDown, FadeInLeft } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSchedules } from "../hooks/useSchedules";
 
 const ProfileScreen = () => {
-  const { email, name, logOut } = useAuthState();
+  const { email, name, logOut, token } = useAuthState();
   const { height } = useWindowDimensions();
-  //const { getAllSchedulesQuery } = useSchedules(token);
+
+  const { getAllSchedulesQuery } = useSchedules(token);
+  getAllSchedulesQuery.refetch();
+
+  const { getAllPhotosQuery } = usePhotos(token);
+  getAllPhotosQuery.refetch();
 
   return (
     <SafeAreaView className="flex-1 bg-primary-600">

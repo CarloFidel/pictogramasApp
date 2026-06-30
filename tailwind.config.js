@@ -31,7 +31,7 @@ module.exports = {
         gray04: "#F5F5F5",
         gray16: "#CECECE",
         gray55: "#737373",
-        warning: "#FF3C3C",
+        warning: "#f26161",
       },
       fontFamily: {
         "hank-light": ["Hanken Grotesk Light", "sans-serif"],

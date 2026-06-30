@@ -1,17 +1,31 @@
 import Backbutton from "@/common/components/Backbutton";
+import BlurComponent from "@/common/components/BlurComponent";
 import Loading from "@/common/components/loading";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { usePhotos } from "@/modules/photos/hooks/usePhotos";
-import Feather from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
-import React, { useEffect } from "react";
-import { FlatList, Image, Text, useWindowDimensions, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { RefreshControl } from "react-native-gesture-handler";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import DeletePopUp from "../components/DeletePopUp";
+import EditPhotoPopUp from "../components/EditPhotoPopUp";
+import { useDeletePhoto } from "../hooks/useDeletePhoto";
 
 const MyPhotosScreen = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isEditVisible, setIsEditPopVisible] = useState<boolean>(false);
+
+  const [photoId, setPhotoId] = useState<string>();
 
   const { width } = useWindowDimensions();
 
@@ -27,6 +41,19 @@ const MyPhotosScreen = () => {
       setIsLoading(false);
     }
   }, [setIsLoading, getAllPhotosQuery]);
+
+  const {
+    openDeletePhotoPopUp,
+    setOpenDeletePhotoPopUp,
+    handleDeleteOpenPopUp,
+    handleDeletePhoto,
+    isLoadingDelete,
+  } = useDeletePhoto();
+
+  const handleEditPhoto = (photoId: string) => {
+    setIsEditPopVisible(true);
+    setPhotoId(photoId);
+  };
 
   if (isLoading) {
     return (
@@ -78,24 +105,37 @@ const MyPhotosScreen = () => {
                   entering={FadeInUp.delay(index * 100).springify()}
                   style={{ width: width * 0.9 }}
                 >
-                  <View
-                    className="flex-row"
-                    style={[{ gap: 20, justifyContent: "space-between" }]}
-                  >
+                  <View className="flex-row" style={[{ gap: 20 }]}>
                     <Image
                       source={{ uri: item.url }}
                       style={[{ width: 160, height: 160, borderRadius: 10 }]}
                       className="border border-gray-400"
                     />
-                    <View className="gap-4 items-center">
-                      <Text>{item.word}</Text>
+                    <View className="gap-4 items-center justify-center">
+                      <Text className=" w-full text-left px-2">
+                        {item.word}
+                      </Text>
                       <View className="flex-row p-2 gap-4">
-                        <View className=" bg-red-200 rounded-full p-2 border border-gray-400">
-                          <Feather name="trash-2" size={20} color="black" />
-                        </View>
-                        <View className=" bg-primary-100 rounded-full p-2 border border-gray-400">
-                          <Feather name="edit" size={20} color="black" />
-                        </View>
+                        <Pressable
+                          className=" bg-primary-100 rounded-full p-2 border border-gray-400"
+                          onPress={() => handleEditPhoto(item.id)}
+                        >
+                          <Ionicons
+                            name="pencil-outline"
+                            size={20}
+                            color="black"
+                          />
+                        </Pressable>
+                        <Pressable
+                          className=" bg-red-200 rounded-full p-2 border border-gray-400"
+                          onPress={() => handleDeleteOpenPopUp(item.id)}
+                        >
+                          <Ionicons
+                            name="trash-outline"
+                            size={20}
+                            color="black"
+                          />
+                        </Pressable>
                       </View>
                     </View>
                   </View>
@@ -112,6 +152,26 @@ const MyPhotosScreen = () => {
             />
           </View>
         </SafeAreaView>
+        {openDeletePhotoPopUp && (
+          <>
+            {isLoadingDelete && <Loading />}
+            <BlurComponent />
+            <DeletePopUp
+              text="Seguro que quieres elimiar esta foto?"
+              onOkPress={handleDeletePhoto}
+              onCanselPress={() => setOpenDeletePhotoPopUp(false)}
+            />
+          </>
+        )}
+        {isEditVisible && (
+          <>
+            <BlurComponent />
+            <EditPhotoPopUp
+              photoid={photoId!}
+              onCanselPress={() => setIsEditPopVisible(false)}
+            />
+          </>
+        )}
       </View>
     </>
   );

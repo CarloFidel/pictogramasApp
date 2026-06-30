@@ -58,6 +58,7 @@ export const globalStyles = {
 
     elevation: 14,
   },
+
   shadow_md_up_light: {
     shadowColor: "#000",
     shadowOffset: {
@@ -92,5 +93,30 @@ export const globalStyles = {
 
   BlurViewAnimatedContainer: {
     ...StyleSheet.absoluteFillObject,
+  },
+
+  colors: {
+    lightBlue: "#7CCEFF",
+    darkBlue: "#0A4290",
+    alertColor: "#FF3C3C",
+    backGroundLight: "#F5F5F5",
+    textColor: "#333333",
+    gray04: "#F5F5F5",
+    gray16: "#CECECE",
+    gray55: "#737373",
+    warning: "#f26161",
+
+    primary: {
+      50: "#E6F2FF",
+      100: "#B3D9FF",
+      200: "#80BFFF",
+      300: "#4DA6FF",
+      400: "#1A8CFF",
+      500: "#1475DE",
+      600: "#0F5CB3",
+      700: "#0A4290",
+      800: "#052967",
+      900: "#021433",
+    },
   },
 };

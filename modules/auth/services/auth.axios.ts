@@ -28,7 +28,10 @@ export const login = async (data: User) => {
 
     return response.data;
   } catch (error: any) {
-    throw error;
+    if (axios.isAxiosError(error)) {
+      throw error.response?.data?.message || "Error en login";
+    }
+    throw `Problem with login ${error}`;
   }
 };
 
@@ -47,9 +50,9 @@ export const getOneUserbyId = async (id: string, token: string) => {
   }
 };
 
-export const deleteUser = async (id: string, token: string) => {
+export const deleteUser = async (token: string) => {
   try {
-    const response = await pictoApi.delete(`/auth/${id}`, {
+    const response = await pictoApi.delete(`/auth/user`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -58,6 +61,6 @@ export const deleteUser = async (id: string, token: string) => {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || "Error borrando user");
     }
-    throw new Error(`Problem borrando usuario con el id ${id}`);
+    throw new Error(`Problem borrando usuario`);
   }
 };

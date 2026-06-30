@@ -18,7 +18,7 @@ import BlurComponent from "@/common/components/BlurComponent";
 import PopUp from "@/common/components/PopUp";
 import Feather from "@expo/vector-icons/Feather";
 import Animated, { FadeIn } from "react-native-reanimated";
-import DeleteSchedulePopUp from "../components/DeleteSchedulePopUp";
+import DeletePopUp from "../components/DeletePopUp";
 import PictoInSchedule from "../components/PictoInSchedule";
 import { useDeleteSchedule } from "../hooks/useDeleteSchedule";
 import useLoadSchedule from "../hooks/useLoadSchedule";
@@ -27,12 +27,6 @@ const MySchedulesScreen = () => {
   const { token } = useAuthState();
   const { width } = useWindowDimensions();
 
-  /*   const getIdFromUrl = (url: string) => {
-    const parts = url.split("/").filter(Boolean);
-    console.log(parts);
-    return Number(parts[parts.length - 2]);
-  };
- */
   const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
 
@@ -149,7 +143,8 @@ const MySchedulesScreen = () => {
             />
           )}
           {!isLoading && statusCode !== 200 && (
-            <DeleteSchedulePopUp
+            <DeletePopUp
+              text="Seguro que quiere eliminar este horario?"
               onOkPress={handleDeleteSchedule}
               onCanselPress={() => setOpenDeleteSchedulePopUp(false)}
             />

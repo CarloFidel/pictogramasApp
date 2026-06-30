@@ -1,20 +1,24 @@
 import Backbutton from "@/common/components/Backbutton";
 import BlurComponent from "@/common/components/BlurComponent";
+import Loading from "@/common/components/loading";
 import PrimaryButton from "@/common/components/PrimaryButton";
 import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Text, TextInput, useWindowDimensions, View } from "react-native";
-import DeleteAccountPopUp from "../components/DeleteAccountPopUp";
+import DeletePopUp from "../components/DeletePopUp";
+import { useDeleteAccount } from "../hooks/useDeleteAccount";
 
 const PersonalScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { width, height } = useWindowDimensions();
 
-  const { name, email } = useAuthState();
+  const { name, email, lastName, roles, logOut } = useAuthState();
+  console.log(roles);
 
-  const handleDeleteAccount = () => {};
+  const { isLoadingDelete, handleDeleteAccount } = useDeleteAccount();
+
   return (
     <View className={"flex-1 bg-white items-center pb-10"}>
       <Backbutton
@@ -41,7 +45,7 @@ const PersonalScreen = () => {
           <Text>Apellidos</Text>
           <TextInput
             style={[globalStyles.input, { width: width * 0.9 }]}
-            placeholder="Apellido"
+            placeholder={lastName}
             editable={false}
           />
         </View>
@@ -60,22 +64,34 @@ const PersonalScreen = () => {
           <Text>Rol</Text>
           <TextInput
             style={[globalStyles.input, { width: width * 0.9 }]}
-            placeholder={email}
-            keyboardType="email-address"
+            placeholder={Array.isArray(roles) ? roles.join(", ") : ""}
             editable={false}
           />
         </View>
         <PrimaryButton
           onPress={() => setIsVisible(true)}
-          backGroundColor="#0F5CB3"
+          backGroundColor={globalStyles.colors.warning}
           text="Eliminar cuenta"
           textColor="white"
+        />
+        <PrimaryButton
+          onPress={logOut}
+          backGroundColor="#CECECE"
+          text="Cerrar sesión "
+          textColor="black"
         />
       </View>
       {isVisible && (
         <>
+          {isLoadingDelete && (
+            <>
+              <BlurComponent />
+              <Loading />
+            </>
+          )}
           <BlurComponent />
-          <DeleteAccountPopUp
+          <DeletePopUp
+            text="Seguro que quieres elimiar la cuenta?"
             onOkPress={handleDeleteAccount}
             onCanselPress={() => setIsVisible(false)}
           />
