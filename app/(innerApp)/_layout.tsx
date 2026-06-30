@@ -74,7 +74,7 @@ const Layout = () => {
               gap: width * 0.04,
               height: height * 0.09,
               position: "absolute",
-              bottom: height * 0.076,
+              bottom: height * 0.053,
               left: width * 0.105,
               borderRadius: 20,
               zIndex: 10,
@@ -121,7 +121,7 @@ const Layout = () => {
         style={[
           {
             position: "absolute",
-            bottom: height * 0.07,
+            bottom: height * 0.047,
             left: width * 0.092,
             width: width * 0.825,
             height: height * 0.101,
@@ -138,7 +138,7 @@ const Layout = () => {
         style={[
           {
             position: "absolute",
-            bottom: height * 0.083,
+            bottom: height * 0.06,
             width: width * 0.18,
             height: height * 0.075,
           },

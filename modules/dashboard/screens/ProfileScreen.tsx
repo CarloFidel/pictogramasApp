@@ -103,6 +103,23 @@ const ProfileScreen = () => {
               </View>
               <Feather name="chevron-right" size={15} />
             </Pressable>
+
+            <Pressable
+              className="flex-row justify-between gap-5 items-center"
+              onPress={() => router.push("/schedules")}
+            >
+              <View className="flex-row items-center justify-center gap-5">
+                <Ionicons
+                  name="document-text-outline"
+                  size={20}
+                  color="black"
+                />
+                <Text className="text-black font-hank-regular text-md">
+                  Crear Artículo
+                </Text>
+              </View>
+              <Feather name="chevron-right" size={15} />
+            </Pressable>
           </View>
 
           <View

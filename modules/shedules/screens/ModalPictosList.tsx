@@ -29,7 +29,7 @@ const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
   };
 
   const handlePictoPressed = (
-    id: number,
+    id: number | string,
     keyword: string,
     imageUrl: string,
     isPhoto: boolean,
