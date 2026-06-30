@@ -1,16 +1,16 @@
-import MySchedulesScreen from "@/modules/dashboard/screens/MySchedulesScreen";
+import PersonalScreen from "@/modules/dashboard/screens/PersonalScreen";
 import { StatusBar } from "expo-status-bar";
 import { Platform } from "react-native";
 
-const Profile = () => {
+const Personal = () => {
   return (
     <>
       {Platform.OS === "android" ? (
         <StatusBar style="dark" backgroundColor="white" />
       ) : null}
-      <MySchedulesScreen />
+      <PersonalScreen />
     </>
   );
 };
 
-export default Profile;
+export default Personal;

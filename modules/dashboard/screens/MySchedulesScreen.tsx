@@ -2,7 +2,7 @@ import Backbutton from "@/common/components/Backbutton";
 import Loading from "@/common/components/loading";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { router } from "expo-router";
-import React, { use } from "react";
+import React from "react";
 import {
   FlatList,
   Pressable,
@@ -20,19 +20,19 @@ import Feather from "@expo/vector-icons/Feather";
 import Animated, { FadeIn } from "react-native-reanimated";
 import DeleteSchedulePopUp from "../components/DeleteSchedulePopUp";
 import PictoInSchedule from "../components/PictoInSchedule";
-import { LoadPictosContext } from "../context/LoadPictosContext";
 import { useDeleteSchedule } from "../hooks/useDeleteSchedule";
+import useLoadSchedule from "../hooks/useLoadSchedule";
 
 const MySchedulesScreen = () => {
   const { token } = useAuthState();
   const { width } = useWindowDimensions();
 
-  const getIdFromUrl = (url: string) => {
+  /*   const getIdFromUrl = (url: string) => {
     const parts = url.split("/").filter(Boolean);
     console.log(parts);
     return Number(parts[parts.length - 2]);
   };
-
+ */
   const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
 
@@ -46,24 +46,8 @@ const MySchedulesScreen = () => {
     setOpenDeleteSchedulePopUp,
   } = useDeleteSchedule();
 
-  const loadPictosContext = use(LoadPictosContext);
-  const { setPictosLoaded } = loadPictosContext!;
+  const { handleSetPictosOn } = useLoadSchedule();
 
-  const handleSetPictosOn = (id: string) => {
-    setPictosLoaded([]);
-    const schedules = schedulesResponse?.schedule;
-    const scheduleTarget = schedules?.find((sched) => sched.id === id);
-
-    const pictos = scheduleTarget?.scheduleItems.map((item) => ({
-      id: item.id,
-      keyword: item.visualItem.word,
-      isPhoto: item.visualItem.type === "photo",
-      imageUrl: item.visualItem.url,
-    }));
-
-    pictos?.forEach((picto) => setPictosLoaded((prev) => [...prev, picto]));
-    router.push("/(innerApp)/horario");
-  };
   const handleClosingPopUp = async () => {
     setOpenDeleteSchedulePopUp(false);
     await getAllSchedulesQuery.refetch();
@@ -78,9 +62,11 @@ const MySchedulesScreen = () => {
         className="flex-1 w-screen h-screen"
         accessibilityIgnoresInvertColors
       >
-        <View className="flex-1 items-center justify-center">
+        <View className="flex-1 items-center mb-30">
           <Backbutton onPress={() => router.back()} position="top-2 left-5" />
-          <Text className="text-3xl mt-20">Mis horarios</Text>
+          <Text className="text-3xl w-full text-start p-6 mt-20">
+            Mis horarios
+          </Text>
           <Text className="mt-10 text-xl">No tienes horarios para mostrar</Text>
         </View>
       </SafeAreaView>

@@ -5,7 +5,7 @@ import {
   withSpring,
 } from "react-native-reanimated";
 
-export const useDragDrop = (draggedId?: number) => {
+export const useDragDrop = (draggedId?: number | string) => {
   const inicialPosition = 0;
 
   const x = useSharedValue(inicialPosition);

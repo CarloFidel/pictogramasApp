@@ -35,6 +35,41 @@ export const globalStyles = {
     elevation: 4,
   },
 
+  shadow_sm_ultra: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: 2,
+    },
+    shadowOpacity: 0.28,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+
+  shadow_md_up: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: -6,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 23.3,
+
+    elevation: 14,
+  },
+  shadow_md_up_light: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 1,
+      height: -3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 23.3,
+
+    elevation: 14,
+  },
+
   input: {
     width: 360,
     height: 50,

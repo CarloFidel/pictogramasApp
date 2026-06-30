@@ -20,7 +20,7 @@ interface Props {
 
   dragable?: boolean;
 
-  handleRemovePicto: (id: number) => void;
+  handleRemovePicto: (id: number | string) => void;
   handleIsInDeleteZone: (term: boolean) => void;
 }
 
@@ -52,7 +52,7 @@ const PictoOnBoardItem = ({
     () => onDelete.value,
     (current, previous) => {
       if (current && !previous) {
-        scheduleOnRN(handleRemovePicto, picto.id);
+        scheduleOnRN(handleRemovePicto, picto.id!);
         onDelete.value = false;
       }
     },
@@ -81,7 +81,7 @@ const PictoOnBoardItem = ({
 
         <Pressable className="items-center" style={globalStyles.shadow_md}>
           <ItemPictos
-            id={picto.id}
+            id={picto.id!}
             word={picto.keyword}
             uri={picto.imageUrl}
             isPhoto={picto.isPhoto}
@@ -93,7 +93,7 @@ const PictoOnBoardItem = ({
         </Pressable>
         {editMode && (
           <Animated.View entering={FadeIn.springify().delay(500).duration(800)}>
-            <Pressable onPress={() => handleRemovePicto(picto.id)}>
+            <Pressable onPress={() => handleRemovePicto(picto.id!)}>
               <SimpleLineIcons
                 name="trash"
                 size={20}

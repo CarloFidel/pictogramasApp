@@ -8,7 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 interface Props {
-  id: number;
+  id: number | string;
   word?: string;
   uri: string;
   isPhoto?: boolean;

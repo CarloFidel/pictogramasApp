@@ -17,8 +17,8 @@ const Backbutton = ({ onPress, position, icon = "arrow-left" }: Props) => {
     <GestureDetector gesture={tapGesture}>
       <Pressable onPress={onPress} className={`absolute ${position} my-4`}>
         <Animated.View
-          className="p-3 aspect-square rounded-lg bg-white flex justify-center items-center"
-          style={[pressedStyle, { zIndex: 10, elevation: 10 }]}
+          className="p-3 aspect-square rounded-lg bg-white flex justify-center items-center border border-gray-200"
+          style={[pressedStyle, { zIndex: 10 }]}
         >
           <Feather name={icon} size={23} color="black" />
         </Animated.View>

@@ -44,7 +44,7 @@ const Register = () => {
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <Backbutton
-              position={"top-10 left-2"}
+              position={"top-10 left-0"}
               onPress={handleOnpress}
             ></Backbutton>
             <Text

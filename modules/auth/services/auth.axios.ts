@@ -28,7 +28,7 @@ export const login = async (data: User) => {
 
     return response.data;
   } catch (error: any) {
-    throw `Problem with login ${error}`;
+    throw error;
   }
 };
 
