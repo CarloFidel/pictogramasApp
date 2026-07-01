@@ -1,4 +1,5 @@
 import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
+import IAScreen from "@/modules/IA/screens/IAScreen";
 import PhotosModalList from "@/modules/photos/components/PhotosModalList";
 import { Stagger } from "@animatereactnative/stagger";
 import Feather from "@expo/vector-icons/Feather";
@@ -8,7 +9,6 @@ import Animated, { FadeInDown, SlideOutDown } from "react-native-reanimated";
 import PictosInModalList from "../components/pictos/PictosInModalList";
 import SelectPictosFrom from "../components/pictos/SelectPictosFrom";
 import SearchBar from "../components/searchbar/SearchBar";
-import IAScreen from "./IAScreen";
 
 interface Props {
   visible: boolean;
