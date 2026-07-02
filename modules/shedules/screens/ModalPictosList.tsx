@@ -4,7 +4,12 @@ import PhotosModalList from "@/modules/photos/components/PhotosModalList";
 import { Stagger } from "@animatereactnative/stagger";
 import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
-import { Pressable, Text, useWindowDimensions, View } from "react-native";
+import {
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View
+} from "react-native";
 import Animated, { FadeInDown, SlideOutDown } from "react-native-reanimated";
 import PictosInModalList from "../components/pictos/PictosInModalList";
 import SelectPictosFrom from "../components/pictos/SelectPictosFrom";
@@ -12,12 +17,19 @@ import SearchBar from "../components/searchbar/SearchBar";
 
 interface Props {
   visible: boolean;
+  handleOnError: (error: boolean) => void;
 
+  // error: () => void
   onVisibleModal: (term: boolean) => void;
   onSetPictos: ({ id, imageUrl, keyword, isPhoto }: Pictograma) => void;
 }
 
-const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
+const ModalPictosList = ({
+  visible,
+  onVisibleModal,
+  onSetPictos,
+  handleOnError,
+}: Props) => {
   const [pictoLibrary, setPictolibrary] = useState<"Arasaac" | "Fotos" | "ia">(
     "Arasaac",
   );
@@ -114,10 +126,16 @@ const ModalPictosList = ({ visible, onVisibleModal, onSetPictos }: Props) => {
         )} */}
 
         {pictoLibrary === "Arasaac" && (
-          <PictosInModalList onPressedPictos={handlePictoPressed} />
+          <PictosInModalList
+            onPressedPictos={handlePictoPressed}
+            onError={handleOnError}
+          />
         )}
         {pictoLibrary === "Fotos" && (
-          <PhotosModalList onPressedPictos={handlePictoPressed} />
+          <PhotosModalList
+            onPressedPictos={handlePictoPressed}
+            //onError={handleOnError}
+          />
         )}
         {pictoLibrary === "ia" && <IAScreen />}
       </Stagger>

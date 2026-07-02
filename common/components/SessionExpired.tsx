@@ -16,6 +16,7 @@ const SessionExpired = () => {
       <PopUp
         onPress={handldeOkPress}
         text=" Su sesión ha expirado, por favor ingrese de nuevo"
+        warning
       />
     </>
   );

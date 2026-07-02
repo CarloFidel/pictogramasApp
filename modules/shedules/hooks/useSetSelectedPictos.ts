@@ -1,11 +1,17 @@
 import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export const useSetSelectedPictos = () => {
+export const useSetSelectedPictos = (error: boolean) => {
   const [pictosOn, setPictosOn] = useState<Pictograma[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [saveModalVisible, setSaveModallVisible] = useState<boolean>(false);
   const [fullToolBar, setfullToolBar] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (error) {
+      setModalVisible(false);
+    }
+  }, [error]);
 
   const renderButtonsFlag = pictosOn.length >= 1;
 

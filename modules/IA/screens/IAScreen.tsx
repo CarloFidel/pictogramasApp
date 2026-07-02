@@ -1,9 +1,9 @@
-import BlurComponent from "@/common/components/BlurComponent";
+import Loading from "@/common/components/loading";
 import { globalStyles } from "@/global-style";
-import HelpIA from "@/modules/IA/components/HelpIA";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useState } from "react";
+import React from "react";
 import { Controller } from "react-hook-form";
 import {
   KeyboardAvoidingView,
@@ -19,18 +19,47 @@ import { usePropmt } from "../hooks/usePropmpt";
 
 const IAScreen = () => {
   const { width, height } = useWindowDimensions();
-  const [isVisibleHelpPopUp, setIsVisibleHelpPopUp] = useState<boolean>(true);
 
-  const { control, errors, onSubmit } = usePropmt();
+  const {
+    control,
+    errors,
+    response,
+    resError,
+    setResponse,
+    isLoading,
+    onSubmit,
+    setIsLoading,
+    setResError,
+  } = usePropmt();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
       <KeyboardAvoidingView
+        style={{ height: height * 0.55, justifyContent: "flex-end" }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        {isLoading && <Loading />}
+        <View
+          style={{ flex: 1, justifyContent: "flex-end", paddingHorizontal: 10 }}
+          className="flex-col items-center justify-center mt-5 h-36"
+        >
+          <AntDesign
+            name="robot"
+            size={40}
+            color={globalStyles.colors.gray16}
+          />
+
+          <Text className="text-gray-400 italic text-center mt-3">
+            {`Soy el agente de IA para esta app. Si lo deseas te puedo proporcionar un horario visual. Solo tienes que indicar una acción, por ejemplo: "Ir a la escuela"`}
+          </Text>
+        </View>
         <View
           style={{
-            height: height * 0.51,
+            height: height * 0.4,
             justifyContent: "flex-end",
             paddingHorizontal: 10,
           }}
@@ -47,6 +76,8 @@ const IAScreen = () => {
                       width: width * 0.75,
                       height: height * 0.055,
                       alignItems: "center",
+                      borderRadius: 40,
+                      paddingHorizontal: 20,
                     }}
                     placeholder="Email"
                     keyboardType="email-address"
@@ -84,16 +115,6 @@ const IAScreen = () => {
           </View>
         </View>
       </KeyboardAvoidingView>
-      {isVisibleHelpPopUp && (
-        <>
-          <BlurComponent />
-          <HelpIA
-            buttonText="Ok"
-            onPress={() => setIsVisibleHelpPopUp(false)}
-            text="Ayuda para la IA"
-          />
-        </>
-      )}
     </>
   );
 };

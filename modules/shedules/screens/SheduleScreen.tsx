@@ -1,5 +1,7 @@
 import BlurComponent from "@/common/components/BlurComponent";
+import PopUp from "@/common/components/PopUp";
 import { LoadPictosContext } from "@/modules/dashboard/context/LoadPictosContext";
+import { router } from "expo-router";
 import { use, useEffect, useState } from "react";
 import {
   Modal,
@@ -23,6 +25,8 @@ import { prepareDataSaveSchedules } from "../utility/prepareDatatoSaveSchedules"
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
+  const [error, setError] = useState<boolean>(false);
+
   const [playMode, setPlayMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -92,7 +96,7 @@ export default function SheduleScreen() {
     handleModalListVisibility,
     handleSaveMenuVisibility,
     setfullToolBar,
-  } = useSetSelectedPictos();
+  } = useSetSelectedPictos(error);
 
   /* ----------------------------------------------------------
 Carga de horario. ///////////////////////////////////////////
@@ -184,6 +188,7 @@ Carga de horario. ///////////////////////////////////////////
                 visible={modalVisible}
                 onVisibleModal={handleModalListVisibility}
                 onSetPictos={handleSetPictos}
+                handleOnError={() => setError(true)}
               />
             </Modal>
           )}
@@ -206,6 +211,16 @@ Carga de horario. ///////////////////////////////////////////
           items={schedulesItems}
           onCanselPress={() => setOpenSaveSchedule(false)}
         />
+      )}
+      {error && (
+        <>
+          <BlurComponent />
+          <PopUp
+            onPress={() => router.dismissTo("/")}
+            text={"Algo ha salido mal, intente más tarde"}
+            warning
+          />
+        </>
       )}
     </>
   );

@@ -114,17 +114,21 @@ const SaveMenuModal = ({
                 <Animated.View
                   entering={FadeIn.duration(500).delay(index * 200)}
                   className="w-full px-5 py-2 rounded-lg"
-                  style={{ marginBottom: 20, width: width * 0.93 }}
+                  style={{
+                    marginBottom: 20,
+                    width: width * 0.93,
+                    justifyContent: "center",
+                    borderWidth: 1,
+                    borderColor: globalStyles.colors.gray16,
+                  }}
                 >
                   <View className="flex-row items-center justify-between mb-2">
                     <Text className="text-2xl">
                       {transformCapitalize(item.title)}
                     </Text>
-                    <View className="flex-row items-center justify-between mb-2 gap-2">
-                      <Pressable onPress={() => handlePlay(item.id)}>
-                        <Feather name="play" size={20} color="black" />
-                      </Pressable>
-                    </View>
+                    <Pressable onPress={() => handlePlay(item.id)}>
+                      <Feather name="play" size={20} color="black" />
+                    </Pressable>
                   </View>
                   <FlatList
                     horizontal
@@ -133,11 +137,11 @@ const SaveMenuModal = ({
                     renderItem={({ item }) => (
                       <PictoInSchedule
                         url={item.visualItem.url}
-                        dimention="w-10 h-10"
+                        dimention="w-8 h-8"
                       />
                     )}
                     ItemSeparatorComponent={() => (
-                      <View style={{ width: 15 }} />
+                      <View style={{ width: 10 }} />
                     )}
                   />
                 </Animated.View>
