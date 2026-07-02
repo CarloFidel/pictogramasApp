@@ -1,6 +1,7 @@
 import Backbutton from "@/common/components/Backbutton";
 import BlurComponent from "@/common/components/BlurComponent";
 import Loading from "@/common/components/loading";
+import PopUp from "@/common/components/PopUp";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { usePhotos } from "@/modules/photos/hooks/usePhotos";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -43,6 +44,7 @@ const MyPhotosScreen = () => {
   }, [setIsLoading, getAllPhotosQuery]);
 
   const {
+    statusCode,
     openDeletePhotoPopUp,
     setOpenDeletePhotoPopUp,
     handleDeleteOpenPopUp,
@@ -54,8 +56,12 @@ const MyPhotosScreen = () => {
     setIsEditPopVisible(true);
     setPhotoId(photoId);
   };
+  const handleClosingPopUp = async () => {
+    setOpenDeletePhotoPopUp(false);
+    await getAllPhotosQuery.refetch();
+  };
 
-  if (isLoading) {
+  if (isLoading || isLoadingDelete) {
     return (
       <>
         <Loading />
@@ -154,22 +160,42 @@ const MyPhotosScreen = () => {
         </SafeAreaView>
         {openDeletePhotoPopUp && (
           <>
-            {isLoadingDelete && <Loading />}
             <BlurComponent />
-            <DeletePopUp
-              text="Seguro que quieres elimiar esta foto?"
-              onOkPress={handleDeletePhoto}
-              onCanselPress={() => setOpenDeletePhotoPopUp(false)}
-            />
+            {isLoading && <Loading />}
+            {statusCode === 200 && (
+              <PopUp
+                text="Su foto se ha eliminado con éxito"
+                buttonText="Ok"
+                warning={false}
+                onPress={handleClosingPopUp}
+              />
+            )}
+            {!isLoading && statusCode !== 200 && (
+              <DeletePopUp
+                text="Seguro que quiere eliminar esta foto?"
+                onOkPress={handleDeletePhoto}
+                onCanselPress={() => setOpenDeletePhotoPopUp(false)}
+              />
+            )}
           </>
         )}
         {isEditVisible && (
           <>
             <BlurComponent />
-            <EditPhotoPopUp
-              photoid={photoId!}
-              onCanselPress={() => setIsEditPopVisible(false)}
-            />
+            {statusCode === 200 && (
+              <PopUp
+                text="Su foto se ha editado con éxito"
+                buttonText="Ok"
+                warning={false}
+                onPress={handleClosingPopUp}
+              />
+            )}
+            {!isLoading && statusCode !== 200 && (
+              <EditPhotoPopUp
+                photoid={photoId!}
+                onCanselPress={() => setIsEditPopVisible(false)}
+              />
+            )}
           </>
         )}
       </View>

@@ -1,3 +1,4 @@
+import { globalStyles } from "@/global-style";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { Text, useWindowDimensions } from "react-native";
@@ -30,7 +31,11 @@ const PopUp = ({
       {warning ? (
         <Ionicons name="warning-outline" size={40} color="#f0b30c" />
       ) : (
-        <Ionicons name="checkmark-circle-outline" size={40} color="green" />
+        <Ionicons
+          name="checkmark-circle-outline"
+          size={40}
+          color={globalStyles.colors.primary[700]}
+        />
       )}
       <Text className="text-center" style={{ width: width * 0.5 }}>
         {text}
