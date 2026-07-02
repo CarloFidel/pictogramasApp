@@ -1,8 +1,8 @@
 import { getPicoByWord } from "@/common/services/axios-getPictoByWord";
+import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
 import { useAuthState } from "@/modules/auth/store/authState";
-import { LoadPictosContext } from "@/modules/dashboard/context/LoadPictosContext";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { use, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PromptSchema } from "../schema/PromptSchema";
 import { generatePrompt } from "../services/axios-IA";
@@ -10,10 +10,9 @@ import { generatePrompt } from "../services/axios-IA";
 export const usePropmt = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [resError, setResError] = useState<string | undefined>();
-  const [response, setResponse] = useState<string[]>([]);
+  const [response, setResponse] = useState<Pictograma[]>([]);
 
-  const loadPictosContext = use(LoadPictosContext);
-  const { pictosLoaded, setPictosLoaded } = loadPictosContext!;
+  const [title, setTitle] = useState<string>("");
 
   const { token } = useAuthState();
 
@@ -24,23 +23,20 @@ export const usePropmt = () => {
   } = useForm<{ action: string }>({ resolver: zodResolver(PromptSchema) });
 
   const onSubmit = handleSubmit(async ({ action }) => {
+    setTitle(action);
+
     try {
       setIsLoading(true);
       const res = await generatePrompt(action, token);
-      res.words.forEach(async (element: string) => {
-        const pictos = await getPicoByWord(element);
-        setPictosLoaded((prev) => [...prev, pictos]);
-      });
-
-      console.log(res);
-      if (res) {
-        setIsLoading(false);
-        setResponse(res);
-      }
+      const pictos = await Promise.all(
+        res.words.map((word: string) => getPicoByWord(word)),
+      );
+      setResponse((prev) => [...prev, ...pictos]);
     } catch (error: any) {
       console.log(error);
-      setIsLoading(false);
       setResError(error);
+    } finally {
+      setIsLoading(false);
     }
   });
   return {
@@ -49,6 +45,7 @@ export const usePropmt = () => {
     control,
     errors,
     response,
+    title,
 
     setResponse,
     setResError,

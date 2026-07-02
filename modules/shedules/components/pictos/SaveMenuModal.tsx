@@ -1,23 +1,14 @@
 import Loading from "@/common/components/loading";
 import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
-import PictoInSchedule from "@/modules/dashboard/components/PictoInSchedule";
 import useLoadSchedule from "@/modules/dashboard/hooks/useLoadSchedule";
 import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
 import Feather from "@expo/vector-icons/Feather";
 import React, { useState } from "react";
-import {
-  FlatList,
-  Modal,
-  Pressable,
-  RefreshControl,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
-import Animated, { FadeIn } from "react-native-reanimated";
+import { Modal, Pressable, Text, useWindowDimensions } from "react-native";
+import Animated from "react-native-reanimated";
 import { useLoadScheduleAnimation } from "../../animations/loadScheduleShort/useLoadScheduleAnimation";
-import { transformCapitalize } from "../../utility/transformCapitalize";
+import FlatListInSaveModal from "./FlatListInSaveModal";
 
 interface Props {
   handleSaveMenuVisibility: (term: boolean) => void;
@@ -64,10 +55,6 @@ const SaveMenuModal = ({
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
             width: width,
-
-            /*             marginTop: height * h,
-            height: height * (1 - h),
- */
           },
           globalStyles.shadow_md,
           savedShcedulesBehaviour,
@@ -99,60 +86,10 @@ const SaveMenuModal = ({
           (!schedulesResponse || schedulesResponse.schedule.length === 0 ? (
             <Loading />
           ) : (
-            <FlatList
-              horizontal={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={getAllSchedulesQuery.isFetching}
-                  onRefresh={async () => {
-                    await getAllSchedulesQuery.refetch();
-                  }}
-                />
-              }
+            <FlatListInSaveModal
               data={schedulesResponse.schedule}
-              renderItem={({ item, index }) => (
-                <Animated.View
-                  entering={FadeIn.duration(500).delay(index * 200)}
-                  className="w-full px-5 py-2 rounded-lg"
-                  style={{
-                    marginBottom: 20,
-                    width: width * 0.93,
-                    justifyContent: "center",
-                    borderWidth: 1,
-                    borderColor: globalStyles.colors.gray16,
-                  }}
-                >
-                  <View className="flex-row items-center justify-between mb-2">
-                    <Text className="text-2xl">
-                      {transformCapitalize(item.title)}
-                    </Text>
-                    <Pressable onPress={() => handlePlay(item.id)}>
-                      <Feather name="play" size={20} color="black" />
-                    </Pressable>
-                  </View>
-                  <FlatList
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    data={item.scheduleItems}
-                    renderItem={({ item }) => (
-                      <PictoInSchedule
-                        url={item.visualItem.url}
-                        dimention="w-8 h-8"
-                      />
-                    )}
-                    ItemSeparatorComponent={() => (
-                      <View style={{ width: 10 }} />
-                    )}
-                  />
-                </Animated.View>
-              )}
-              keyExtractor={(item) => item.id.toString()}
-              style={{ marginVertical: 5, width: width }}
-              contentContainerStyle={{
-                width: width,
-                marginVertical: 10,
-              }}
-              showsVerticalScrollIndicator={false}
+              handlePlay={handlePlay}
+              refreching={getAllSchedulesQuery}
             />
           ))}
       </Animated.View>

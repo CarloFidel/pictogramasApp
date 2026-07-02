@@ -4,20 +4,17 @@ import PhotosModalList from "@/modules/photos/components/PhotosModalList";
 import { Stagger } from "@animatereactnative/stagger";
 import Feather from "@expo/vector-icons/Feather";
 import { useState } from "react";
-import {
-  Pressable,
-  Text,
-  useWindowDimensions,
-  View
-} from "react-native";
+import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import Animated, { FadeInDown, SlideOutDown } from "react-native-reanimated";
 import PictosInModalList from "../components/pictos/PictosInModalList";
 import SelectPictosFrom from "../components/pictos/SelectPictosFrom";
 import SearchBar from "../components/searchbar/SearchBar";
+import { SheduleItems } from "../interfaces/save-schedules.interfaces";
 
 interface Props {
   visible: boolean;
   handleOnError: (error: boolean) => void;
+  handleOnSaveIA: (save: boolean, items: SheduleItems[]) => void;
 
   // error: () => void
   onVisibleModal: (term: boolean) => void;
@@ -29,6 +26,7 @@ const ModalPictosList = ({
   onVisibleModal,
   onSetPictos,
   handleOnError,
+  handleOnSaveIA,
 }: Props) => {
   const [pictoLibrary, setPictolibrary] = useState<"Arasaac" | "Fotos" | "ia">(
     "Arasaac",
@@ -73,7 +71,7 @@ const ModalPictosList = ({
         shadowOffset: { width: 0, height: 8 },
         elevation: 38,
       }}
-      exiting={SlideOutDown.springify(200).delay(200)}
+      exiting={SlideOutDown.springify(600).delay(200)}
     >
       <Stagger stagger={50} entering={() => FadeInDown.springify(100)}>
         <Text className="text-center mt-5">Añadir pictograma</Text>
@@ -134,10 +132,12 @@ const ModalPictosList = ({
         {pictoLibrary === "Fotos" && (
           <PhotosModalList
             onPressedPictos={handlePictoPressed}
-            //onError={handleOnError}
+            onError={handleOnError}
           />
         )}
-        {pictoLibrary === "ia" && <IAScreen />}
+        {pictoLibrary === "ia" && (
+          <IAScreen onError={handleOnError} onSave={handleOnSaveIA} />
+        )}
       </Stagger>
     </Animated.View>
   );

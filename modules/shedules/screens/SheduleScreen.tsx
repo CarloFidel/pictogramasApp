@@ -26,6 +26,8 @@ import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
   const [error, setError] = useState<boolean>(false);
+  const [saveSchedluPopUp, setSaveSchedluPopUp] = useState<boolean>(false);
+  const [itemsForSave, setItemsForSave] = useState<SheduleItems[]>([]);
 
   const [playMode, setPlayMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -82,12 +84,20 @@ export default function SheduleScreen() {
     setOpenSaveSchedule(true);
   };
 
+  const handleOnSaveIA = (term: boolean, items: SheduleItems[]) => {
+    setSaveSchedluPopUp(term);
+    console.log(items);
+    setItemsForSave(items);
+    setModalVisible(false);
+  };
+
   const { width, height } = useWindowDimensions();
 
   const {
     pictosOn,
     setPictosOn,
     modalVisible,
+    setModalVisible,
     saveModalVisible,
     setSaveModallVisible,
     renderButtonsFlag,
@@ -189,6 +199,7 @@ Carga de horario. ///////////////////////////////////////////
                 onVisibleModal={handleModalListVisibility}
                 onSetPictos={handleSetPictos}
                 handleOnError={() => setError(true)}
+                handleOnSaveIA={handleOnSaveIA}
               />
             </Modal>
           )}
@@ -219,6 +230,15 @@ Carga de horario. ///////////////////////////////////////////
             onPress={() => router.dismissTo("/")}
             text={"Algo ha salido mal, intente más tarde"}
             warning
+          />
+        </>
+      )}
+      {saveSchedluPopUp && (
+        <>
+          <BlurComponent />
+          <SaveSchedulePopUp
+            onCanselPress={() => setSaveSchedluPopUp(false)}
+            items={itemsForSave}
           />
         </>
       )}

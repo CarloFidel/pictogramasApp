@@ -1,11 +1,15 @@
 import Loading from "@/common/components/loading";
 import { globalStyles } from "@/global-style";
+import PictoInSchedule from "@/modules/dashboard/components/PictoInSchedule";
+import { SheduleItems } from "@/modules/shedules/interfaces/save-schedules.interfaces";
+import { transformCapitalize } from "@/modules/shedules/utility/transformCapitalize";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
+  FlatList,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -17,21 +21,47 @@ import {
 import Animated, { FadeIn } from "react-native-reanimated";
 import { usePropmt } from "../hooks/usePropmpt";
 
-const IAScreen = () => {
+interface Props {
+  onError: (error: boolean) => void;
+  onSave: (save: boolean, items: SheduleItems[]) => void;
+}
+const IAScreen = ({ onError, onSave }: Props) => {
+  const [, setShceduleItemsforSave] = useState<SheduleItems[]>([]);
+
   const { width, height } = useWindowDimensions();
 
   const {
+    title,
     control,
     errors,
     response,
     resError,
-    setResponse,
     isLoading,
     onSubmit,
-    setIsLoading,
     setResError,
   } = usePropmt();
 
+  console.log(response);
+
+  useEffect(() => {
+    if (resError) {
+      onError(true);
+      setResError("");
+    }
+  }, [onError, resError, setResError]);
+
+  const handleSave = () => {
+    const sheduleItems: SheduleItems[] = response.map((item, index) => ({
+      position: index,
+      visualitem: {
+        url: item.imageUrl,
+        type: item.isPhoto ? "picto" : "photo",
+        word: item.keyword,
+      },
+    }));
+    setShceduleItemsforSave(sheduleItems);
+    onSave(true, sheduleItems);
+  };
   if (isLoading) {
     return <Loading />;
   }
@@ -57,6 +87,40 @@ const IAScreen = () => {
             {`Soy el agente de IA para esta app. Si lo deseas te puedo proporcionar un horario visual. Solo tienes que indicar una acción, por ejemplo: "Ir a la escuela"`}
           </Text>
         </View>
+        {response.length > 0 && (
+          <View>
+            <Animated.View
+              entering={FadeIn.duration(500).delay(200)}
+              className="w-full px-5 py-2 rounded-lg"
+              style={{
+                marginBottom: 20,
+                width: width * 0.93,
+                justifyContent: "center",
+                borderWidth: 1,
+                borderColor: globalStyles.colors.gray16,
+              }}
+            >
+              <View className="flex-row items-center justify-between mb-2">
+                <Text className="text-2xl">{transformCapitalize(title)}</Text>
+                <View className="flex-row gap-4">
+                  <Pressable onPress={handleSave}>
+                    <Feather name="save" size={20} color="black" />
+                  </Pressable>
+                </View>
+              </View>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={response}
+                renderItem={({ item }) => (
+                  <PictoInSchedule url={item.imageUrl} dimention="w-14 h-14" />
+                )}
+                ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
+              />
+            </Animated.View>
+          </View>
+        )}
+
         <View
           style={{
             height: height * 0.4,
