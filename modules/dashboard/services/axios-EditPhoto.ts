@@ -5,11 +5,12 @@ export const saveEditPhoto = async (
   token: string,
   id: string,
 ) => {
+  console.log(id);
   try {
     const res = await pictoApi.patch(
       `/photo/edit/${id}`,
       {
-        title: title,
+        word: title,
       },
       {
         headers: {
@@ -18,10 +19,11 @@ export const saveEditPhoto = async (
       },
     );
 
-    console.log(res);
+    console.log(res.status);
 
     return res;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };

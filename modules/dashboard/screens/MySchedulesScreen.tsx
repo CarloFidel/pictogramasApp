@@ -46,6 +46,7 @@ const MySchedulesScreen = () => {
     setOpenDeleteSchedulePopUp(false);
     await getAllSchedulesQuery.refetch();
   };
+
   if (getAllSchedulesQuery.isLoading) {
     return <Loading />;
   }
@@ -136,7 +137,7 @@ const MySchedulesScreen = () => {
           {isLoading && <Loading />}
           {statusCode === 200 && (
             <PopUp
-              text="Su hprario se ha eliminado con éxito"
+              text="Su horario se ha eliminado con éxito"
               buttonText="Ok"
               warning={false}
               onPress={handleClosingPopUp}

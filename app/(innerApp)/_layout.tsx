@@ -1,8 +1,6 @@
 import { useTabBarAnimation } from "@/common/animations/useTabBar";
-import SessionExpired from "@/common/components/SessionExpired";
 import { usetabBarBehaviour } from "@/common/hooks/usetabBarBehaviour";
 import { globalStyles } from "@/global-style";
-import { SessioExpiredContext } from "@/modules/auth/context/session-expired-provider/session-expired.context";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { EditModeContext } from "@/modules/shedules/context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "@/modules/shedules/context/play-mode-context/PlayModeContext";
@@ -26,9 +24,6 @@ const Layout = () => {
 
   const editContext = use(EditModeContext);
   const { isEditMode } = editContext!;
-
-  const sessionContext = use(SessioExpiredContext);
-  const { sessionExpired } = sessionContext!;
 
   const { isLoggedIn } = useAuthState();
 
@@ -67,7 +62,7 @@ const Layout = () => {
         <TabList
           style={[
             {
-              opacity: isPlayMode || isEditMode || sessionExpired ? 0 : 1,
+              opacity: isPlayMode || isEditMode ? 0 : 1,
               width: width * 0.8,
               justifyContent: "space-evenly",
               alignItems: "center",
@@ -129,7 +124,7 @@ const Layout = () => {
             borderColor: "#CECECE",
             borderRadius: 25,
             backgroundColor: "#E6F2FF",
-            opacity: 0.4,
+            opacity: isPlayMode || isEditMode ? 0 : 0.4,
           },
           globalStyles.shadow_lg,
         ]}
@@ -141,13 +136,14 @@ const Layout = () => {
             bottom: height * 0.06,
             width: width * 0.18,
             height: height * 0.075,
+            opacity: isPlayMode || isEditMode ? 0 : 0.15,
           },
           globalStyles.shadow_md_up,
           movementStyle,
         ]}
-        className="bg-primary-500 z-20 opacity-10 rounded-3xl"
+        className="bg-primary-500 z-20 rounded-3xl"
       />
-      {sessionExpired && <SessionExpired />}
+      {/* {sessionExpired && <SessionExpired />} */}
     </>
   );
 };

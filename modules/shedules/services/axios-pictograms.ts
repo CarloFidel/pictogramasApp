@@ -6,15 +6,13 @@ import { SheduleItems } from "../interfaces/save-schedules.interfaces";
 
 export const getAllPictosfromArasaac = async (): Promise<Pictograma[]> => {
   try {
-    const { data } = await arasaacApi.get("/es");
+    const { data } = await arasaacApi.get("/all/es");
 
     const pictos = data.map(PictoMapper.fromAraasacApi);
 
-    //console.log(JSON.stringify(pictos, null, 2));
-
     return pictos;
-  } catch (error) {
-    throw `Problem with pictograms ${error}`;
+  } catch (error: any) {
+    throw error;
   }
 };
 

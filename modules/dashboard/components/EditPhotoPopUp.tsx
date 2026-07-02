@@ -42,7 +42,9 @@ const EditPhotoPopUp = ({ photoid, onCanselPress }: Props) => {
       const res = await saveEditPhoto(title, token, photoid);
       setIsLoading(false);
       setStatusCode(res.status);
-      await getAllPhotosQuery.refetch();
+      //onCanselPress();
+      console.log(res.status);
+      //await getAllPhotosQuery.refetch();
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         setStatusCode(error.response?.data.statusCode);
@@ -56,12 +58,12 @@ const EditPhotoPopUp = ({ photoid, onCanselPress }: Props) => {
     return <Loading />;
   }
 
-  if (statusCode === 201) {
+  if (statusCode === 200) {
     return (
       <PopUp
         onPress={onCanselPress}
         buttonText="OK"
-        text="Horario guardado con éxito"
+        text="Foto actualizada con éxito"
       />
     );
   }

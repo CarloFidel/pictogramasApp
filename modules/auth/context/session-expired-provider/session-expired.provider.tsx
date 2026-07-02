@@ -9,14 +9,17 @@ export const SessinExipiredProvider = ({
   children: React.ReactNode;
 }) => {
   const { logOut } = useAuthState();
-  const [sessionExpired, setSessionExpired] = useState<boolean>(false);
+  const [sessionExpired, setSessionExpired] = useState<boolean | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setSessionExpired(true);
     }, SESSION_DURATION);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      setSessionExpired(false);
+    };
   }, [logOut, sessionExpired]);
 
   return (

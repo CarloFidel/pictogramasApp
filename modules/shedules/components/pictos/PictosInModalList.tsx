@@ -1,12 +1,13 @@
-import PopUp from "@/common/components/PopUp";
-import { router } from "expo-router";
-import { ActivityIndicator, Pressable, View } from "react-native";
+import { useEffect } from "react";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { usePictos } from "../../hooks/usePictos";
 import ItemPictos from "./ItemPictos";
 
 interface Props {
+  onError: (error: boolean) => void;
+
   onPressedPictos: (
     id: number | string,
     word: string,
@@ -15,8 +16,14 @@ interface Props {
   ) => void;
 }
 
-const PictosInModalList = ({ onPressedPictos }: Props) => {
+const PictosInModalList = ({ onPressedPictos, onError }: Props) => {
   const { getAllPictosQuery } = usePictos();
+
+  useEffect(() => {
+    if (getAllPictosQuery.error) {
+      onError(true);
+    }
+  }, [getAllPictosQuery.error, onError]);
 
   if (getAllPictosQuery.isLoading) {
     return (
@@ -26,12 +33,10 @@ const PictosInModalList = ({ onPressedPictos }: Props) => {
     );
   }
   if (getAllPictosQuery.error) {
-    console.log(getAllPictosQuery.error);
     return (
-      <PopUp
-        onPress={() => router.back()}
-        text={"Algo ha salido mal, intente más tarde"}
-      />
+      <View className="flex-1 justify-center items-center mt-40">
+        <Text>Ocurrió un error al cargar los pictogramas.</Text>
+      </View>
     );
   }
 

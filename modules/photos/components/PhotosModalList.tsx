@@ -1,7 +1,7 @@
 import { useAuthState } from "@/modules/auth/store/authState";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -15,15 +15,16 @@ import ItemPictos from "../../shedules/components/pictos/ItemPictos";
 import { usePhotos } from "../hooks/usePhotos";
 
 interface Props {
+  onError: (error: boolean) => void;
   onPressedPictos: (
-    id: number,
+    id: number | string,
     word: string,
     imageUrl: string,
     isPhoto: boolean,
   ) => void;
 }
 
-const PhotosModalList = ({ onPressedPictos }: Props) => {
+const PhotosModalList = ({ onPressedPictos, onError }: Props) => {
   const { token } = useAuthState();
 
   const { getAllPhotosQuery } = usePhotos(token);
@@ -31,6 +32,12 @@ const PhotosModalList = ({ onPressedPictos }: Props) => {
   const handleCamaraPress = () => {
     router.push("/camara");
   };
+
+  useEffect(() => {
+    if (getAllPhotosQuery.error) {
+      onError(true);
+    }
+  }, [getAllPhotosQuery.error, onError]);
 
   if (getAllPhotosQuery.isLoading) {
     return (
