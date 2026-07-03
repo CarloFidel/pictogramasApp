@@ -5,6 +5,7 @@ import { useAuthState } from "@/modules/auth/store/authState";
 import { EditModeContext } from "@/modules/shedules/context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "@/modules/shedules/context/play-mode-context/PlayModeContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { BlurView } from "expo-blur";
 import { router, usePathname } from "expo-router";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
 import React, { use, useEffect, useState } from "react";
@@ -62,7 +63,7 @@ const Layout = () => {
         <TabList
           style={[
             {
-              opacity: isPlayMode || isEditMode ? 0 : 1,
+              opacity: isPlayMode || isEditMode ? 0 : 0.7,
               width: width * 0.8,
               justifyContent: "space-evenly",
               alignItems: "center",
@@ -144,6 +145,19 @@ const Layout = () => {
         className="bg-primary-500 z-20 rounded-3xl"
       />
       {/* {sessionExpired && <SessionExpired />} */}
+      <BlurView
+        intensity={40}
+        tint="light"
+        experimentalBlurMethod="dimezisBlurView"
+        style={{
+          position: "absolute",
+          bottom: height * 0.055,
+          left: width * 0.13,
+          width: width * 0.75,
+          height: height * 0.09,
+          borderRadius: 25,
+        }}
+      />
     </>
   );
 };

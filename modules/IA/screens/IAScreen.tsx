@@ -88,37 +88,34 @@ const IAScreen = ({ onError, onSave }: Props) => {
           </Text>
         </View>
         {response.length > 0 && (
-          <View>
-            <Animated.View
-              entering={FadeIn.duration(500).delay(200)}
-              className="w-full px-5 py-2 rounded-lg"
-              style={{
-                marginBottom: 20,
-                width: width * 0.93,
-                justifyContent: "center",
-                borderWidth: 1,
-                borderColor: globalStyles.colors.gray16,
-              }}
-            >
-              <View className="flex-row items-center justify-between mb-2">
-                <Text className="text-2xl">{transformCapitalize(title)}</Text>
-                <View className="flex-row gap-4">
-                  <Pressable onPress={handleSave}>
-                    <Feather name="save" size={20} color="black" />
-                  </Pressable>
-                </View>
+          <Animated.View
+            entering={FadeIn.duration(500).delay(200)}
+            style={{
+              marginBottom: 20,
+              width: width * 0.93,
+              justifyContent: "center",
+              borderWidth: 1,
+              borderColor: globalStyles.colors.gray16,
+            }}
+          >
+            <View className="flex-row items-center justify-between mb-2">
+              <Text className="text-2xl">{transformCapitalize(title)}</Text>
+              <View className="flex-row gap-4">
+                <Pressable onPress={handleSave}>
+                  <Feather name="save" size={20} color="black" />
+                </Pressable>
               </View>
-              <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={response}
-                renderItem={({ item }) => (
-                  <PictoInSchedule url={item.imageUrl} dimention="w-14 h-14" />
-                )}
-                ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
-              />
-            </Animated.View>
-          </View>
+            </View>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={response}
+              renderItem={({ item }) => (
+                <PictoInSchedule url={item.imageUrl} dimention="w-14 h-14" />
+              )}
+              ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
+            />
+          </Animated.View>
         )}
 
         <View

@@ -25,7 +25,7 @@ import useLoadSchedule from "../hooks/useLoadSchedule";
 
 const MySchedulesScreen = () => {
   const { token } = useAuthState();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
@@ -95,7 +95,7 @@ const MySchedulesScreen = () => {
           renderItem={({ item, index }) => (
             <Animated.View
               entering={FadeIn.duration(500).delay(index * 200)}
-              className="w-full px-5 py-2 border border-gray-300 rounded-lg"
+              className="px-5 py-2 border border-gray-300 rounded-lg"
               style={{ marginBottom: 20, width: width }}
             >
               <View className="flex-row items-center justify-between mb-2">

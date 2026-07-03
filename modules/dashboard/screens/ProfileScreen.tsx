@@ -76,6 +76,19 @@ const ProfileScreen = () => {
 
             <Pressable
               className="flex-row justify-between gap-5 items-center"
+              onPress={() => router.push("/calendar")}
+            >
+              <View className="flex-row items-center justify-center gap-5">
+                <Ionicons name="calendar-outline" size={20} color="black" />
+                <Text className="text-black font-hank-regular text-md">
+                  Calendar
+                </Text>
+              </View>
+              <Feather name="chevron-right" size={15} />
+            </Pressable>
+
+            {/* <Pressable
+              className="flex-row justify-between gap-5 items-center"
               onPress={() => router.push("/myphotos")}
             >
               <View className="flex-row items-center justify-center gap-5">
@@ -85,7 +98,7 @@ const ProfileScreen = () => {
                 </Text>
               </View>
               <Feather name="chevron-right" size={15} />
-            </Pressable>
+            </Pressable> */}
 
             <Pressable
               className="flex-row justify-between gap-5 items-center"
@@ -104,7 +117,7 @@ const ProfileScreen = () => {
               <Feather name="chevron-right" size={15} />
             </Pressable>
 
-            <Pressable
+            {/*             <Pressable
               className="flex-row justify-between gap-5 items-center"
               onPress={() => router.push("/schedules")}
             >
@@ -119,7 +132,7 @@ const ProfileScreen = () => {
                 </Text>
               </View>
               <Feather name="chevron-right" size={15} />
-            </Pressable>
+            </Pressable> */}
           </View>
 
           <View
