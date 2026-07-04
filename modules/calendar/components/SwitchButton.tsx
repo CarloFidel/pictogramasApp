@@ -2,10 +2,17 @@ import { globalStyles } from "@/global-style";
 import { useState } from "react";
 import { Switch } from "react-native-paper";
 
-const SwitchButton = () => {
+interface Props {
+  onSwitchChange: (isSwitchOn: boolean) => void;
+}
+
+const SwitchButton = ({ onSwitchChange }: Props) => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const onToggleSwitch = () => {
+    setIsSwitchOn(!isSwitchOn);
+    onSwitchChange(!isSwitchOn);
+  };
 
   return (
     <Switch

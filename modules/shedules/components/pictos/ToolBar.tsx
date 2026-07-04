@@ -1,17 +1,17 @@
 import {
-  COORDINATES_DELETE_ZONE_IN_PLAYMODE,
-  WIDTH_DELETE_ZONE,
+    COORDINATES_DELETE_ZONE_IN_PLAYMODE,
+    WIDTH_DELETE_ZONE,
 } from "@/constants/global-constatnt";
 import { globalStyles } from "@/global-style";
-import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
+import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import Feather from "@expo/vector-icons/Feather";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { use } from "react";
 import { Pressable } from "react-native";
 import Animated, {
-  FadeInLeft,
-  FadeOut,
-  ZoomOutRotate
+    FadeInLeft,
+    FadeOut,
+    ZoomOutRotate,
 } from "react-native-reanimated";
 import { useToolBarBehaviour } from "../../animations/toolbar/ToolBarBehaviour";
 import { PlayModeContext } from "../../context/play-mode-context/PlayModeContext";

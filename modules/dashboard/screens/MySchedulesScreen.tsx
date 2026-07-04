@@ -116,7 +116,10 @@ const MySchedulesScreen = () => {
                 showsHorizontalScrollIndicator={false}
                 data={item.scheduleItems}
                 renderItem={({ item }) => (
-                  <PictoInSchedule url={item.visualItem.url} />
+                  <PictoInSchedule
+                    url={item.visualItem.url}
+                    dimention="w-20 h-20"
+                  />
                 )}
                 ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
               />

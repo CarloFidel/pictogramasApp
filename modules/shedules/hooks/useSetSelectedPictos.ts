@@ -1,4 +1,4 @@
-import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
+import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import { useEffect, useState } from "react";
 
 export const useSetSelectedPictos = (error: boolean) => {

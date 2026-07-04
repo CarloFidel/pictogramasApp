@@ -1,5 +1,6 @@
 import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
+import { useCalendarQuery } from "@/modules/calendar/hook/useCalendarQuery";
 import { usePhotos } from "@/modules/photos/hooks/usePhotos";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -19,6 +20,9 @@ const ProfileScreen = () => {
 
   const { getAllPhotosQuery } = usePhotos(token);
   getAllPhotosQuery.refetch();
+
+  const { getAllCalendarEventsQuery } = useCalendarQuery(token);
+  getAllCalendarEventsQuery.refetch();
 
   return (
     <SafeAreaView className="flex-1 bg-primary-600">

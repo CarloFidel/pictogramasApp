@@ -1,4 +1,4 @@
-import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
+import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import IAScreen from "@/modules/IA/screens/IAScreen";
 import PhotosModalList from "@/modules/photos/components/PhotosModalList";
 import { Stagger } from "@animatereactnative/stagger";
@@ -115,7 +115,7 @@ const ModalPictosList = ({
             icon
           />
         </View>
-        <SearchBar />
+        {pictoLibrary === "Arasaac" && <SearchBar />}
 
         {/*         {pictoLibrary === "arasaac" ? (
           <PictosInModalList onPressedPictos={handlePictoPressed} />

@@ -1,5 +1,5 @@
 import { getPicoByWord } from "@/common/services/axios-getPictoByWord";
-import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
+import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";

@@ -1,4 +1,4 @@
-import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
+import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import { ReactNode, useState } from "react";
 import { LoadPictosContext } from "./LoadPictosContext";
 

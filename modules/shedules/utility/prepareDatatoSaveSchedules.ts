@@ -1,4 +1,4 @@
-import { Pictograma } from "@/infrastructure/interfaces/picto.interface";
+import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 
 export const prepareDataSaveSchedules = (pictosOn: Pictograma[]) => {
   const scheduleItems = pictosOn.map((scheduleItem) => {

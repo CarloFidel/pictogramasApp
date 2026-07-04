@@ -63,7 +63,7 @@ const Layout = () => {
         <TabList
           style={[
             {
-              opacity: isPlayMode || isEditMode ? 0 : 0.7,
+              opacity: isPlayMode || isEditMode ? 0 : 0.75,
               width: width * 0.8,
               justifyContent: "space-evenly",
               alignItems: "center",
@@ -150,6 +150,7 @@ const Layout = () => {
         tint="light"
         experimentalBlurMethod="dimezisBlurView"
         style={{
+          opacity: isPlayMode || isEditMode ? 0 : 0.95,
           position: "absolute",
           bottom: height * 0.055,
           left: width * 0.13,
