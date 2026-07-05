@@ -10,19 +10,29 @@ import {
   View,
 } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
+import { useCalendarQuery } from "../hook/useCalendarQuery";
 import SwitchButton from "./SwitchButton";
 
 interface Props {
+  selected: string;
   handleSwitchChange: (isSwitchOn: boolean, scheduleId: string) => void;
 }
 
-const FleatListUserShedules = ({ handleSwitchChange }: Props) => {
+const FleatListUserShedules = ({ selected, handleSwitchChange }: Props) => {
   const { width } = useWindowDimensions();
 
   const { token } = useAuthState();
 
   const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
+
+  const { getAllCalendarEventsQuery } = useCalendarQuery(token);
+  const calendarResponse = getAllCalendarEventsQuery.data?.response;
+  console.log("calendarResponse", JSON.stringify(calendarResponse, null, 2));
+  console.log(
+    "schedulesResponse",
+    JSON.stringify(schedulesResponse?.schedule, null, 2),
+  );
 
   return (
     <FlatList
@@ -58,11 +68,20 @@ const FleatListUserShedules = ({ handleSwitchChange }: Props) => {
               <Text className="text-xl mb-4">
                 {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
               </Text>
-              <SwitchButton
-                onSwitchChange={(isSwitchOn) =>
-                  handleSwitchChange(isSwitchOn, item.id)
-                }
-              />
+              {getAllCalendarEventsQuery.isLoading ? (
+                <RefreshControl refreshing={true} />
+              ) : (
+                <SwitchButton
+                  initialvalue={
+                    calendarResponse
+                      ?.find((event) => event.date === selected)
+                      ?.sheduleId?.includes(item.id) ?? false
+                  }
+                  onSwitchChange={(isSwitchOn) =>
+                    handleSwitchChange(isSwitchOn, item.id)
+                  }
+                />
+              )}
             </View>
             <FlatList
               horizontal

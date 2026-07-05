@@ -1,11 +1,7 @@
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
-import {
-  AgendaList,
-  CalendarProvider,
-  ExpandableCalendar,
-} from "react-native-calendars";
+import { CalendarProvider, ExpandableCalendar } from "react-native-calendars";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Backbutton from "@/common/components/Backbutton";
@@ -16,20 +12,18 @@ import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import FleatListUserShedules from "../components/FleatListUserShedules";
+import SchedulesOnDay from "../components/SchedulesOnDay";
 import { useCalendarQuery } from "../hook/useCalendarQuery";
 import { useSaveEvents } from "../hook/useSaveEvents";
-import { AgendaSection } from "../interface/agendaSection.interface";
 import { todayDate } from "../utility/todayDate";
 
 const CalendarScreen = () => {
   const [isVisibleSchedules, setIsVisibleSchedules] = useState<boolean>(false);
   const [selected, setSelected] = useState(todayDate());
-
-  const [agendaEvents, setAgendaEvents] = useState<AgendaSection | undefined>();
 
   const { width, height } = useWindowDimensions();
 
@@ -46,34 +40,20 @@ const CalendarScreen = () => {
   const calendarEventsResponse = getAllCalendarEventsQuery.data?.events;
   const calendarResponse = getAllCalendarEventsQuery.data?.response;
 
-  //console.log(JSON.stringify(calendarResponse, null, 2));
-  //console.log(selected);
-
   const handleSaveandRefetch = async (selected: string) => {
     await handleOKPress(selected);
     await getAllCalendarEventsQuery.refetch();
   };
 
-  useEffect(() => {
-    if (!calendarResponse) return;
-
-    const selectedDayEvents = calendarResponse.filter(
-      (event) => event.date === selected,
-    );
-
-    const event = {
-      title: selected,
-      data: selectedDayEvents.map((event) => ({
-        title: event.id,
-      })),
-    };
-    setAgendaEvents(event);
-  }, [calendarResponse, selected]);
-
   return (
     <>
       <StatusBar style="dark" backgroundColor="white" />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+        }}
+      >
         <Backbutton
           position="left-5 top-16"
           onPress={() => {
@@ -88,7 +68,7 @@ const CalendarScreen = () => {
             className="bg-primary-400 p-3 rounded-full"
             style={{
               position: "absolute",
-              bottom: height * 0.2,
+              bottom: height * 0.16,
               right: width * 0.05,
               zIndex: 10,
             }}
@@ -97,7 +77,6 @@ const CalendarScreen = () => {
             <Ionicons name="add" size={30} color="white" />
           </Pressable>
         )}
-
         <CalendarProvider
           date={new Date().toISOString().split("T")[0]}
           style={{
@@ -125,22 +104,14 @@ const CalendarScreen = () => {
               }}
             />
           )}
-          <AgendaList
-            style={{ flex: 1 }}
-            sections={agendaEvents ? [agendaEvents] : []}
-            renderItem={({ item }) => (
-              <View
-                style={{
-                  padding: 16,
-                  backgroundColor: "red",
-                  marginBottom: 8,
-                }}
-              >
-                <Text>{item.title}</Text>
-              </View>
-            )}
-          />
         </CalendarProvider>
+        <SchedulesOnDay
+          date={selected}
+          schedulesId={
+            calendarResponse?.find((event) => event.date === selected)
+              ?.sheduleId ?? []
+          }
+        />
         {getAllCalendarEventsQuery.isLoading && (
           <>
             <BlurComponent />
@@ -176,7 +147,10 @@ const CalendarScreen = () => {
             </Text>
             {isLoading && <Loading />}
             {schedulesResponse?.schedule.length! > 0 ? (
-              <FleatListUserShedules handleSwitchChange={handleSwitchChange} />
+              <FleatListUserShedules
+                selected={selected}
+                handleSwitchChange={handleSwitchChange}
+              />
             ) : (
               !isLoading && (
                 <View className="flex-1 items-center mb-30">

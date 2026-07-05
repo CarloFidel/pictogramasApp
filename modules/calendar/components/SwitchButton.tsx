@@ -3,11 +3,12 @@ import { useState } from "react";
 import { Switch } from "react-native-paper";
 
 interface Props {
+  initialvalue?: boolean;
   onSwitchChange: (isSwitchOn: boolean) => void;
 }
 
-const SwitchButton = ({ onSwitchChange }: Props) => {
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
+const SwitchButton = ({ initialvalue, onSwitchChange }: Props) => {
+  const [isSwitchOn, setIsSwitchOn] = useState(initialvalue ?? false);
 
   const onToggleSwitch = (value: boolean) => {
     setIsSwitchOn(value);

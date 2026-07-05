@@ -5,5 +5,5 @@ export interface SheduleEventesResponse {
 export interface Response {
   id: string;
   date: string;
-  shcedulesIds: string[];
+  sheduleId: string[];
 }

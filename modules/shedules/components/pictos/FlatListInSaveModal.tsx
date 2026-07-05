@@ -5,6 +5,7 @@ import React from "react";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
 import Animated, { FadeIn } from "react-native-reanimated";
+import { transformCapitalize } from "../../utility/transformCapitalize";
 
 interface Props {
   data: any[];
@@ -16,7 +17,14 @@ interface Props {
 const FlatListInSaveModal = ({ handlePlay, data, refreching }: Props) => {
   const { width, height } = useWindowDimensions();
   return (
-    <View>
+    <View
+      style={{
+        width: width,
+        height: height * 0.58,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <FlatList
         horizontal={false}
         refreshControl={
@@ -43,7 +51,9 @@ const FlatListInSaveModal = ({ handlePlay, data, refreching }: Props) => {
             }}
           >
             <View className="flex-row items-center justify-between mb-2">
-              <Text className="text-2xl">{item.title}</Text>
+              <Text className="text-2xl text-gray-600">
+                {transformCapitalize(item.title)}
+              </Text>
               <Pressable onPress={() => handlePlay(item.id)}>
                 <Feather name="play" size={20} color="black" />
               </Pressable>
