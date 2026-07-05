@@ -4,6 +4,7 @@ import Loading from "@/common/components/loading";
 import PrimaryButton from "@/common/components/PrimaryButton";
 import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
+import { transformCapitalize } from "@/modules/shedules/utility/transformCapitalize";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Text, TextInput, useWindowDimensions, View } from "react-native";
@@ -12,10 +13,10 @@ import { useDeleteAccount } from "../hooks/useDeleteAccount";
 
 const PersonalScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
+
   const { width, height } = useWindowDimensions();
 
   const { name, email, lastName, roles, logOut } = useAuthState();
-  console.log(roles);
 
   const { isLoadingDelete, handleDeleteAccount } = useDeleteAccount();
 
@@ -64,7 +65,7 @@ const PersonalScreen = () => {
           <Text>Rol</Text>
           <TextInput
             style={[globalStyles.input, { width: width * 0.9 }]}
-            placeholder={Array.isArray(roles) ? roles.join(", ") : ""}
+            placeholder={transformCapitalize(roles)}
             editable={false}
           />
         </View>

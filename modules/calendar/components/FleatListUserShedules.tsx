@@ -28,11 +28,6 @@ const FleatListUserShedules = ({ selected, handleSwitchChange }: Props) => {
 
   const { getAllCalendarEventsQuery } = useCalendarQuery(token);
   const calendarResponse = getAllCalendarEventsQuery.data?.response;
-  console.log("calendarResponse", JSON.stringify(calendarResponse, null, 2));
-  console.log(
-    "schedulesResponse",
-    JSON.stringify(schedulesResponse?.schedule, null, 2),
-  );
 
   return (
     <FlatList
@@ -68,20 +63,16 @@ const FleatListUserShedules = ({ selected, handleSwitchChange }: Props) => {
               <Text className="text-xl mb-4">
                 {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
               </Text>
-              {getAllCalendarEventsQuery.isLoading ? (
-                <RefreshControl refreshing={true} />
-              ) : (
-                <SwitchButton
-                  initialvalue={
-                    calendarResponse
-                      ?.find((event) => event.date === selected)
-                      ?.sheduleId?.includes(item.id) ?? false
-                  }
-                  onSwitchChange={(isSwitchOn) =>
-                    handleSwitchChange(isSwitchOn, item.id)
-                  }
-                />
-              )}
+              <SwitchButton
+                initialvalue={
+                  calendarResponse
+                    ?.find((event) => event.date === selected)
+                    ?.sheduleId?.includes(item.id) ?? false
+                }
+                onSwitchChange={(isSwitchOn) =>
+                  handleSwitchChange(isSwitchOn, item.id)
+                }
+              />
             </View>
             <FlatList
               horizontal

@@ -57,7 +57,7 @@ const ProfileScreen = () => {
               onPress={() => router.push("/personal")}
             >
               <View className="flex-row items-center justify-center gap-5">
-                <Ionicons name="person-outline" size={20} color="black" />
+                <Ionicons name="person-outline" size={18} color="black" />
                 <Text className="text-black font-hank-regular text-md">
                   Información personal
                 </Text>
@@ -116,6 +116,19 @@ const ProfileScreen = () => {
                 />
                 <Text className="text-black font-hank-regular text-md">
                   Mis horarios
+                </Text>
+              </View>
+              <Feather name="chevron-right" size={15} />
+            </Pressable>
+
+            <Pressable
+              className="flex-row justify-between gap-5 items-center"
+              onPress={() => router.push("/schedules")}
+            >
+              <View className="flex-row items-center justify-center gap-5">
+                <Ionicons name="school-outline" size={20} color="black" />
+                <Text className="text-black font-hank-regular text-md">
+                  Crear artículo
                 </Text>
               </View>
               <Feather name="chevron-right" size={15} />

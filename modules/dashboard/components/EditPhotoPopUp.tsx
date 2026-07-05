@@ -29,7 +29,10 @@ const EditPhotoPopUp = ({ photoid, onCanselPress }: Props) => {
   const [statusCode, setStatusCode] = useState<number>();
   const { width } = useWindowDimensions();
   const { token } = useAuthState();
+
   const { getAllPhotosQuery } = usePhotos(token);
+  getAllPhotosQuery.refetch();
+
   const {
     control,
     handleSubmit,
