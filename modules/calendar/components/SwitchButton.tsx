@@ -9,9 +9,9 @@ interface Props {
 const SwitchButton = ({ onSwitchChange }: Props) => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
-  const onToggleSwitch = () => {
-    setIsSwitchOn(!isSwitchOn);
-    onSwitchChange(!isSwitchOn);
+  const onToggleSwitch = (value: boolean) => {
+    setIsSwitchOn(value);
+    onSwitchChange(value);
   };
 
   return (

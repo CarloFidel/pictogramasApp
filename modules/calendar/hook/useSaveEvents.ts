@@ -15,16 +15,17 @@ export const useSaveEvents = ({ setIsVisibleSchedules }: Props) => {
   const { getAllCalendarEventsQuery } = useCalendarQuery(token);
 
   const handleOKPress = async (selected: string) => {
-    const data = { date: selected, shcedulesIds: schedulesEvents };
+    const data = { date: selected, shceduleId: schedulesEvents };
     try {
       setIsLoading(true);
       await saveScheduleClendar(data, token);
       setIsVisibleSchedules(false);
-      getAllCalendarEventsQuery.refetch();
     } catch (error) {
       console.error(error);
     } finally {
       setIsLoading(false);
+      setSchedulesEvents([]);
+      getAllCalendarEventsQuery.refetch();
     }
   };
 
@@ -38,5 +39,10 @@ export const useSaveEvents = ({ setIsVisibleSchedules }: Props) => {
     }
   };
 
-  return { isLoading, setIsLoading, handleOKPress, handleSwitchChange };
+  return {
+    isLoading,
+    setIsLoading,
+    handleOKPress,
+    handleSwitchChange,
+  };
 };

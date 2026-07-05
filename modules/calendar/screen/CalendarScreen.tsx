@@ -16,18 +16,20 @@ import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import FleatListUserShedules from "../components/FleatListUserShedules";
-import { agendaEventsMock } from "../data/agendaEvents.mock";
 import { useCalendarQuery } from "../hook/useCalendarQuery";
 import { useSaveEvents } from "../hook/useSaveEvents";
+import { AgendaSection } from "../interface/agendaSection.interface";
 import { todayDate } from "../utility/todayDate";
 
 const CalendarScreen = () => {
   const [isVisibleSchedules, setIsVisibleSchedules] = useState<boolean>(false);
   const [selected, setSelected] = useState(todayDate());
+
+  const [agendaEvents, setAgendaEvents] = useState<AgendaSection | undefined>();
 
   const { width, height } = useWindowDimensions();
 
@@ -36,16 +38,37 @@ const CalendarScreen = () => {
   const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
 
-  const { getAllCalendarEventsQuery } = useCalendarQuery(token);
-  const calendarEventsResponse = getAllCalendarEventsQuery.data;
-
   const { isLoading, handleOKPress, handleSwitchChange } = useSaveEvents({
     setIsVisibleSchedules,
   });
+  const { getAllCalendarEventsQuery } = useCalendarQuery(token);
 
-  if (getAllCalendarEventsQuery.isLoading) {
-    return <Loading />;
-  }
+  const calendarEventsResponse = getAllCalendarEventsQuery.data?.events;
+  const calendarResponse = getAllCalendarEventsQuery.data?.response;
+
+  //console.log(JSON.stringify(calendarResponse, null, 2));
+  //console.log(selected);
+
+  const handleSaveandRefetch = async (selected: string) => {
+    await handleOKPress(selected);
+    await getAllCalendarEventsQuery.refetch();
+  };
+
+  useEffect(() => {
+    if (!calendarResponse) return;
+
+    const selectedDayEvents = calendarResponse.filter(
+      (event) => event.date === selected,
+    );
+
+    const event = {
+      title: selected,
+      data: selectedDayEvents.map((event) => ({
+        title: event.id,
+      })),
+    };
+    setAgendaEvents(event);
+  }, [calendarResponse, selected]);
 
   return (
     <>
@@ -57,41 +80,59 @@ const CalendarScreen = () => {
             router.back();
           }}
         />
-        <Pressable
-          className="absolute bottom-40 right-10 bg-primary-400 p-3 rounded-full z-50"
-          onPress={() => setIsVisibleSchedules(true)}
-        >
-          <Ionicons name="add" size={30} color="white" />
-        </Pressable>
+        <Text className="text-3xl justify-start mt-20 w-full px-5">
+          Calendario
+        </Text>
+        {!getAllCalendarEventsQuery.isLoading && (
+          <Pressable
+            className="bg-primary-400 p-3 rounded-full"
+            style={{
+              position: "absolute",
+              bottom: height * 0.2,
+              right: width * 0.05,
+              zIndex: 10,
+            }}
+            onPress={() => setIsVisibleSchedules(true)}
+          >
+            <Ionicons name="add" size={30} color="white" />
+          </Pressable>
+        )}
 
         <CalendarProvider
           date={new Date().toISOString().split("T")[0]}
           style={{
-            marginTop: height * 0.06,
+            flex: 1,
+            marginTop: height * 0.01,
           }}
         >
-          <ExpandableCalendar
-            hideArrows={true}
-            closeOnDayPress={true}
-            markedDates={Object.assign({}, ...calendarEventsResponse!)}
-            theme={{
-              selectedDayBackgroundColor: globalStyles.colors.primary[400],
-              selectedDayTextColor: "#FFFFFF",
-              todayTextColor: globalStyles.colors.primary[600],
-              arrowColor: globalStyles.colors.primary[400],
-            }}
-            onDayPress={(day) => {
-              setSelected(day.dateString);
-            }}
-          />
-
+          {!getAllCalendarEventsQuery.isLoading && (
+            <ExpandableCalendar
+              hideArrows={true}
+              closeOnDayPress={true}
+              markedDates={
+                calendarEventsResponse
+                  ? Object.assign({}, ...calendarEventsResponse)
+                  : null
+              }
+              theme={{
+                selectedDayBackgroundColor: globalStyles.colors.primary[400],
+                selectedDayTextColor: "#FFFFFF",
+                todayTextColor: globalStyles.colors.primary[600],
+                arrowColor: globalStyles.colors.primary[400],
+              }}
+              onDayPress={(day) => {
+                setSelected(day.dateString);
+              }}
+            />
+          )}
           <AgendaList
-            sections={agendaEventsMock}
+            style={{ flex: 1 }}
+            sections={agendaEvents ? [agendaEvents] : []}
             renderItem={({ item }) => (
               <View
                 style={{
                   padding: 16,
-                  backgroundColor: "white",
+                  backgroundColor: "red",
                   marginBottom: 8,
                 }}
               >
@@ -100,6 +141,12 @@ const CalendarScreen = () => {
             )}
           />
         </CalendarProvider>
+        {getAllCalendarEventsQuery.isLoading && (
+          <>
+            <BlurComponent />
+            <Loading />
+          </>
+        )}
       </SafeAreaView>
 
       {isVisibleSchedules && (
@@ -141,8 +188,8 @@ const CalendarScreen = () => {
             )}
             {schedulesResponse?.schedule.length! > 0 && (
               <PrimaryButton
-                onPress={() => handleOKPress(selected)}
-                text="Agregar"
+                onPress={() => handleSaveandRefetch(selected)}
+                text="Ok"
                 textColor="white"
                 backGroundColor={globalStyles.colors.primary[500]}
               />

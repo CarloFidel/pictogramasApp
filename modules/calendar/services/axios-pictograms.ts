@@ -3,16 +3,19 @@ import { CalendarMapper } from "@/infrastructure/calendar/mapper/calendar.mapper
 import { SheduleEventes } from "../interface/scheduleEventData.interface";
 
 export const saveScheduleClendar = async (
-  { date, shcedulesIds }: SheduleEventes,
+  { date, shceduleId }: SheduleEventes,
   token: string,
 ) => {
-  console.log("saveScheduleClendar", { date, shcedulesIds, token });
+  console.log(
+    "saveScheduleClendar",
+    JSON.stringify({ date, shceduleId }, null, 2),
+  );
   try {
     const res = await pictoApi.post(
       "/calendar/create",
       {
         date: date,
-        sheduleId: shcedulesIds,
+        sheduleId: shceduleId,
       },
       {
         headers: {
@@ -40,7 +43,10 @@ export const getAllEventsfromUser = async (token: string) => {
 
     const events = res.data.map(CalendarMapper.fromAraasacApi);
 
-    return events;
+    return {
+      response: res.data,
+      events,
+    };
   } catch (error) {
     throw error;
   }
