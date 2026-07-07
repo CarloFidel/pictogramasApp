@@ -2,6 +2,7 @@ import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { useCalendarQuery } from "@/modules/calendar/hook/useCalendarQuery";
 import { usePhotos } from "@/modules/photos/hooks/usePhotos";
+import { transformCapitalize } from "@/modules/shedules/utility/transformCapitalize";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
@@ -12,7 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSchedules } from "../hooks/useSchedules";
 
 const ProfileScreen = () => {
-  const { email, name, logOut, token } = useAuthState();
+  const { email, name, logOut, token, roles } = useAuthState();
   const { height } = useWindowDimensions();
 
   const { getAllSchedulesQuery } = useSchedules(token);
@@ -37,7 +38,14 @@ const ProfileScreen = () => {
           >
             {name}
           </Text>
-          <Text className="text-white font-hank-light text-md">{email}</Text>
+          <Animated.View className={"flex-row justify-between w-full"}>
+            <Text className="text-white font-hank-light text-md">{email}</Text>
+            <Text className="text-white font-hank-light text-md">
+              {Array.isArray(roles) && roles.length > 0
+                ? transformCapitalize(roles[0])
+                : ""}
+            </Text>
+          </Animated.View>
         </Animated.View>
         <Animated.View
           className="px-2 bg-white rounded-t-3xl"
@@ -51,7 +59,6 @@ const ProfileScreen = () => {
             <Text className="text-gray-500 font-hank-regular text-2xl ">
               Cuenta
             </Text>
-
             <Pressable
               className="flex-row justify-between gap-5 items-center"
               onPress={() => router.push("/personal")}
@@ -64,7 +71,6 @@ const ProfileScreen = () => {
               </View>
               <Feather name="chevron-right" size={15} />
             </Pressable>
-
             <Pressable
               className="flex-row justify-between gap-5 items-center"
               onPress={() => router.push("/myphotos")}
@@ -77,7 +83,6 @@ const ProfileScreen = () => {
               </View>
               <Feather name="chevron-right" size={15} />
             </Pressable>
-
             <Pressable
               className="flex-row justify-between gap-5 items-center"
               onPress={() => router.push("/calendar")}
@@ -90,20 +95,6 @@ const ProfileScreen = () => {
               </View>
               <Feather name="chevron-right" size={15} />
             </Pressable>
-
-            {/* <Pressable
-              className="flex-row justify-between gap-5 items-center"
-              onPress={() => router.push("/myphotos")}
-            >
-              <View className="flex-row items-center justify-center gap-5">
-                <Ionicons name="book-outline" size={20} color="black" />
-                <Text className="text-black font-hank-regular text-md">
-                  Artículos guardados
-                </Text>
-              </View>
-              <Feather name="chevron-right" size={15} />
-            </Pressable> */}
-
             <Pressable
               className="flex-row justify-between gap-5 items-center"
               onPress={() => router.push("/schedules")}
@@ -121,35 +112,20 @@ const ProfileScreen = () => {
               <Feather name="chevron-right" size={15} />
             </Pressable>
 
-            <Pressable
-              className="flex-row justify-between gap-5 items-center"
-              onPress={() => router.push("/schedules")}
-            >
-              <View className="flex-row items-center justify-center gap-5">
-                <Ionicons name="school-outline" size={20} color="black" />
-                <Text className="text-black font-hank-regular text-md">
-                  Crear artículo
-                </Text>
-              </View>
-              <Feather name="chevron-right" size={15} />
-            </Pressable>
-
-            {/*             <Pressable
-              className="flex-row justify-between gap-5 items-center"
-              onPress={() => router.push("/schedules")}
-            >
-              <View className="flex-row items-center justify-center gap-5">
-                <Ionicons
-                  name="document-text-outline"
-                  size={20}
-                  color="black"
-                />
-                <Text className="text-black font-hank-regular text-md">
-                  Crear Artículo
-                </Text>
-              </View>
-              <Feather name="chevron-right" size={15} />
-            </Pressable> */}
+            {roles.includes("therapist") && (
+              <Pressable
+                className="flex-row justify-between gap-5 items-center"
+                onPress={() => router.push("/create_articles")}
+              >
+                <View className="flex-row items-center justify-center gap-5">
+                  <Ionicons name="school-outline" size={20} color="black" />
+                  <Text className="text-black font-hank-regular text-md">
+                    Crear artículo
+                  </Text>
+                </View>
+                <Feather name="chevron-right" size={15} />
+              </Pressable>
+            )}
           </View>
 
           <View

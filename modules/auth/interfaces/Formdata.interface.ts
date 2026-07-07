@@ -3,6 +3,7 @@ export interface FormDataRegister {
   lastName: string;
   email: string;
   password: string;
+  roles: string[];
 }
 
 export interface FormDataLogin {

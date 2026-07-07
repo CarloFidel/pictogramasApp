@@ -198,7 +198,7 @@ Carga de horario. ///////////////////////////////////////////
                 visible={modalVisible}
                 onVisibleModal={handleModalListVisibility}
                 onSetPictos={handleSetPictos}
-                handleOnError={() => setError(true)}
+                handleOnError={(term) => setError(term)}
                 handleOnSaveIA={handleOnSaveIA}
               />
             </Modal>

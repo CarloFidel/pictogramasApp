@@ -65,7 +65,7 @@ const PersonalScreen = () => {
           <Text>Rol</Text>
           <TextInput
             style={[globalStyles.input, { width: width * 0.9 }]}
-            placeholder={transformCapitalize(roles)}
+            placeholder={transformCapitalize(roles.toLocaleString())}
             editable={false}
           />
         </View>

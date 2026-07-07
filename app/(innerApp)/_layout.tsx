@@ -42,7 +42,7 @@ const Layout = () => {
       setIsHorario(true);
       setIsArticle(false);
     }
-    if (path === "/article") {
+    if (path === "/articles") {
       setIsProffile(false);
       setIsHorario(false);
       setIsArticle(true);

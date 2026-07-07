@@ -10,7 +10,7 @@ export const useAuthState = create(
       name: "",
       lastName: "",
       email: "",
-      roles: "",
+      roles: [],
       token: "",
       logIn(name, lastName, email, roles, token) {
         set((state) => {
@@ -31,7 +31,7 @@ export const useAuthState = create(
           name: "",
           lastName: "",
           email: "",
-          roles: "",
+          roles: [],
           token: "",
         }));
       },

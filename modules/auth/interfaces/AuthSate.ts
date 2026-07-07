@@ -3,14 +3,14 @@ export type AuthState = {
   name: string;
   lastName: string;
   email: string;
-  roles: string;
+  roles: string[];
   token: string;
 
   logIn: (
     name: string,
     lastName: string,
     email: string,
-    roles: string,
+    roles: string[],
     token: string,
   ) => void;
   logOut: () => void;

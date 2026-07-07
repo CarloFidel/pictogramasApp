@@ -31,7 +31,6 @@ const EditPhotoPopUp = ({ photoid, onCanselPress }: Props) => {
   const { token } = useAuthState();
 
   const { getAllPhotosQuery } = usePhotos(token);
-  getAllPhotosQuery.refetch();
 
   const {
     control,
@@ -46,8 +45,8 @@ const EditPhotoPopUp = ({ photoid, onCanselPress }: Props) => {
       setIsLoading(false);
       setStatusCode(res.status);
       //onCanselPress();
-      console.log(res.status);
-      //await getAllPhotosQuery.refetch();
+      await getAllPhotosQuery.refetch();
+      onCanselPress();
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         setStatusCode(error.response?.data.statusCode);

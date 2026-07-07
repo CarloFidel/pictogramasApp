@@ -29,7 +29,11 @@ const PopUp = ({
       }}
     >
       {warning ? (
-        <Ionicons name="warning-outline" size={40} color="#f0b30c" />
+        <Ionicons
+          name="warning-outline"
+          size={40}
+          color={globalStyles.colors.gray55}
+        />
       ) : (
         <Ionicons
           name="checkmark-circle-outline"

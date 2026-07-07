@@ -12,20 +12,20 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSchedules } from "../hooks/useSchedules";
 
 import BlurComponent from "@/common/components/BlurComponent";
 import PopUp from "@/common/components/PopUp";
+import DeletePopUp from "@/modules/dashboard/components/DeletePopUp";
+import PictoInSchedule from "@/modules/dashboard/components/PictoInSchedule";
+import { useDeleteSchedule } from "@/modules/dashboard/hooks/useDeleteSchedule";
+import useLoadSchedule from "@/modules/dashboard/hooks/useLoadSchedule";
+import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
 import Feather from "@expo/vector-icons/Feather";
 import Animated, { FadeIn } from "react-native-reanimated";
-import DeletePopUp from "../components/DeletePopUp";
-import PictoInSchedule from "../components/PictoInSchedule";
-import { useDeleteSchedule } from "../hooks/useDeleteSchedule";
-import useLoadSchedule from "../hooks/useLoadSchedule";
 
 const MySchedulesScreen = () => {
   const { token } = useAuthState();
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
