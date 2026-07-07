@@ -1,3 +1,4 @@
+import { globalStyles } from "@/global-style";
 import React from "react";
 import { Image, View } from "react-native";
 
@@ -8,10 +9,13 @@ interface Props {
 
 const PictoInSchedule = ({ url, dimention = "w-24 h-24" }: Props) => {
   return (
-    <View>
+    <View
+      style={globalStyles.shadow_sm}
+      className="border border-gray-300 bg-white"
+    >
       <Image
         source={{ uri: url }}
-        className={`rounded-lg h-full bg-cover ${dimention}`}
+        className={`rounded-lg bg-cover ${dimention}`}
         resizeMode="cover"
       />
     </View>

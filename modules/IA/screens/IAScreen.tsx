@@ -41,8 +41,6 @@ const IAScreen = ({ onError, onSave }: Props) => {
     setResError,
   } = usePropmt();
 
-  console.log(response);
-
   useEffect(() => {
     if (resError) {
       onError(true);
@@ -69,66 +67,22 @@ const IAScreen = ({ onError, onSave }: Props) => {
   return (
     <>
       <KeyboardAvoidingView
-        style={{ height: height * 0.55, justifyContent: "flex-end" }}
+        style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
       >
         {isLoading && <Loading />}
         <View
-          style={{ flex: 1, justifyContent: "flex-end", paddingHorizontal: 10 }}
-          className="flex-col items-center justify-center mt-5 h-36"
-        >
-          <AntDesign
-            name="robot"
-            size={40}
-            color={globalStyles.colors.gray16}
-          />
-
-          <Text className="text-gray-400 italic text-center mt-3">
-            {`Soy el agente de IA para esta app. Si lo deseas te puedo proporcionar un horario visual. Solo tienes que indicar una acción, por ejemplo: "Ir a la escuela"`}
-          </Text>
-        </View>
-        {response.length > 0 && (
-          <View>
-            <Animated.View
-              entering={FadeIn.duration(500).delay(200)}
-              className="w-full px-5 py-2 rounded-lg"
-              style={{
-                marginBottom: 20,
-                width: width * 0.93,
-                justifyContent: "center",
-                borderWidth: 1,
-                borderColor: globalStyles.colors.gray16,
-              }}
-            >
-              <View className="flex-row items-center justify-between mb-2">
-                <Text className="text-2xl">{transformCapitalize(title)}</Text>
-                <View className="flex-row gap-4">
-                  <Pressable onPress={handleSave}>
-                    <Feather name="save" size={20} color="black" />
-                  </Pressable>
-                </View>
-              </View>
-              <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={response}
-                renderItem={({ item }) => (
-                  <PictoInSchedule url={item.imageUrl} dimention="w-14 h-14" />
-                )}
-                ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
-              />
-            </Animated.View>
-          </View>
-        )}
-
-        <View
           style={{
-            height: height * 0.4,
-            justifyContent: "flex-end",
+            justifyContent: "flex-start",
             paddingHorizontal: 10,
+            height: height * 0.08,
+            marginTop: 15,
+            gap: 10,
           }}
+          className="flex-col items-center justify-center mt-5"
         >
-          <View className="flex-row gap-4 justify-center items-center">
+          <View className="flex-row gap-4 justify-center items-center  mt-18">
             <Controller
               control={control}
               name="action"
@@ -143,9 +97,9 @@ const IAScreen = ({ onError, onSave }: Props) => {
                       borderRadius: 40,
                       paddingHorizontal: 20,
                     }}
-                    placeholder="Email"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
+                    placeholder="Escriba una acción..."
+                    keyboardType="default"
+                    autoCapitalize="words"
                     onChangeText={onChange}
                     value={value}
                   />
@@ -177,7 +131,62 @@ const IAScreen = ({ onError, onSave }: Props) => {
               <Ionicons name="send-outline" size={18} color="white" />
             </Pressable>
           </View>
+
+          {response.length <= 0 && (
+            <>
+              <AntDesign
+                name="robot"
+                size={40}
+                color={globalStyles.colors.gray16}
+                style={{ marginTop: 20 }}
+              />
+              <Text className="text-gray-400 italic text-center mt-30">
+                {`Soy el agente de IA para esta app. Si lo deseas te puedo proporcionar un horario visual. Solo tienes que indicar una acción, por ejemplo: "Ir a la escuela"`}
+              </Text>
+            </>
+          )}
         </View>
+
+        {response.length > 0 && (
+          <Animated.View
+            entering={FadeIn.duration(500).delay(200)}
+            style={{
+              width: width * 0.93,
+              height: height * 0.1155,
+              justifyContent: "center",
+              borderWidth: 1,
+              borderColor: globalStyles.colors.gray16,
+              borderRadius: 10,
+              padding: 10,
+            }}
+          >
+            <View className="flex-row items-center justify-between mb-2">
+              <Text className="text-2xl">{transformCapitalize(title)}</Text>
+              <View className="flex-row gap-4">
+                <Pressable onPress={handleSave}>
+                  <Feather name="save" size={20} color="black" />
+                </Pressable>
+              </View>
+            </View>
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={response}
+              renderItem={({ item }) => (
+                <PictoInSchedule url={item.imageUrl} dimention="w-12 h-12" />
+              )}
+              ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
+            />
+          </Animated.View>
+        )}
+
+        <View
+          style={{
+            height: height * 0.4,
+            justifyContent: "flex-end",
+            paddingHorizontal: 10,
+          }}
+        ></View>
       </KeyboardAvoidingView>
     </>
   );

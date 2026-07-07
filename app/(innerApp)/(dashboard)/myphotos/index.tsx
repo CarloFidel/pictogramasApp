@@ -1,4 +1,4 @@
-import MyPhotosScreen from "@/modules/dashboard/screens/MyPhotosScreen";
+import MyPhotosScreen from "@/modules/photos/screens/MyPhotosScreen";
 import { StatusBar } from "expo-status-bar";
 
 const Personal = () => {

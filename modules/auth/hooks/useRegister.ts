@@ -15,6 +15,7 @@ export const useRegister = () => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormDataRegister>({ resolver: zodResolver(RegisterSchema) });
 
@@ -41,6 +42,7 @@ export const useRegister = () => {
     resError,
     control,
     errors,
+    setValue,
 
     setResError,
     handleSubmit,

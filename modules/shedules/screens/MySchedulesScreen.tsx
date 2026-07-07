@@ -12,16 +12,16 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSchedules } from "../hooks/useSchedules";
 
 import BlurComponent from "@/common/components/BlurComponent";
 import PopUp from "@/common/components/PopUp";
+import DeletePopUp from "@/modules/dashboard/components/DeletePopUp";
+import PictoInSchedule from "@/modules/dashboard/components/PictoInSchedule";
+import { useDeleteSchedule } from "@/modules/dashboard/hooks/useDeleteSchedule";
+import useLoadSchedule from "@/modules/dashboard/hooks/useLoadSchedule";
+import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
 import Feather from "@expo/vector-icons/Feather";
 import Animated, { FadeIn } from "react-native-reanimated";
-import DeletePopUp from "../components/DeletePopUp";
-import PictoInSchedule from "../components/PictoInSchedule";
-import { useDeleteSchedule } from "../hooks/useDeleteSchedule";
-import useLoadSchedule from "../hooks/useLoadSchedule";
 
 const MySchedulesScreen = () => {
   const { token } = useAuthState();
@@ -95,7 +95,7 @@ const MySchedulesScreen = () => {
           renderItem={({ item, index }) => (
             <Animated.View
               entering={FadeIn.duration(500).delay(index * 200)}
-              className="w-full px-5 py-2 border border-gray-300 rounded-lg"
+              className="px-5 py-2 border border-gray-300 rounded-lg"
               style={{ marginBottom: 20, width: width }}
             >
               <View className="flex-row items-center justify-between mb-2">
@@ -116,7 +116,10 @@ const MySchedulesScreen = () => {
                 showsHorizontalScrollIndicator={false}
                 data={item.scheduleItems}
                 renderItem={({ item }) => (
-                  <PictoInSchedule url={item.visualItem.url} />
+                  <PictoInSchedule
+                    url={item.visualItem.url}
+                    dimention="w-20 h-20"
+                  />
                 )}
                 ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
               />

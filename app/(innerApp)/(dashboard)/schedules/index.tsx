@@ -1,4 +1,4 @@
-import MySchedulesScreen from "@/modules/dashboard/screens/MySchedulesScreen";
+import MySchedulesScreen from "@/modules/shedules/screens/MySchedulesScreen";
 import { StatusBar } from "expo-status-bar";
 
 const Profile = () => {
