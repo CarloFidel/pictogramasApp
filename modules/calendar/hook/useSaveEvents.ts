@@ -1,6 +1,6 @@
 import { useAuthState } from "@/modules/auth/store/authState";
 import { useState } from "react";
-import { saveScheduleClendar } from "../services/axios-pictograms";
+import { saveScheduleClendar } from "../services/calendar.service";
 import { useCalendarQuery } from "./useCalendarQuery";
 
 interface Props {
@@ -21,7 +21,6 @@ export const useSaveEvents = ({ setIsVisibleSchedules }: Props) => {
       await saveScheduleClendar(data, token);
       setIsVisibleSchedules(false);
     } catch (error) {
-      console.error(error);
     } finally {
       setIsLoading(false);
       setSchedulesEvents([]);

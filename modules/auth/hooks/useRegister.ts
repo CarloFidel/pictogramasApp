@@ -2,9 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FormDataRegister } from "../interfaces/Formdata.interface";
+import { UserRegister } from "../interfaces/User.interface";
 import { RegisterSchema } from "../schema/form.schema";
-import { register } from "../services/auth.axios";
+import { register } from "../services/auth.service";
 import { useAuthState } from "../store/authState";
 
 export const useRegister = () => {
@@ -17,7 +17,7 @@ export const useRegister = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<FormDataRegister>({ resolver: zodResolver(RegisterSchema) });
+  } = useForm<UserRegister>({ resolver: zodResolver(RegisterSchema) });
 
   const router = useRouter();
 

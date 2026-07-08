@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import { SavePhotoSchema } from "../schema/scheme-picture";
-import { savePhoto } from "../services/axios-SavePhoto";
+import { savePhoto } from "../services/photo.service";
 
 interface Props {
   photo: string;

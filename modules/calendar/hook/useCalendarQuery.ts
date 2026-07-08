@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { SheduleEventesResponse } from "../interface/schedulesEventesResponse.interface";
-import { getAllEventsfromUser } from "../services/axios-pictograms";
+import { getAllEventsfromUser } from "../services/calendar.service";
 
 export const useCalendarQuery = (token: string) => {
   const getAllCalendarEventsQuery = useQuery<SheduleEventesResponse>({

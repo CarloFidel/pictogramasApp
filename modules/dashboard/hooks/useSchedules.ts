@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { getSchedulesFromUser } from "../../shedules/services/userSchedules.service";
 import { LoadSchedule } from "../interfaces/LoadSchedule.interface";
-import { getSchedulesFromUser } from "../services/axios-UserSchedules";
 
 export const useSchedules = (token: string) => {
   const getAllSchedulesQuery = useQuery<LoadSchedule>({

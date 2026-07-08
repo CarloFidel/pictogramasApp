@@ -9,6 +9,8 @@ import Animated, { FadeInDown, SlideOutDown } from "react-native-reanimated";
 import PictosInModalList from "../components/pictos/PictosInModalList";
 import SelectPictosFrom from "../components/pictos/SelectPictosFrom";
 import SearchBar from "../components/searchbar/SearchBar";
+import useDevounce from "../hooks/useDevounce";
+import { usePictos } from "../hooks/usePictos";
 import { SheduleItems } from "../interfaces/save-schedules.interfaces";
 
 interface Props {
@@ -35,6 +37,10 @@ const ModalPictosList = ({
   const [, setIsSelected] = useState<boolean>(false);
 
   const { width, height } = useWindowDimensions();
+
+  const { getAllPictosQuery } = usePictos();
+
+  const { founded, pictosFounded, handleSearch } = useDevounce();
 
   const handleShowPictoLibrary = (term: number) => {
     if (term === 1) {
@@ -115,7 +121,12 @@ const ModalPictosList = ({
             icon
           />
         </View>
-        {pictoLibrary === "Arasaac" && <SearchBar />}
+        {pictoLibrary === "Arasaac" && (
+          <SearchBar
+            placeholder="Buscar pictograma..."
+            onQuery={handleSearch}
+          />
+        )}
 
         {/*         {pictoLibrary === "arasaac" ? (
           <PictosInModalList onPressedPictos={handlePictoPressed} />
@@ -123,10 +134,11 @@ const ModalPictosList = ({
           <PhotosModalList onPressedPictos={handlePictoPressed} />
         )} */}
 
-        {pictoLibrary === "Arasaac" && (
+        {pictoLibrary === "Arasaac" && !founded && (
           <PictosInModalList
             onPressedPictos={handlePictoPressed}
             onError={handleOnError}
+            data={getAllPictosQuery.data ?? []}
           />
         )}
         {pictoLibrary === "Fotos" && (
@@ -137,6 +149,13 @@ const ModalPictosList = ({
         )}
         {pictoLibrary === "ia" && (
           <IAScreen onError={handleOnError} onSave={handleOnSaveIA} />
+        )}
+        {founded && (
+          <PictosInModalList
+            onPressedPictos={handlePictoPressed}
+            onError={handleOnError}
+            data={pictosFounded ?? []}
+          />
         )}
       </Stagger>
     </Animated.View>

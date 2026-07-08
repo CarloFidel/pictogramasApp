@@ -12,13 +12,13 @@ import { Controller, useForm } from "react-hook-form";
 import { Text, useWindowDimensions, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeOutDown,
+    FadeIn,
+    FadeInDown,
+    FadeOutDown,
 } from "react-native-reanimated";
 import { SheduleItems } from "../../interfaces/save-schedules.interfaces";
 import { SaveScheduleSchema } from "../../schema/save-schecule";
-import { saveSchedule } from "../../services/axios-pictograms";
+import { saveSchedule } from "../../services/pictograms.service";
 
 interface Props {
   items: SheduleItems[];
@@ -98,8 +98,8 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
             <TextInput
               style={[globalStyles.input, { width: width * 0.8 }]}
               placeholder="Escriba la palabra..."
+              autoCapitalize="sentences"
               keyboardType="default"
-              autoCapitalize="none"
               onChangeText={onChange}
               value={value}
             />

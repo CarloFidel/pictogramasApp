@@ -4,14 +4,14 @@ import { TemporalCamaraState } from "../interfaces/TemporalCamaraState";
 export const useCamaraStore = create<TemporalCamaraState>((set) => ({
   picture: "",
   addPicture(image) {
-    set((state) => {
+    set((state: TemporalCamaraState) => {
       return {
         picture: image,
       };
     });
   },
   clearPicture() {
-    set((state) => ({
+    set((state: TemporalCamaraState) => ({
       picture: "",
     }));
   },

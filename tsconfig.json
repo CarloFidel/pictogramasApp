@@ -6,7 +6,10 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "types": [
+      "jest", "react-native", "react-native-reanimated", "nativewind/types"
+    ]
   },
   "include": [
     "**/*.ts",

@@ -19,8 +19,8 @@ import { RefreshControl } from "react-native-gesture-handler";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DeletePopUp from "../../dashboard/components/DeletePopUp";
-import EditPhotoPopUp from "../../dashboard/components/EditPhotoPopUp";
 import { useDeletePhoto } from "../../dashboard/hooks/useDeletePhoto";
+import EditPhotoPopUp from "../components/EditPhotoPopUp";
 
 const MyPhotosScreen = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);

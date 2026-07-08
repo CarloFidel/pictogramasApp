@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PromptSchema } from "../schema/PromptSchema";
-import { generatePrompt } from "../services/axios-IA";
+import { generatePrompt } from "../services/IA.service";
 
 export const usePropmt = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

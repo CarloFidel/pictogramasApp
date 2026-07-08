@@ -1,6 +1,6 @@
 import { useAuthState } from "@/modules/auth/store/authState";
 import { useState } from "react";
-import { deletePhoto } from "../services/axios-DeletePhoto";
+import { deletePhoto } from "../../photos/services/photo.service";
 
 export const useDeletePhoto = () => {
   const [openDeletePhotoPopUp, setOpenDeletePhotoPopUp] =

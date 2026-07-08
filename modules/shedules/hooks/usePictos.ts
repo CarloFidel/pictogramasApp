@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllPictosfromArasaac } from "../services/axios-pictograms";
+import { getAllPictosfromArasaac } from "../services/pictograms.service";
 
 export const usePictos = () => {
   const getAllPictosQuery = useQuery({

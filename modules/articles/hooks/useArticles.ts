@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getArticles } from "../services/axios-articles";
+import { getArticles } from "../services/articles.service";
 
 export const useArticles = (token: string) => {
   const getAllArticlesQuery = useQuery({

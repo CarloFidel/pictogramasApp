@@ -1,5 +1,6 @@
-import { deleteUser } from "@/modules/auth/services/auth.axios";
+import { deleteUser } from "@/modules/auth/services/auth.service";
 import { useAuthState } from "@/modules/auth/store/authState";
+import { router } from "expo-router";
 import { useState } from "react";
 
 export const useDeleteAccount = () => {
@@ -8,6 +9,7 @@ export const useDeleteAccount = () => {
 
   const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
   const [statusCode, setStatusCode] = useState<number>(0);
+  const [error, setError] = useState<any>();
 
   const { token } = useAuthState();
 
@@ -23,8 +25,9 @@ export const useDeleteAccount = () => {
       setIsLoadingDelete(true);
       const res = await deleteUser(token);
       setStatusCode(res?.status ?? 200);
+      router.push("/login");
     } catch (error) {
-      console.error(error);
+      setError(error);
       setStatusCode(500);
     } finally {
       setIsLoadingDelete(false);
@@ -36,6 +39,7 @@ export const useDeleteAccount = () => {
     statusCode,
     openDeleteAccountPopUp,
     setOpenDeleteAccountPopUp,
+    error,
 
     handleDeleteOpenPopUp,
     handleDeleteAccount,

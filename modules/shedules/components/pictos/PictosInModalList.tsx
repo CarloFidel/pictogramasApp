@@ -1,3 +1,4 @@
+import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import { useEffect } from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -7,6 +8,7 @@ import ItemPictos from "./ItemPictos";
 
 interface Props {
   onError: (error: boolean) => void;
+  data: Pictograma[];
 
   onPressedPictos: (
     id: number | string,
@@ -16,7 +18,7 @@ interface Props {
   ) => void;
 }
 
-const PictosInModalList = ({ onPressedPictos, onError }: Props) => {
+const PictosInModalList = ({ onPressedPictos, onError, data }: Props) => {
   const { getAllPictosQuery } = usePictos();
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const PictosInModalList = ({ onPressedPictos, onError }: Props) => {
   return (
     <View className="justify-center my-5 h-3/4">
       <FlatList
-        data={getAllPictosQuery.data}
+        data={data}
         renderItem={({ item, index }) => (
           <Animated.View entering={FadeInUp.delay(index * 100).springify()}>
             <Pressable
