@@ -49,12 +49,13 @@ const SaveMenuModal = ({
   return (
     <Modal animationType="slide" transparent>
       <Animated.View
-        className="bg-white px-4 relative gap-8 py-10"
+        className="bg-white items-center px-4 relative gap-8 py-10"
         style={[
           {
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
             width: width,
+            opacity: 0.95,
           },
           globalStyles.shadow_md,
           savedShcedulesBehaviour,
@@ -67,7 +68,7 @@ const SaveMenuModal = ({
           <Feather name="x" size={24} color="black" />
         </Pressable>
         <Pressable
-          className="flex flex-row items-center gap-4"
+          className="flex flex-row items-center gap-4 w-full"
           onPress={handleSavePress}
         >
           <Feather name="save" size={24} color="grey" />
@@ -75,7 +76,7 @@ const SaveMenuModal = ({
         </Pressable>
         {!savedVissible && (
           <Pressable
-            className="flex flex-row items-center gap-4"
+            className="flex flex-row items-center gap-4 w-full"
             onPress={handleOpenSavedSchedules}
           >
             <Feather name="folder" size={24} color="grey" />

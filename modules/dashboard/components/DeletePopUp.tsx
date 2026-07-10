@@ -19,10 +19,11 @@ const DeletePopUp = ({ text, onOkPress, onCanselPress }: Props) => {
     <Animated.View
       entering={FadeInDown.springify().duration(400)}
       exiting={FadeOutDown.springify().duration(100)}
-      className="absolute bg-white justify-center items-center p-2 py-8 rounded-xl gap-5 px-5"
+      className="absolute bg-white justify-center items-center p-2 py-8 rounded-3xl gap-5 px-5"
       style={{
         top: "20%",
         right: width - width * 0.94,
+        opacity: 0.9,
       }}
     >
       <Ionicons name="warning-outline" size={30} color="black" />

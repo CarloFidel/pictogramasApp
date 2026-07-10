@@ -2,7 +2,7 @@ import { globalStyles } from "@/global-style";
 import { CalendarResponse } from "../interfaces/calendar-response";
 
 export class CalendarMapper {
-  static fromAraasacApi = (calendar: CalendarResponse) => {
+  static fromPictoApi = (calendar: CalendarResponse) => {
     if (!calendar.sheduleId.length) return {};
 
     const date: string = calendar.date;

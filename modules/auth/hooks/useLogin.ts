@@ -2,9 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FormDataLogin } from "../interfaces/Formdata.interface";
+import { UserLogin } from "../interfaces/User.interface";
 import { LoginSchema } from "../schema/form.schema";
-import { login } from "../services/auth.axios";
+import { login } from "../services/auth.service";
 import { useAuthState } from "../store/authState";
 
 export const useLogin = () => {
@@ -16,7 +16,7 @@ export const useLogin = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormDataLogin>({ resolver: zodResolver(LoginSchema) });
+  } = useForm<UserLogin>({ resolver: zodResolver(LoginSchema) });
 
   const onSubmit = handleSubmit(async (data) => {
     try {

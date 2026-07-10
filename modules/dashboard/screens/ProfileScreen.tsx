@@ -138,7 +138,7 @@ const ProfileScreen = () => {
 
             <Pressable
               className="flex-row justify-between gap-5 items-center"
-              //onPress={() => router.push("/schedules")}
+              onPress={() => router.push("/faqs")}
             >
               <View className="flex-row items-center justify-center gap-5">
                 <Ionicons name="help-circle-outline" size={20} color="black" />

@@ -50,8 +50,6 @@ const ItemPictos = ({
     };
   });
 
-  //rconsole.log(uri);
-
   return (
     <View
       className={className}

@@ -48,11 +48,6 @@ const Register = () => {
     router.replace("/login");
   };
 
-  const handleOnpress = () => {
-    console.log("back-press");
-    router.back();
-  };
-
   const handleClosePopUp = () => {
     setPopUpVisible(false);
     setResError(undefined);
@@ -83,7 +78,7 @@ const Register = () => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Backbutton
               position={"top-10 left-0"}
-              onPress={handleOnpress}
+              onPress={() => router.back()}
             ></Backbutton>
             <Text
               className="w-full justify-left text-3xl mt-10 mb-2"

@@ -84,18 +84,18 @@ const PersonalScreen = () => {
       </View>
       {isVisible && (
         <>
-          {isLoadingDelete && (
-            <>
-              <BlurComponent />
-              <Loading />
-            </>
-          )}
           <BlurComponent />
           <DeletePopUp
             text="Seguro que quieres elimiar la cuenta?"
             onOkPress={handleDeleteAccount}
             onCanselPress={() => setIsVisible(false)}
           />
+        </>
+      )}
+      {isLoadingDelete && (
+        <>
+          <BlurComponent />
+          <Loading />
         </>
       )}
     </View>

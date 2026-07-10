@@ -1,7 +1,7 @@
 import { deleteItemAsync, getItem, setItem } from "expo-secure-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { AuthState } from "../interfaces/AuthSate";
+import { AuthState } from "../interfaces/AuthSate.interface";
 
 export const useAuthState = create(
   persist<AuthState>(
@@ -13,7 +13,7 @@ export const useAuthState = create(
       roles: [],
       token: "",
       logIn(name, lastName, email, roles, token) {
-        set((state) => {
+        set((state: AuthState) => {
           return {
             name,
             lastName,
@@ -25,7 +25,7 @@ export const useAuthState = create(
         });
       },
       logOut() {
-        set((state) => ({
+        set((state: AuthState) => ({
           ...state,
           isLoggedIn: false,
           name: "",

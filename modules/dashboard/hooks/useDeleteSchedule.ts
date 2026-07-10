@@ -1,6 +1,6 @@
 import { useAuthState } from "@/modules/auth/store/authState";
 import React, { useState } from "react";
-import { deleteSchedule } from "../services/axios-UserSchedules";
+import { deleteSchedule } from "../../shedules/services/userSchedules.service";
 
 export const useDeleteSchedule = () => {
   const [openDeleteSchedulePopUp, setOpenDeleteSchedulePopUp] =

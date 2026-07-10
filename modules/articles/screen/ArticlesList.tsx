@@ -10,12 +10,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useArticles } from "../hooks/useArticles";
 
 const ArticlesList = () => {
-  const { width, height } = useWindowDimensions();
+  const { height } = useWindowDimensions();
   const { token } = useAuthState();
 
   const { getAllArticlesQuery } = useArticles(token);
   const articlesQueryResponse = getAllArticlesQuery.data;
-  console.log(JSON.stringify(articlesQueryResponse, null, 2));
 
   return (
     <>

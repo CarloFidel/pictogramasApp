@@ -21,7 +21,7 @@ import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
 import { useSetSelectedPictos } from "../hooks/useSetSelectedPictos";
 import { SheduleItems } from "../interfaces/save-schedules.interfaces";
-import { prepareDataSaveSchedules } from "../utility/prepareDatatoSaveSchedules";
+import { prepareDataSaveSchedules } from "../utility/prepareDataToSaveSchedules";
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
@@ -86,7 +86,6 @@ export default function SheduleScreen() {
 
   const handleOnSaveIA = (term: boolean, items: SheduleItems[]) => {
     setSaveSchedluPopUp(term);
-    console.log(items);
     setItemsForSave(items);
     setModalVisible(false);
   };

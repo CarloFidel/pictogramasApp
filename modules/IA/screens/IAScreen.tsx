@@ -1,4 +1,5 @@
 import Loading from "@/common/components/loading";
+import PrimaryButton from "@/common/components/PrimaryButton";
 import { globalStyles } from "@/global-style";
 import PictoInSchedule from "@/modules/dashboard/components/PictoInSchedule";
 import { SheduleItems } from "@/modules/shedules/interfaces/save-schedules.interfaces";
@@ -18,7 +19,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import Animated, { FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import { usePropmt } from "../hooks/usePropmpt";
 
 interface Props {
@@ -60,6 +61,11 @@ const IAScreen = ({ onError, onSave }: Props) => {
     setShceduleItemsforSave(sheduleItems);
     onSave(true, sheduleItems);
   };
+
+  const handleClose = () => {
+    onSave(false, []);
+  };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -76,61 +82,62 @@ const IAScreen = ({ onError, onSave }: Props) => {
           style={{
             justifyContent: "flex-start",
             paddingHorizontal: 10,
-            height: height * 0.08,
-            marginTop: 15,
             gap: 10,
+            height: response.length > 0 ? height * 0 : height * 0.6,
           }}
           className="flex-col items-center justify-center mt-5"
         >
-          <View className="flex-row gap-4 justify-center items-center  mt-18">
-            <Controller
-              control={control}
-              name="action"
-              render={({ field: { onChange, value } }) => (
-                <View>
-                  <TextInput
-                    style={{
-                      ...globalStyles.input,
-                      width: width * 0.75,
-                      height: height * 0.055,
-                      alignItems: "center",
-                      borderRadius: 40,
-                      paddingHorizontal: 20,
-                    }}
-                    placeholder="Escriba una acción..."
-                    keyboardType="default"
-                    autoCapitalize="words"
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                  {errors.action && (
-                    <Animated.View
-                      entering={FadeIn}
-                      className="flex-row justify-start items-center gap-2 mt-2"
-                    >
-                      <Feather name="alert-circle" size={18} color={"red"} />
-                      <Text style={{ color: "red" }} className="text-left">
-                        {errors.action.message!}
-                      </Text>
-                    </Animated.View>
-                  )}
-                </View>
-              )}
-            />
+          {response.length <= 0 && (
+            <View className="flex-row gap-4 justify-center items-center mt-18">
+              <Controller
+                control={control}
+                name="action"
+                render={({ field: { onChange, value } }) => (
+                  <View>
+                    <TextInput
+                      style={{
+                        ...globalStyles.input,
+                        width: width * 0.75,
+                        height: height * 0.055,
+                        alignItems: "center",
+                        borderRadius: 40,
+                        paddingHorizontal: 20,
+                      }}
+                      placeholder="Escriba una acción..."
+                      keyboardType="default"
+                      autoCapitalize="sentences"
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                    {errors.action && (
+                      <Animated.View
+                        entering={FadeIn}
+                        className="flex-row justify-start items-center gap-2 mt-2"
+                      >
+                        <Feather name="alert-circle" size={18} color={"red"} />
+                        <Text style={{ color: "red" }} className="text-left">
+                          {errors.action.message!}
+                        </Text>
+                      </Animated.View>
+                    )}
+                  </View>
+                )}
+              />
 
-            <Pressable
-              style={{
-                backgroundColor: globalStyles.colors.primary[500],
-                borderRadius: 50,
-                padding: 12,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onPress={onSubmit}
-            >
-              <Ionicons name="send-outline" size={18} color="white" />
-            </Pressable>
-          </View>
+              <Pressable
+                style={{
+                  backgroundColor: globalStyles.colors.primary[500],
+                  borderRadius: 50,
+                  padding: 12,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={onSubmit}
+              >
+                <Ionicons name="send-outline" size={18} color="white" />
+              </Pressable>
+            </View>
+          )}
 
           {response.length <= 0 && (
             <>
@@ -149,33 +156,68 @@ const IAScreen = ({ onError, onSave }: Props) => {
 
         {response.length > 0 && (
           <Animated.View
-            entering={FadeIn.duration(500).delay(200)}
+            entering={FadeInDown.duration(500).delay(200)}
             style={{
               width: width * 0.93,
-              height: height * 0.1155,
-              justifyContent: "center",
+              height: height * 0.65,
+              alignItems: "center",
               borderWidth: 1,
-              borderColor: globalStyles.colors.gray16,
+              borderColor: globalStyles.colors.gray04,
               borderRadius: 10,
               padding: 10,
+              gap: 10,
             }}
           >
-            <View className="flex-row items-center justify-between mb-2">
-              <Text className="text-2xl">{transformCapitalize(title)}</Text>
-              <View className="flex-row gap-4">
-                <Pressable onPress={handleSave}>
-                  <Feather name="save" size={20} color="black" />
-                </Pressable>
-              </View>
+            <View className="flex-row items-center justify-between w-full mb-2">
+              <Text className="text-2xl color-slate-700">
+                {transformCapitalize(title)}
+              </Text>
+              <Pressable onPress={handleClose}>
+                <Ionicons name="close" size={20} color="black" />
+              </Pressable>
             </View>
+            <View
+              style={{
+                width: width * 0.07,
+                height: height * 0.47,
+
+                backgroundColor: globalStyles.colors.primary[500],
+                borderRadius: 5,
+                paddingVertical: 8,
+              }}
+            ></View>
+
             <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
+              horizontal={false}
+              style={{
+                position: "absolute",
+                height: height * 0.45,
+                marginTop: 60,
+              }}
+              showsVerticalScrollIndicator={false}
               data={response}
-              renderItem={({ item }) => (
-                <PictoInSchedule url={item.imageUrl} dimention="w-12 h-12" />
+              contentContainerStyle={{
+                alignItems: "center",
+                paddingBottom: 20,
+              }}
+              renderItem={({ item, index }) => (
+                <Animated.View
+                  entering={FadeInDown.duration(500).delay(index * 100)}
+                  className="flex-row items-center justify-between w-full"
+                >
+                  <PictoInSchedule url={item.imageUrl} dimention="w-24 h-24" />
+                </Animated.View>
               )}
-              ItemSeparatorComponent={() => <View style={{ width: 15 }} />}
+              ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
+            />
+
+            <PrimaryButton
+              onPress={handleSave}
+              text="Guardar"
+              textColor={globalStyles.colors.gray04}
+              backGroundColor={globalStyles.colors.primary[500]}
+
+              iconColor={globalStyles.colors.gray04}
             />
           </Animated.View>
         )}

@@ -32,10 +32,6 @@ const Register = () => {
     router.push("/register");
   };
 
-  const handleOnpress = () => {
-    router.replace("/");
-  };
-
   const handleClosePopUp = () => {
     setPopUpVisible(false);
     setResError(undefined);

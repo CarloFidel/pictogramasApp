@@ -1,0 +1,76 @@
+Este archivo explica a una IA todo lo necesario para generar las diapositivas de la presentación del proyecto Picto App.
+
+Objetivo:
+
+- Crear una presentación profesional, sobria y seria.
+- Resaltar el propósito del proyecto, sus funcionalidades principales, las tecnologías utilizadas y las librerías clave.
+- Mantener un estilo visual elegante, con colores neutros, tipografía clara y una jerarquía de información limpia.
+
+Estructura sugerida de las diapositivas:
+
+1. Portada
+   - Título del proyecto: Picto App
+   - Subtítulo: Plataforma móvil para gestión de pictogramas, artículos, horarios y recursos multimedia.
+   - Nombre del equipo o autor(es) y fecha.
+
+2. Problema y objetivo
+   - Describir el problema que resuelve la aplicación: comunicación mediante pictogramas, gestión educativa y accesibilidad.
+   - Objetivo general del proyecto.
+
+3. Funcionalidades principales
+   - Autenticación de usuarios.
+   - Gestión de artículos.
+   - Calendario y horarios.
+   - Soporte de cámara y galería.
+   - Integración de IA.
+   - Navegación fluida con rutas anidadas.
+
+4. Tecnologías centrales
+   - Expo SDK
+   - React Native
+   - TypeScript
+   - Expo Router
+
+5. Librerías principales
+   - Zustand: estado global ligero.
+   - React Query: cache y sincronización de datos.
+   - Axios: llamadas HTTP.
+   - NativeWind: estilos y diseño basado en utilidades.
+   - React Hook Form + Zod: formularios y validación.
+   - React Navigation (bottom-tabs, elements, native): navegación.
+   - Expo Camera / Image Picker: captura y selección de imágenes.
+   - react-native-paper: componentes UI.
+   - react-native-calendars: calendario.
+   - Jest + @testing-library/react-native: pruebas unitarias.
+
+6. Arquitectura y organización
+   - `app/`: rutas y pantallas principales.
+   - `modules/`: módulos funcionales por dominio (auth, articles, calendar, photos, shedules, IA).
+   - `common/`: componentes reutilizables, hooks y servicios.
+   - `config/`, `constants/`, `infrastructure/`: configuración de APIs, constantes y mapeo de datos.
+
+7. Diseño y experiencia
+   - Enfoque sobrio y serio.
+   - Uso de colores neutros y tipografía limpia.
+   - Interfaz compacta y ordenada, con énfasis en usabilidad.
+   - Transiciones suaves y componentes consistentes.
+
+8. Resultados esperados o valor agregado
+   - Mejora en la gestión de contenido para entornos educativos.
+   - Fácil acceso a pictogramas y recursos multimedia.
+   - Plataforma preparada para crecimiento y nuevas integraciones.
+
+9. Cómo ejecutar el proyecto
+   - `npm install`
+   - `npm run start`
+   - `npm run android` / `npm run ios` / `npm run web`
+
+Instrucciones de estilo para la IA generadora de diapositivas:
+
+- Mantener un tono formal y profesional.
+- Evitar gráficos demasiado brillantes o diseños recargados.
+- Preferir diagramas simples, listas claras y composiciones con mucho espacio en blanco.
+- Usar un esquema de color sobrio: tonos grises, blanco, negro y un acento discreto si es necesario.
+- Priorizar legibilidad y una jerarquía visual clara en cada diapositiva.
+
+Esta información debe ser suficiente para producir una presentación coherente y bien estructurada del proyecto Picto App.

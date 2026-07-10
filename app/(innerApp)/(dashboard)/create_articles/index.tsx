@@ -1,4 +1,4 @@
-import CreateAfrticleScreen from "@/modules/articles/screen/CreateAfrticleScreen";
+import CreateAfrticleScreen from "@/modules/articles/screen/CreateArticleScreen";
 
 const index = () => {
   return <CreateAfrticleScreen />;

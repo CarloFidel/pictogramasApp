@@ -1,17 +1,16 @@
 import {
-    COORDINATES_DELETE_ZONE_IN_PLAYMODE,
-    WIDTH_DELETE_ZONE,
+  COORDINATES_DELETE_ZONE_IN_PLAYMODE,
+  WIDTH_DELETE_ZONE,
 } from "@/constants/global-constatnt";
 import { globalStyles } from "@/global-style";
 import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import Feather from "@expo/vector-icons/Feather";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { use } from "react";
 import { Pressable } from "react-native";
 import Animated, {
-    FadeInLeft,
-    FadeOut,
-    ZoomOutRotate,
+  FadeInLeft,
+  FadeOut,
+  ZoomOutRotate,
 } from "react-native-reanimated";
 import { useToolBarBehaviour } from "../../animations/toolbar/ToolBarBehaviour";
 import { PlayModeContext } from "../../context/play-mode-context/PlayModeContext";
@@ -89,23 +88,23 @@ const ToolBar = ({
             </Pressable>
 
             <Pressable className="px-4 py-2" onPress={handleEditMode}>
-              <SimpleLineIcons
-                name="pencil"
-                size={18}
-                color="white"
-                className="mt-1"
-              />
+              <Feather name="edit-2" size={20} color="white" className="mt-1" />
             </Pressable>
             <Pressable
               className="px-4 py-2"
               onPress={() => handleSaveMenuVisibility(true)}
             >
-              <Feather name="crop" size={20} color="white" className="mt-1" />
+              <Feather
+                name="triangle"
+                size={20}
+                color="white"
+                className="mt-1"
+              />
             </Pressable>
             <Pressable className="px-4 py-2" onPress={handlePlayMode}>
               <Feather
                 name="maximize-2"
-                size={18}
+                size={20}
                 color="white"
                 className="mt-1.5"
               />

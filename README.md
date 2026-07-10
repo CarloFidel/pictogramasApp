@@ -1,50 +1,86 @@
-# Welcome to your Expo app 👋
+# Picto App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil desarrollada con **Expo + React Native + TypeScript** para gestionar pictogramas, artículos, horarios, autenticación y funciones de cámara/fotos. Está pensada como una base de producto para entornos educativos y de comunicación mediante pictogramas.
 
-## Get started
+## Qué hace esta app
 
-1. Install dependencies
+- Autenticación de usuario con módulo `auth`
+- Gestión de artículos y contenido en `modules/articles`
+- Calendario y horarios en `modules/calendar` y `modules/shedules`
+- Soporte de cámara y galería en `modules/photos`
+- Integración de IA en `modules/IA`
+- Navegación basada en `expo-router`
+- Uso de formularios con `react-hook-form` y validación con `zod`
+
+## Tecnologías
+
+- Expo SDK
+- React Native
+- TypeScript
+- Expo Router
+- Zustand para estado global
+- React Query para cache y sincronización de datos
+- Axios para llamadas HTTP
+- NativeWind para estilos
+- Jest + `@testing-library/react-native` para pruebas unitarias
+
+## Estructura principal
+
+- `app/` - rutas y pantallas principales de la aplicación
+- `modules/` - módulos funcionales por dominio
+  - `auth/` - login, registro, store de autenticación
+  - `articles/` - creación y consulta de artículos
+  - `calendar/` - eventos y utilidades de calendario
+  - `shedules/` - búsqueda y administración de horarios
+  - `photos/` - cámara, galería y subida de fotos
+  - `IA/` - funcionalidades de inteligencia artificial
+- `common/` - componentes, hooks y servicios reutilizables
+- `config/` - configuración de APIs externas
+- `constants/` - constantes globales del proyecto
+- `infrastructure/` - mapeo e interfaces de datos
+
+## Instalación
+
+1. Instalar dependencias:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Iniciar el servidor de Expo:
 
    ```bash
-   npx expo start
+   npm run start
    ```
 
-In the output, you'll find options to open the app in a
+3. Ejecutar en un emulador o dispositivo:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   - `npm run android`
+   - `npm run ios`
+   - `npm run web`
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Scripts útiles
 
-## Get a fresh project
+- `npm run start` - inicia Expo
+- `npm run android` - ejecuta en Android
+- `npm run ios` - ejecuta en iOS
+- `npm run web` - ejecuta en web
+- `npm run lint` - corre ESLint
+- `npm test` - ejecuta pruebas con Jest
 
-When you're ready, run:
+## Pruebas
 
-```bash
-npm run reset-project
-```
+Este proyecto usa Jest con `jest-expo` y `@testing-library/react-native`.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Los tests están configurados en `package.json`.
+- Usa `npm test` para ejecutar el conjunto de pruebas.
 
-## Learn more
+## Notas
 
-To learn more about developing your project with Expo, look at the following resources:
+- El proyecto usa `expo-router`, por lo que las rutas se definen por archivos dentro de `app/`.
+- Los estilos se gestionan con `nativewind`, por lo que se emplea `className` en componentes React Native.
+- Las pantallas y componentes comparten hooks personalizados y utilidades en `common/`.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Desarrollado para facilitar la gestión de comunicación con pictogramas y contenidos visuales en un entorno móvil moderno.

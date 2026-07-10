@@ -18,7 +18,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { SheduleItems } from "../../interfaces/save-schedules.interfaces";
 import { SaveScheduleSchema } from "../../schema/save-schecule";
-import { saveSchedule } from "../../services/axios-pictograms";
+import { saveSchedule } from "../../services/pictograms.service";
 
 interface Props {
   items: SheduleItems[];
@@ -81,13 +81,14 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
     <Animated.View
       entering={FadeInDown.springify().duration(400)}
       exiting={FadeOutDown.springify().duration(100)}
-      className="absolute bg-white justify-center items-center p-2 py-8 rounded-xl gap-5 px-5"
+      className="absolute bg-white justify-center items-center p-2 py-8 rounded-3xl gap-5 px-5"
       style={{
         top: "20%",
         right: width - width * 0.94,
+        opacity: 0.8,
       }}
     >
-      <Text className="text-center" style={{ width: width * 0.5 }}>
+      <Text className="text-center text-xl" style={{ width: width * 0.5 }}>
         Escriba un título para el horario
       </Text>
       <Controller
@@ -98,8 +99,8 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
             <TextInput
               style={[globalStyles.input, { width: width * 0.8 }]}
               placeholder="Escriba la palabra..."
+              autoCapitalize="sentences"
               keyboardType="default"
-              autoCapitalize="none"
               onChangeText={onChange}
               value={value}
             />

@@ -23,7 +23,6 @@ const SchedulesOnDay = ({ date, schedulesId }: Props) => {
   const dayName = new Date(date).toLocaleDateString("es-ES", {
     weekday: "long",
   });
-  console.log("day", dayName); // ej: "domingo"
 
   const schedulesForDay = allSchedules.filter((schedule) =>
     schedulesId.includes(schedule.id),
