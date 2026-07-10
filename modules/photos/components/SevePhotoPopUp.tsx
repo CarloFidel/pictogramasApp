@@ -78,9 +78,10 @@ const SavePhotoPopUp = ({ onCanselPress, onOkPress, photo }: Props) => {
       style={{
         top: "20%",
         right: width - width * 0.94,
+        opacity: 0.8,
       }}
     >
-      <Text className="text-center" style={{ width: width * 0.5 }}>
+      <Text className="text-center text-xl" style={{ width: width * 0.5 }}>
         Escriba una palabra que representa la acción de la imagen
       </Text>
       <Controller

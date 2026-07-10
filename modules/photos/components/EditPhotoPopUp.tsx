@@ -88,9 +88,10 @@ const EditPhotoPopUp = ({ photoid, onCanselPress }: Props) => {
       style={{
         top: "20%",
         right: width - width * 0.94,
+        opacity: 0.8,
       }}
     >
-      <Text className="text-center" style={{ width: width * 0.5 }}>
+      <Text className="text-center text-xl" style={{ width: width * 0.5 }}>
         Escriba la nueva palabra para la foto
       </Text>
       <Controller

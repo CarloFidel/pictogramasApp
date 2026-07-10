@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1783506576599" clover="3.2.0">
-  <project timestamp="1783506576599" name="All files">
-    <metrics statements="1157" coveredstatements="34" conditionals="450" coveredconditionals="3" methods="340" coveredmethods="7" elements="1947" coveredelements="44" complexity="0" loc="1157" ncloc="1157" packages="79" files="131" classes="131"/>
+<coverage generated="1783590713577" clover="3.2.0">
+  <project timestamp="1783590713577" name="All files">
+    <metrics statements="1176" coveredstatements="34" conditionals="460" coveredconditionals="3" methods="351" coveredmethods="7" elements="1987" coveredelements="44" complexity="0" loc="1176" ncloc="1176" packages="81" files="134" classes="134"/>
     <package name="picto-app">
       <metrics statements="9" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="eslint.config.js" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/eslint.config.js">
@@ -144,6 +144,14 @@
         <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="3" count="0" type="stmt"/>
         <line num="4" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="picto-app.app.(innerApp).(dashboard).faqs">
+      <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="index.tsx" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/app/(innerApp)/(dashboard)/faqs/index.tsx">
+        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
       </file>
     </package>
     <package name="picto-app.app.(innerApp).(dashboard).myphotos">
@@ -418,8 +426,8 @@
         <line num="70" count="0" type="stmt"/>
         <line num="73" count="0" type="stmt"/>
         <line num="96" count="0" type="stmt"/>
-        <line num="205" count="0" type="stmt"/>
-        <line num="212" count="0" type="stmt"/>
+        <line num="204" count="0" type="stmt"/>
+        <line num="211" count="0" type="stmt"/>
       </file>
     </package>
     <package name="picto-app.modules.IA.services">
@@ -1005,7 +1013,25 @@
       </file>
     </package>
     <package name="picto-app.modules.dashboard.screens">
-      <metrics statements="25" coveredstatements="0" conditionals="10" coveredconditionals="0" methods="11" coveredmethods="0"/>
+      <metrics statements="41" coveredstatements="0" conditionals="20" coveredconditionals="0" methods="21" coveredmethods="0"/>
+      <file name="FrecuentAsk.tsx" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/modules/dashboard/screens/FrecuentAsk.tsx">
+        <metrics statements="15" coveredstatements="0" conditionals="10" coveredconditionals="0" methods="9" coveredmethods="0"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="79" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="106" count="0" type="stmt"/>
+      </file>
       <file name="PersonalScreen.tsx" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/modules/dashboard/screens/PersonalScreen.tsx">
         <metrics statements="9" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="4" coveredmethods="0"/>
         <line num="14" count="0" type="stmt"/>
@@ -1019,7 +1045,7 @@
         <line num="91" count="0" type="stmt"/>
       </file>
       <file name="ProfileScreen.tsx" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/modules/dashboard/screens/ProfileScreen.tsx">
-        <metrics statements="16" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="7" coveredmethods="0"/>
+        <metrics statements="17" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="8" coveredmethods="0"/>
         <line num="15" count="0" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
@@ -1035,7 +1061,15 @@
         <line num="88" count="0" type="stmt"/>
         <line num="100" count="0" type="stmt"/>
         <line num="118" count="0" type="stmt"/>
+        <line num="141" count="0" type="stmt"/>
         <line num="187" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="picto-app.modules.dashboard.screens.data">
+      <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="faqs.ts" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/modules/dashboard/screens/data/faqs.ts">
+        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
       </file>
     </package>
     <package name="picto-app.modules.photos.components">
@@ -1067,7 +1101,7 @@
         <line num="72" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="73" count="0" type="stmt"/>
         <line num="83" count="0" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
       </file>
       <file name="PhotosModalList.tsx" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/modules/photos/components/PhotosModalList.tsx">
         <metrics statements="15" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="7" coveredmethods="0"/>
@@ -1116,8 +1150,8 @@
         <line num="65" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="66" count="0" type="stmt"/>
         <line num="74" count="0" type="stmt"/>
-        <line num="90" count="0" type="stmt"/>
-        <line num="133" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
       </file>
       <file name="ShutterButton.tsx" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/modules/photos/components/ShutterButton.tsx">
         <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -1490,7 +1524,7 @@
         <line num="69" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="70" count="0" type="stmt"/>
         <line num="80" count="0" type="stmt"/>
-        <line num="97" count="0" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
       </file>
       <file name="SelectPictosFrom.tsx" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/modules/shedules/components/pictos/SelectPictosFrom.tsx">
         <metrics statements="4" coveredstatements="0" conditionals="9" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -1501,14 +1535,14 @@
       </file>
       <file name="ToolBar.tsx" path="/Users/charlyflow/programing/04-pictogramas-app/picto-app/modules/shedules/components/pictos/ToolBar.tsx">
         <metrics statements="8" coveredstatements="0" conditionals="12" coveredconditionals="0" methods="4" coveredmethods="0"/>
-        <line num="34" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="54" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="101" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
       </file>
     </package>
     <package name="picto-app.modules.shedules.components.searchbar">

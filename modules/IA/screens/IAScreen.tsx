@@ -156,7 +156,6 @@ const IAScreen = ({ onError, onSave }: Props) => {
 
         {response.length > 0 && (
           <Animated.View
-            className="bg-primary-300"
             entering={FadeInDown.duration(500).delay(200)}
             style={{
               width: width * 0.93,

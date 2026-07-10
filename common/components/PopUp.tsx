@@ -26,6 +26,7 @@ const PopUp = ({
       style={{
         top: height * 0.35,
         right: width - width * 0.92,
+        opacity: 0.8,
       }}
     >
       {warning ? (
@@ -38,10 +39,10 @@ const PopUp = ({
         <Ionicons
           name="checkmark-circle-outline"
           size={40}
-          color={globalStyles.colors.primary[700]}
+          color={globalStyles.colors.primary[500]}
         />
       )}
-      <Text className="text-center" style={{ width: width * 0.5 }}>
+      <Text className="text-center text-xl" style={{ width: width * 0.5 }}>
         {text}
       </Text>
       <PrimaryButton
