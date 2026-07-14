@@ -7,12 +7,12 @@ const BlurComponent = () => {
   return (
     <Animated.View
       style={globalStyles.BlurViewAnimatedContainer}
-      entering={FadeIn.springify().duration(200)}
+      entering={FadeIn.springify().duration(400)}
       exiting={FadeOut.springify().duration(200)}
     >
       <BlurView
-        intensity={40}
-        tint="dark"
+        intensity={30}
+        tint="systemMaterialDark"
         experimentalBlurMethod="dimezisBlurView"
         style={{ ...globalStyles.BlurViewAnimatedContainer, zIndex: 10 }}
       />
