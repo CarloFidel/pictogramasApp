@@ -3,21 +3,17 @@ import React from "react";
 import { Pressable, StyleSheet, Text, useWindowDimensions } from "react-native";
 import Animated from "react-native-reanimated";
 
-export type FeatherIconName = React.ComponentProps<typeof Feather>["name"];
-
 interface Props {
-  border?: boolean;
-  borderColor?: string;
   iconDimentions?: number;
   backGroundColor?: string;
-  icon?: FeatherIconName;
+  icon?: React.ComponentProps<typeof Feather>["name"];
   text?: string;
   textColor?: string;
   iconColor?: string;
   onPress: () => void;
 }
 
-const PrimaryButton = ({
+const SecundaryButton = ({
   backGroundColor,
   icon,
   iconDimentions,
@@ -25,8 +21,6 @@ const PrimaryButton = ({
   textColor,
   iconColor,
   onPress,
-  border,
-  borderColor,
 }: Props) => {
   const { width } = useWindowDimensions();
 
@@ -39,8 +33,6 @@ const PrimaryButton = ({
           {
             width: width * 0.8,
             backgroundColor: backGroundColor,
-            borderWidth: border ? 1 : 0,
-            borderColor: borderColor,
           },
         ]}
         onPress={onPress}
@@ -54,7 +46,7 @@ const PrimaryButton = ({
   );
 };
 
-export default PrimaryButton;
+export default SecundaryButton;
 
 const styles = StyleSheet.create({
   button: {

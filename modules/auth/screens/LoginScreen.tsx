@@ -16,6 +16,7 @@ import {
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, { FadeIn } from "react-native-reanimated";
 
+import Backbutton from "@/common/components/Backbutton";
 import BlurComponent from "@/common/components/BlurComponent";
 import Loading from "@/common/components/loading";
 import PopUp from "@/common/components/PopUp";
@@ -55,6 +56,11 @@ const Register = () => {
           className={"flex-1 bg-white justify-between items-center pb-10 mt-4"}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
+            <Backbutton
+              position={"top-10 left-0"}
+              onPress={() => router.back()}
+            ></Backbutton>
+
             <Text
               className="w-full justify-left text-3xl mt-10 mb-2"
               style={{ marginTop: height * 0.12 }}
