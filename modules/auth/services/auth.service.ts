@@ -1,6 +1,6 @@
 import { pictoApi } from "@/config/api-picto/api-picto.config";
 import * as axios from "axios";
-import { User } from "../interfaces/User.interface";
+import { UserLogin, UserRegister } from "../interfaces/User.interface";
 
 export interface AuthResponse {
   name: string;
@@ -8,9 +8,13 @@ export interface AuthResponse {
   token: string;
 }
 
-export const register = async (data: User) => {
+export const register = async (data: UserRegister) => {
+  console.log(data.roles);
   try {
-    const response = await pictoApi.post("/auth/register", data);
+    const response = await pictoApi.post("/auth/register", {
+      ...data,
+      roles: data.roles?.length ? [data.roles] : ["user"],
+    });
 
     return response.data;
   } catch (error) {
@@ -22,7 +26,7 @@ export const register = async (data: User) => {
   }
 };
 
-export const login = async (data: User) => {
+export const login = async (data: UserLogin) => {
   try {
     const response = await pictoApi.post("/auth/login", data);
 

@@ -1,8 +1,8 @@
 import { router } from "expo-router";
 import { useReducer } from "react";
 import {
-    getInitialState,
-    onboardingReducer,
+  getInitialState,
+  onboardingReducer,
 } from "../reducer/onboardingReducer";
 
 export const useOnboarding = () => {
@@ -30,6 +30,7 @@ export const useOnboarding = () => {
     twoButtons,
     registre,
     progressValue,
+    roles,
   } = state;
   const handleBackPress = () => {
     if (state.title === "Empecemos, ¿qué eres?") {
@@ -77,7 +78,10 @@ export const useOnboarding = () => {
     router.push("/login");
   };
   const handleRegisterMail = () => {
-    router.push("/register");
+    router.push({
+      pathname: "/register",
+      params: { roles },
+    });
   };
   const handleRegisterGoogle = () => {
     router.push("/login");
