@@ -13,5 +13,6 @@ export type AuthState = {
     roles: string[],
     token: string,
   ) => void;
+
   logOut: () => void;
 };

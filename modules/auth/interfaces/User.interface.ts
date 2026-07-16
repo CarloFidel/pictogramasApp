@@ -3,7 +3,7 @@ export interface UserRegister {
   lastName: string;
   email: string;
   password: string;
-  roles: string[];
+  roles?: string[];
 }
 
 export interface UserLogin {

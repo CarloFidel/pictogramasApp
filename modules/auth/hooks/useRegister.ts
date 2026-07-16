@@ -7,7 +7,7 @@ import { RegisterSchema } from "../schema/form.schema";
 import { register } from "../services/auth.service";
 import { useAuthState } from "../store/authState";
 
-export const useRegister = () => {
+export const useRegister = (roles: string[]) => {
   const { logIn } = useAuthState();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [resError, setResError] = useState<string | undefined>();
@@ -15,7 +15,6 @@ export const useRegister = () => {
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<UserRegister>({ resolver: zodResolver(RegisterSchema) });
 
@@ -24,7 +23,7 @@ export const useRegister = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setIsLoading(true);
-      const res = await register(data);
+      const res = await register({ ...data, roles });
 
       if (res) {
         setIsLoading(false);
@@ -42,7 +41,6 @@ export const useRegister = () => {
     resError,
     control,
     errors,
-    setValue,
 
     setResError,
     handleSubmit,

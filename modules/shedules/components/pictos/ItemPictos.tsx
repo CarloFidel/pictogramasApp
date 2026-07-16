@@ -6,6 +6,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { transformCapitalize } from "../../utility/transformCapitalize";
 
 interface Props {
   id: number | string;
@@ -76,7 +77,9 @@ const ItemPictos = ({
           ]}
         />
       )}
-      <Text className={classnameText}>{word}</Text>
+      <Text className={`${classnameText} justify-center items-center`}>
+        {transformCapitalize(word!)}
+      </Text>
     </View>
   );
 };

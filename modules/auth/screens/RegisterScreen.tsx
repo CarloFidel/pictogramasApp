@@ -20,29 +20,21 @@ import Animated, { FadeIn } from "react-native-reanimated";
 import BlurComponent from "@/common/components/BlurComponent";
 import Loading from "@/common/components/loading";
 import PopUp from "@/common/components/PopUp";
-import { transformCapitalize } from "@/modules/shedules/utility/transformCapitalize";
-import { router } from "expo-router";
-import PickRole from "../components/PickRole";
+import { router, useLocalSearchParams } from "expo-router";
 import { useLogin } from "../hooks/useLogin";
 import { useRegister } from "../hooks/useRegister";
+
 const Register = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [role, setRole] = useState<string>("");
 
-  const [vsibleModal, setVsibleModal] = useState(false);
   const [popUpVisible, setPopUpVisible] = useState(false);
 
   const { width, height } = useWindowDimensions();
 
-  const {
-    control,
-    errors,
-    onSubmit,
-    resError,
-    setResError,
-    isLoading,
-    setValue,
-  } = useRegister();
+  const { roles } = useLocalSearchParams<{ roles: string[] }>();
+
+  const { control, errors, onSubmit, resError, setResError, isLoading } =
+    useRegister(roles);
 
   const handleToLogin = () => {
     router.replace("/login");
@@ -51,12 +43,6 @@ const Register = () => {
   const handleClosePopUp = () => {
     setPopUpVisible(false);
     setResError(undefined);
-  };
-
-  const handleSwitchRole = (role: string) => {
-    setRole(role);
-    setValue("roles", [role], { shouldValidate: true });
-    setVsibleModal(false);
   };
 
   const { pressedStyle, tapGesture } = useButtonPress();
@@ -216,30 +202,6 @@ const Register = () => {
                 )}
               />
 
-              <Pressable
-                style={[
-                  globalStyles.input,
-                  { justifyContent: "center", width: width * 0.9 },
-                ]}
-                onPress={() => setVsibleModal(true)}
-              >
-                <Text style={{ color: globalStyles.colors.gray16 }}>
-                  {role ? transformCapitalize(role) : "Seleccione un rol"}
-                </Text>
-              </Pressable>
-              {errors.roles && (
-                <Animated.View
-                  entering={FadeIn}
-                  className="flex-row justify-start items-center gap-2"
-                  style={{ width: width * 0.9, marginTop: -12 }}
-                >
-                  <Feather name="alert-circle" size={18} color={"red"} />
-                  <Text style={{ color: "red" }} className="text-left">
-                    {errors.roles.message!}
-                  </Text>
-                </Animated.View>
-              )}
-
               <GestureDetector gesture={tapGesture}>
                 <Animated.View style={pressedStyle}>
                   <Pressable
@@ -280,15 +242,6 @@ const Register = () => {
             warning={true}
             text={resError!}
             buttonText="Ok"
-          />
-        </>
-      )}
-      {vsibleModal && (
-        <>
-          <BlurComponent />
-          <PickRole
-            setRole={handleSwitchRole}
-            setVisible={() => setVsibleModal(false)}
           />
         </>
       )}

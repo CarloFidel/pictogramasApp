@@ -23,12 +23,12 @@ export interface OnboardingState {
   textButtonTwoColor?: string;
   textButtonTwo?: string;
   registre: boolean;
-  role: "therapist" | "user" | "";
+  roles: string[];
 }
 
 export const getInitialState = (): OnboardingState => {
   return {
-    role: "therapist",
+    roles: ["therapist"],
     landingPage: true,
     showProgressBar: false,
     progressValue: 0,
@@ -96,7 +96,7 @@ export const onboardingReducer = (
     case "HAS_USADO_PICTOGRAMAS":
       return {
         ...state,
-        role: "user",
+        roles: ["user"],
         landingPage: false,
         showProgressBar: true,
         progressValue: 0.25,

@@ -35,5 +35,5 @@ export interface UserData {
   lastName: string;
   email: string;
   isActive: boolean;
-  roles: string;
+  roles: string[];
 }

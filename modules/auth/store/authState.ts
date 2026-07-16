@@ -12,6 +12,7 @@ export const useAuthState = create(
       email: "",
       roles: [],
       token: "",
+
       logIn(name, lastName, email, roles, token) {
         set((state: AuthState) => {
           return {

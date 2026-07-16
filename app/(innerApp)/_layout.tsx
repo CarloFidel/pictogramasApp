@@ -1,6 +1,7 @@
 import { useTabBarAnimation } from "@/common/animations/useTabBar";
 import { usetabBarBehaviour } from "@/common/hooks/usetabBarBehaviour";
 import { globalStyles } from "@/global-style";
+import { TokenPayload } from "@/modules/auth/interfaces/token.interface";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { EditModeContext } from "@/modules/shedules/context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "@/modules/shedules/context/play-mode-context/PlayModeContext";
@@ -8,6 +9,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { BlurView } from "expo-blur";
 import { router, usePathname } from "expo-router";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
+import { jwtDecode } from "jwt-decode";
 import React, { use, useEffect, useState } from "react";
 import { Text, useWindowDimensions, View } from "react-native";
 import Animated from "react-native-reanimated";
@@ -26,15 +28,21 @@ const Layout = () => {
   const editContext = use(EditModeContext);
   const { isEditMode } = editContext!;
 
-  const { isLoggedIn } = useAuthState();
+  const { isLoggedIn, token, logOut } = useAuthState();
 
   useEffect(() => {
-    if (isLoggedIn) {
-      router.replace("/profile");
-    } else {
+    if (!isLoggedIn || !token) {
       router.replace("/login");
+      return;
     }
-  }, [isLoggedIn]);
+
+    const exp = jwtDecode<TokenPayload>(token).exp;
+    if (Date.now() >= exp * 1000) {
+      logOut();
+      router.replace("/login");
+      return;
+    }
+  }, [isLoggedIn, token, logOut]);
 
   useEffect(() => {
     if (path === "/horario") {
