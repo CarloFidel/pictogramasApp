@@ -60,7 +60,7 @@ const InfoView = ({
         padding: 10,
       }}
     >
-      <Text className="text-2xl font-hank-regular w-full text-center">
+      <Text className="text-3xl font-hank-regular w-full text-center">
         {title}
       </Text>
       {body &&

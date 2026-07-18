@@ -21,6 +21,7 @@ import BlurComponent from "@/common/components/BlurComponent";
 import Loading from "@/common/components/loading";
 import PopUp from "@/common/components/PopUp";
 import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useLogin } from "../hooks/useLogin";
 
 const Register = () => {
@@ -52,23 +53,23 @@ const Register = () => {
   return (
     <>
       <KeyboardAvoidingView behavior="padding" className="flex-1 bg-white">
-        <View
+        <SafeAreaView
           className={"flex-1 bg-white justify-between items-center pb-10 mt-4"}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <Backbutton
-              position={"top-10 left-0"}
+              position={"top-0 left-0"}
               onPress={() => router.back()}
             ></Backbutton>
 
             <Text
-              className="w-full justify-left text-3xl mt-10 mb-2"
-              style={{ marginTop: height * 0.12 }}
+              className="w-full justify-left text-3xl mb-2"
+              style={{ marginTop: height * 0.08 }}
             >
               Inicia sesión con email
             </Text>
             <View
-              style={{ height: height * 0.35, gap: 20 }}
+              style={{ height: height * 0.4, gap: 30 }}
               className="justify-center items-center w-full"
             >
               <Controller
@@ -168,7 +169,7 @@ const Register = () => {
             <Text className="white">¿Tienes una cuenta?</Text>
             <Text className="text-primary-600"> Register</Text>
           </Pressable>
-        </View>
+        </SafeAreaView>
       </KeyboardAvoidingView>
       {isLoading && (
         <>

@@ -5,6 +5,7 @@ import {
 import { globalStyles } from "@/global-style";
 import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import Feather from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { use } from "react";
 import { Pressable } from "react-native";
 import Animated, {
@@ -66,7 +67,7 @@ const ToolBar = ({
         )}
         {isPlayMode && (
           <Pressable onPress={handlePlayMode} className="px-4 py-2">
-            <Feather name="pause" size={24} color="white" />
+            <Ionicons name="pause-outline" size={24} color="white" />
           </Pressable>
         )}
         {editMode && (

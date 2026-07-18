@@ -1,4 +1,5 @@
 import { globalStyles } from "@/global-style";
+import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { Text, useWindowDimensions } from "react-native";
@@ -36,13 +37,20 @@ const PopUp = ({
           color={globalStyles.colors.gray55}
         />
       ) : (
-        <Ionicons
-          name="checkmark-circle-outline"
-          size={40}
-          color={globalStyles.colors.primary[500]}
-        />
+        <Animated.View
+          entering={FadeInDown.springify()
+            .damping(35)
+            .stiffness(1200)
+            .delay(100)}
+        >
+          <Feather
+            name="check-circle"
+            size={30}
+            color={globalStyles.colors.primary[700]}
+          />
+        </Animated.View>
       )}
-      <Text className="text-center text-xl" style={{ width: width * 0.5 }}>
+      <Text className="text-center text-l" style={{ width: width * 0.5 }}>
         {text}
       </Text>
       <PrimaryButton

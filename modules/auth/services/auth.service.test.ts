@@ -1,6 +1,6 @@
 import { pictoApi } from "@/config/api-picto/api-picto.config";
 import axios from "axios";
-import * as authService from "../services/auth.service";
+import * as authService from "./auth.service";
 
 jest.mock("@/config/api-picto/api-picto.config", () => ({
   pictoApi: {

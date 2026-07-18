@@ -4,8 +4,8 @@ import { LoadPictosContext } from "@/modules/dashboard/context/LoadPictosContext
 import { router } from "expo-router";
 import { use, useEffect, useState } from "react";
 import {
+  FlatList,
   Modal,
-  ScrollView,
   StatusBar,
   Text,
   useWindowDimensions,
@@ -21,7 +21,7 @@ import { EditModeContext } from "../context/edit-mode-context/EditModeContext";
 import { PlayModeContext } from "../context/play-mode-context/PlayModeContext";
 import { useSetSelectedPictos } from "../hooks/useSetSelectedPictos";
 import { SheduleItems } from "../interfaces/save-schedules.interfaces";
-import { prepareDataSaveSchedules } from "../utility/prepareDataToSaveSchedules";
+import { prepareDataSaveSchedules } from "../utility/prepareDatatoSaveSchedules";
 import ModalPictosList from "./ModalPictosList";
 
 export default function SheduleScreen() {
@@ -151,8 +151,8 @@ Carga de horario. ///////////////////////////////////////////
             </Animated.View>
           )}
           <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 "></View>
-          <ScrollView
-            //scrollEnabled={false}
+          <FlatList
+            showsVerticalScrollIndicator={false}
             style={{
               position: "absolute",
               top: 0,
@@ -169,28 +169,27 @@ Carga de horario. ///////////////////////////////////////////
               paddingTop: 100,
               paddingBottom: 40,
             }}
-            contentContainerClassName="gap-10 w-fit bg-transparent"
-            showsVerticalScrollIndicator={false}
-          >
-            {pictosOn.map((picto, index) => (
+            ItemSeparatorComponent={() => <View style={{ height: 35 }} />}
+            data={pictosOn}
+            renderItem={({ item, index }) => (
               <Animated.View
                 entering={FadeInUp.delay(80 * index)}
-                key={`${picto.id}-${pictosOn.indexOf(picto)}`}
+                key={`${item.id}-${pictosOn.indexOf(item)}`}
               >
                 <PictoOnBoardItem
-                  picto={picto}
+                  picto={item}
                   editMode={editMode}
                   setEditMode={setEditMode}
                   pictosOn={pictosOn}
                   handleRemovePicto={handleRemovePicto}
                   dragable={
-                    picto.id === pictosOn[0].id && playMode ? true : false
+                    item.id === pictosOn[0].id && playMode ? true : false
                   }
                   handleIsInDeleteZone={handleIsInDeleteZone}
                 />
               </Animated.View>
-            ))}
-          </ScrollView>
+            )}
+          />
           {modalVisible && (
             <Modal animationType="slide" transparent>
               <ModalPictosList

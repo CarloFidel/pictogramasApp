@@ -35,7 +35,7 @@ const PictoOnBoardItem = ({
   dragable = false,
 }: Props) => {
   const { panGesture, moveStyle, isInDeleteZone, onDelete, tapGesture } =
-    useDragDrop(picto.id);
+    useDragDrop(dragable, picto.id);
   const gesture = Gesture.Simultaneous(tapGesture, panGesture);
 
   useAnimatedReaction(
