@@ -8,7 +8,10 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.charlyflow.pictoapp"
+      "bundleIdentifier": "com.pictoapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +25,7 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.charlyflow.pictoapp"
+      "package": "com.pictoapp"
     },
     "web": {
       "output": "static"
@@ -55,6 +58,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "0eac0899-e750-4292-a5d9-c6dd1f8c9763"
+      }
+    },
+    "owner": "charlyflow"
   }
 }

@@ -6,7 +6,7 @@ import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
 import Feather from "@expo/vector-icons/Feather";
 import React, { useState } from "react";
 import { Modal, Pressable, Text, useWindowDimensions } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, { FadeIn } from "react-native-reanimated";
 import { useLoadScheduleAnimation } from "../../animations/loadScheduleShort/useLoadScheduleAnimation";
 import FlatListInSaveModal from "./FlatListInSaveModal";
 
@@ -55,7 +55,6 @@ const SaveMenuModal = ({
             borderTopRightRadius: 30,
             borderTopLeftRadius: 30,
             width: width,
-            opacity: 0.95,
           },
           globalStyles.shadow_md,
           savedShcedulesBehaviour,
@@ -83,16 +82,27 @@ const SaveMenuModal = ({
             <Text>Abrir horario</Text>
           </Pressable>
         )}
+        {savedVissible && getAllSchedulesQuery.isLoading && <Loading />}
+
         {savedVissible &&
-          (!schedulesResponse || schedulesResponse.schedule.length === 0 ? (
-            <Loading />
-          ) : (
+          ((!getAllSchedulesQuery.isLoading &&
+            schedulesResponse?.schedule.length === 0) ||
+            !schedulesResponse) && (
+            <Animated.View entering={FadeIn.delay(300)}>
+              <Text className="text-xl mt-20">
+                No hay horarios para mostrar
+              </Text>
+            </Animated.View>
+          )}
+        {savedVissible &&
+          !getAllSchedulesQuery.isLoading &&
+          schedulesResponse?.schedule.length !== 0 && (
             <FlatListInSaveModal
-              data={schedulesResponse.schedule}
+              data={schedulesResponse!.schedule}
               handlePlay={handlePlay}
               refreching={getAllSchedulesQuery}
             />
-          ))}
+          )}
       </Animated.View>
     </Modal>
   );

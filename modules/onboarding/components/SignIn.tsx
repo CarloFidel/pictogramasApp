@@ -1,7 +1,12 @@
-import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { Pressable, Text, useWindowDimensions, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 
 interface Props {
@@ -10,7 +15,7 @@ interface Props {
   onClose: () => void;
 }
 
-const RegistreScreen = ({ onGoogle, onMail, onClose }: Props) => {
+const SignIn = ({ onGoogle, onMail, onClose }: Props) => {
   const { width, height } = useWindowDimensions();
   return (
     <Animated.View
@@ -32,8 +37,8 @@ const RegistreScreen = ({ onGoogle, onMail, onClose }: Props) => {
       >
         <Ionicons name="close-outline" size={30} color={"black"} />
       </Pressable>
-      <Text className="text-2xl font-hank-light w-full text-center">
-        Registro
+      <Text className="text-3xl font-hank-regular w-full text-center">
+        Iniciar sesión
       </Text>
       <View className="justify-center items-center gap-4 mt-4">
         <Pressable
@@ -47,9 +52,16 @@ const RegistreScreen = ({ onGoogle, onMail, onClose }: Props) => {
             flexDirection: "row",
             gap: 10,
           }}
-          onPress={onGoogle}
+          onPress={() => onGoogle()}
         >
-          <AntDesign name="google" size={18} color="white" />
+          <Image
+            source={require("@/modules/onboarding/assets/icons8-google-48.png")}
+            style={{
+              width: 20,
+              height: 20,
+              resizeMode: "contain",
+            }}
+          />
           <Text style={{ color: "white" }}>Continuar con google</Text>
         </Pressable>
         <Pressable
@@ -74,4 +86,4 @@ const RegistreScreen = ({ onGoogle, onMail, onClose }: Props) => {
   );
 };
 
-export default RegistreScreen;
+export default SignIn;

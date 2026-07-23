@@ -5,7 +5,10 @@ import {
   withSpring,
 } from "react-native-reanimated";
 
-export const useDragDrop = (draggedId?: number | string) => {
+export const useDragDrop = (
+  draggable: boolean,
+  draggedId?: number | string,
+) => {
   const inicialPosition = 0;
 
   const x = useSharedValue(inicialPosition);
@@ -20,6 +23,7 @@ export const useDragDrop = (draggedId?: number | string) => {
   const onDelete = useSharedValue(false);
 
   const tapGesture = Gesture.Tap()
+    .enabled(draggable)
     .maxDuration(20000)
     .onBegin(() => {
       pressed.value = true;
@@ -29,6 +33,7 @@ export const useDragDrop = (draggedId?: number | string) => {
     });
 
   const panGesture = Gesture.Pan()
+    .enabled(draggable)
     .onBegin(() => {
       startX.value = x.value;
       startY.value = y.value;
@@ -116,5 +121,6 @@ export const useDragDrop = (draggedId?: number | string) => {
     onDelete,
     draggedId,
     tapGesture,
+    //longPressGesture,
   };
 };

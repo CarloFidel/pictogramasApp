@@ -1,6 +1,5 @@
 import Backbutton from "@/common/components/Backbutton";
 import Loading from "@/common/components/loading";
-import { useAuthState } from "@/modules/auth/store/authState";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -15,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import BlurComponent from "@/common/components/BlurComponent";
 import PopUp from "@/common/components/PopUp";
+import { useAuthState } from "@/modules/auth/store/authState";
 import DeletePopUp from "@/modules/dashboard/components/DeletePopUp";
 import PictoInSchedule from "@/modules/dashboard/components/PictoInSchedule";
 import { useDeleteSchedule } from "@/modules/dashboard/hooks/useDeleteSchedule";
@@ -25,7 +25,7 @@ import Animated, { FadeIn } from "react-native-reanimated";
 
 const MySchedulesScreen = () => {
   const { token } = useAuthState();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
@@ -75,7 +75,8 @@ const MySchedulesScreen = () => {
     >
       <Animated.View
         entering={FadeIn.duration(500)}
-        className="flex flex-1 items-start"
+        className="flex items-start"
+        style={{ height: height * 0.8 }}
       >
         <Backbutton onPress={() => router.back()} position="top-2 left-5" />
         <Text className="text-3xl justify-start mt-20 px-5 w-full">

@@ -19,7 +19,7 @@ import Animated, {
   FadeOutRight,
 } from "react-native-reanimated";
 import InfoView from "../components/InfoView";
-import RegistreScreen from "../components/RegistreScreen";
+import SignIn from "../components/SignIn";
 import { useOnboarding } from "../hooks/useOnboarding";
 
 const OnBoardingScreen = () => {
@@ -53,7 +53,6 @@ const OnBoardingScreen = () => {
     progressValue,
     handleLoginMail,
     handleRegisterGoogle,
-    handleRegisterMail,
   } = useOnboarding();
 
   return (
@@ -161,10 +160,10 @@ const OnBoardingScreen = () => {
       {registre && (
         <>
           <BlurComponent />
-          <RegistreScreen
+          <SignIn
             onClose={handleEmpecemosPress}
-            onGoogle={handleRegisterGoogle}
-            onMail={handleRegisterMail}
+            onGoogle={() => {}}
+            onMail={handleLoginMail}
           />
         </>
       )}

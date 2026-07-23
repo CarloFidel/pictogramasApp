@@ -1,6 +1,6 @@
 import { globalStyles } from "@/global-style";
 import PictoInSchedule from "@/modules/dashboard/components/PictoInSchedule";
-import Feather from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { Pressable, Text, useWindowDimensions, View } from "react-native";
 import { FlatList, RefreshControl } from "react-native-gesture-handler";
@@ -20,7 +20,7 @@ const FlatListInSaveModal = ({ handlePlay, data, refreching }: Props) => {
     <View
       style={{
         width: width,
-        height: height * 0.58,
+        height: height * 0.42,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -48,14 +48,33 @@ const FlatListInSaveModal = ({ handlePlay, data, refreching }: Props) => {
               justifyContent: "center",
               borderWidth: 1,
               borderColor: globalStyles.colors.gray16,
+              backgroundColor: globalStyles.colors.primary[50],
             }}
           >
             <View className="flex-row items-center justify-between mb-2">
-              <Text className="text-2xl text-gray-600">
+              <Text className="text-xl text-gray-600">
                 {transformCapitalize(item.title)}
               </Text>
-              <Pressable onPress={() => handlePlay(item.id)}>
-                <Feather name="play" size={20} color="black" />
+              <Pressable
+                onPress={() => handlePlay(item.id)}
+                style={{
+                  borderWidth: 1,
+                  borderColor: globalStyles.colors.gray55,
+
+                  //backgroundColor: globalStyles.colors.primary[600],
+                  padding: 7,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 50,
+                  marginVertical: 5,
+                }}
+              >
+                <Ionicons
+                  name="play"
+                  size={18}
+                  color={globalStyles.colors.gray55}
+                  style={{ marginLeft: 2 }}
+                />
               </Pressable>
             </View>
             <FlatList
@@ -65,10 +84,10 @@ const FlatListInSaveModal = ({ handlePlay, data, refreching }: Props) => {
               renderItem={({ item }) => (
                 <PictoInSchedule
                   url={item.visualItem.url}
-                  dimention="w-8 h-8"
+                  dimention="w-12 h-12"
                 />
               )}
-              ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+              ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
             />
           </Animated.View>
         )}
@@ -77,6 +96,7 @@ const FlatListInSaveModal = ({ handlePlay, data, refreching }: Props) => {
           marginVertical: 5,
           width: width * 0.93,
           height: height * 0.4,
+          borderRadius: 10,
         }}
         contentContainerStyle={{
           width: width * 0.93,

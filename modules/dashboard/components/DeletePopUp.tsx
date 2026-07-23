@@ -13,7 +13,7 @@ interface Props {
 }
 
 const DeletePopUp = ({ text, onOkPress, onCanselPress }: Props) => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
 
   return (
     <Animated.View
@@ -21,7 +21,7 @@ const DeletePopUp = ({ text, onOkPress, onCanselPress }: Props) => {
       exiting={FadeOutDown.springify().duration(100)}
       className="absolute bg-white justify-center items-center p-2 py-8 rounded-3xl gap-5 px-5"
       style={{
-        top: "20%",
+        top: height * 0.3,
         right: width - width * 0.94,
         opacity: 0.9,
       }}

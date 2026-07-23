@@ -192,6 +192,7 @@ const IAScreen = ({ onError, onSave }: Props) => {
               style={{
                 position: "absolute",
                 height: height * 0.45,
+                width: width * 0.8,
                 marginTop: 60,
               }}
               showsVerticalScrollIndicator={false}

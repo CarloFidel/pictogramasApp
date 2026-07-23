@@ -13,12 +13,4 @@ export const WIDTH_DELETE_ZONE = {
   width: 54,
 };
 
-export const PICTO_DIMENTIONS = {
-  lg: {},
-
-  md: {},
-
-  sm: {},
-};
-
 export const SESSION_DURATION = 1000 * 6; // * 60 * 2; //2 HORAS
