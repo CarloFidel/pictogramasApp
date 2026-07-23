@@ -15,7 +15,7 @@ interface Props {
   onClose: () => void;
 }
 
-const RegistreScreen = ({ onGoogle, onMail, onClose }: Props) => {
+const SignIn = ({ onGoogle, onMail, onClose }: Props) => {
   const { width, height } = useWindowDimensions();
   return (
     <Animated.View
@@ -38,7 +38,7 @@ const RegistreScreen = ({ onGoogle, onMail, onClose }: Props) => {
         <Ionicons name="close-outline" size={30} color={"black"} />
       </Pressable>
       <Text className="text-3xl font-hank-regular w-full text-center">
-        Registro
+        Iniciar sesión
       </Text>
       <View className="justify-center items-center gap-4 mt-4">
         <Pressable
@@ -52,7 +52,7 @@ const RegistreScreen = ({ onGoogle, onMail, onClose }: Props) => {
             flexDirection: "row",
             gap: 10,
           }}
-          onPress={onGoogle}
+          onPress={() => onGoogle()}
         >
           <Image
             source={require("@/modules/onboarding/assets/icons8-google-48.png")}
@@ -86,4 +86,4 @@ const RegistreScreen = ({ onGoogle, onMail, onClose }: Props) => {
   );
 };
 
-export default RegistreScreen;
+export default SignIn;

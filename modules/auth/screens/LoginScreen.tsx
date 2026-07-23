@@ -30,6 +30,8 @@ const Register = () => {
 
   const { width, height } = useWindowDimensions();
 
+  //console.log(router.canGoBack());
+
   const handleToRegister = () => {
     router.push("/register");
   };
@@ -57,10 +59,12 @@ const Register = () => {
           className={"flex-1 bg-white justify-between items-center pb-10 mt-4"}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Backbutton
-              position={"top-0 left-0"}
-              onPress={() => router.back()}
-            ></Backbutton>
+            {router.canGoBack() && (
+              <Backbutton
+                position={"top-0 left-0"}
+                onPress={() => router.back()}
+              ></Backbutton>
+            )}
 
             <Text
               className="w-full justify-left text-3xl mb-2"
