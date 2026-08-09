@@ -3,6 +3,7 @@ import { PlayModeProvider } from "@/modules/shedules/context/play-mode-context/P
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import { SchedulesInEvenProvider } from "@/modules/calendar/context/SchedulesInEvent.provider";
 import { LoadPictosProvider } from "@/modules/dashboard/context/LoadPictosProvider";
 import { useFonts } from "expo-font";
 import { Slot, SplashScreen } from "expo-router";
@@ -33,7 +34,9 @@ const RootLayout = () => {
           <LoadPictosProvider>
             <PlayModeProvider>
               <EditModeProvider>
-                <Slot />
+                <SchedulesInEvenProvider>
+                  <Slot />
+                </SchedulesInEvenProvider>
               </EditModeProvider>
             </PlayModeProvider>
           </LoadPictosProvider>

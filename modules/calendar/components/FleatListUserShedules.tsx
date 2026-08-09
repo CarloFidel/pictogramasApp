@@ -15,10 +15,9 @@ import SwitchButton from "./SwitchButton";
 
 interface Props {
   selected: string;
-  handleSwitchChange: (isSwitchOn: boolean, scheduleId: string) => void;
 }
 
-const FleatListUserShedules = ({ selected, handleSwitchChange }: Props) => {
+const FleatListUserShedules = ({ selected }: Props) => {
   const { width } = useWindowDimensions();
 
   const { token } = useAuthState();
@@ -64,13 +63,11 @@ const FleatListUserShedules = ({ selected, handleSwitchChange }: Props) => {
                 {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
               </Text>
               <SwitchButton
+                scheduleId={item.id}
                 initialvalue={
                   calendarResponse
                     ?.find((event) => event.date === selected)
                     ?.sheduleId?.includes(item.id) ?? false
-                }
-                onSwitchChange={(isSwitchOn) =>
-                  handleSwitchChange(isSwitchOn, item.id)
                 }
               />
             </View>
