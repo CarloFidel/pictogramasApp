@@ -20,6 +20,7 @@ const useLoadSchedule = () => {
 
     const pictos = scheduleTarget?.scheduleItems.map((item) => ({
       id: item.id,
+      instanceId: `${item.id}-${Date.now()}`,
       keyword: item.visualItem.word,
       isPhoto: item.visualItem.type === "photo",
       imageUrl: item.visualItem.url,

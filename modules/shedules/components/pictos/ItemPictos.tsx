@@ -20,7 +20,6 @@ interface Props {
 }
 
 const ItemPictos = ({
-  id,
   word,
   uri,
   isPhoto,
@@ -45,17 +44,13 @@ const ItemPictos = ({
 
   const reduceScaleInEditMode = useAnimatedStyle(() => {
     return {
-      // transform: [{ scale: scale.value }],
       width: width.value,
       height: height.value,
     };
   });
 
   return (
-    <View
-      className={className}
-      //style={[{ width: 100, height: 100 }, reduceScaleInEditMode]}
-    >
+    <View className={className}>
       {isPhoto ? (
         <Animated.Image
           source={{ uri }}

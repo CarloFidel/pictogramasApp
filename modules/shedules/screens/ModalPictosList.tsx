@@ -24,7 +24,6 @@ interface Props {
 }
 
 const ModalPictosList = ({
-  visible,
   onVisibleModal,
   onSetPictos,
   handleOnError,
@@ -128,12 +127,6 @@ const ModalPictosList = ({
           />
         )}
 
-        {/*         {pictoLibrary === "arasaac" ? (
-          <PictosInModalList onPressedPictos={handlePictoPressed} />
-        ) : (
-          <PhotosModalList onPressedPictos={handlePictoPressed} />
-        )} */}
-
         {pictoLibrary === "Arasaac" && !founded && (
           <PictosInModalList
             onPressedPictos={handlePictoPressed}
@@ -150,7 +143,7 @@ const ModalPictosList = ({
         {pictoLibrary === "ia" && (
           <IAScreen onError={handleOnError} onSave={handleOnSaveIA} />
         )}
-        {founded && (
+        {founded && pictoLibrary !== "ia" && (
           <PictosInModalList
             onPressedPictos={handlePictoPressed}
             onError={handleOnError}
