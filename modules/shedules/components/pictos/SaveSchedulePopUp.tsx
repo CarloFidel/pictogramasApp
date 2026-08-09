@@ -1,0 +1,139 @@
+import Loading from "@/common/components/loading";
+import PopUp from "@/common/components/PopUp";
+import PrimaryButton from "@/common/components/PrimaryButton";
+import { globalStyles } from "@/global-style";
+import { useAuthState } from "@/modules/auth/store/authState";
+import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
+import Feather from "@expo/vector-icons/Feather";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as axios from "axios";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Text, useWindowDimensions, View } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeOutDown,
+} from "react-native-reanimated";
+import { SheduleItems } from "../../interfaces/save-schedules.interfaces";
+import { SaveScheduleSchema } from "../../schema/save-schecule";
+import { saveSchedule } from "../../services/pictograms.service";
+
+interface Props {
+  items: SheduleItems[];
+  onCanselPress: () => void;
+}
+
+const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [statusCode, setStatusCode] = useState<number>();
+  const { width } = useWindowDimensions();
+  const { token } = useAuthState();
+  const { getAllSchedulesQuery } = useSchedules(token);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{ title: string }>({ resolver: zodResolver(SaveScheduleSchema) });
+
+  const onSubmit = handleSubmit(async ({ title }) => {
+    try {
+      setIsLoading(true);
+      const res = await saveSchedule({ title, token, items });
+      setIsLoading(false);
+      setStatusCode(res.status);
+      await getAllSchedulesQuery.refetch();
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        setStatusCode(error.response?.data.statusCode);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  });
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (statusCode === 201) {
+    return (
+      <PopUp
+        onPress={onCanselPress}
+        buttonText="OK"
+        text="Horario guardado con éxito"
+      />
+    );
+  }
+  if (statusCode === 400) {
+    return (
+      <PopUp
+        onPress={onCanselPress}
+        buttonText="OK"
+        text="Ya tiene un horario con ese título, por favor escoja otro"
+        warning={true}
+      />
+    );
+  }
+
+  return (
+    <Animated.View
+      entering={FadeInDown.springify().duration(400)}
+      exiting={FadeOutDown.springify().duration(100)}
+      className="absolute bg-white justify-center items-center p-2 py-8 rounded-3xl gap-5 px-5"
+      style={{
+        top: "20%",
+        right: width - width * 0.94,
+        opacity: 0.8,
+      }}
+    >
+      <Text className="text-center text-xl" style={{ width: width * 0.5 }}>
+        Escriba un título para el horario
+      </Text>
+      <Controller
+        control={control}
+        name="title"
+        render={({ field: { onChange, value } }) => (
+          <View>
+            <TextInput
+              style={[globalStyles.input, { width: width * 0.8 }]}
+              placeholder="Escriba la palabra..."
+              autoCapitalize="sentences"
+              keyboardType="default"
+              onChangeText={onChange}
+              value={value}
+            />
+            {errors.title && (
+              <Animated.View
+                entering={FadeIn}
+                className="flex-row justify-start items-center gap-2 mt-2"
+              >
+                <Feather name="alert-circle" size={18} color={"red"} />
+                <Text style={{ color: "red" }} className="text-left">
+                  {errors.title?.message}
+                </Text>
+              </Animated.View>
+            )}
+          </View>
+        )}
+      />
+      <View className="gap-5 mt-10">
+        <PrimaryButton
+          onPress={onSubmit}
+          text="Save"
+          textColor="white"
+          backGroundColor="#0F5CB3"
+        />
+        <PrimaryButton
+          onPress={onCanselPress}
+          text="Cancel"
+          textColor="black"
+          backGroundColor="#CECECE"
+        />
+      </View>
+    </Animated.View>
+  );
+};
+
+export default SaveSchedulePopUp;

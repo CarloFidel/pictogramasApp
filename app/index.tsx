@@ -1,11 +1,9 @@
-import { Text, View } from "react-native";
+import { useAuthState } from "@/modules/auth/store/authState";
+import { Redirect } from "expo-router";
 
 const AppPicto = () => {
-  return (
-    <View>
-      <Text>AppPicto</Text>
-    </View>
-  );
+  const { isLoggedIn } = useAuthState();
+  return <Redirect href={isLoggedIn ? "/profile" : "/onboarding"} />;
 };
 
 export default AppPicto;
