@@ -77,7 +77,7 @@ const ItemPictos = ({
           ]}
         />
       )}
-      <Text className={`${classnameText} justify-center items-center`}>
+      <Text className={`${classnameText} text-center items-center`}>
         {transformCapitalize(word!)}
       </Text>
     </View>

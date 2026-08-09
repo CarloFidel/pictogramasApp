@@ -10,6 +10,7 @@ import { useDragDrop } from "../../animations/drag_drop/useDragDrop";
 import ItemPictos from "./ItemPictos";
 
 interface Props {
+  pictoKey?: string;
   picto: Pictograma;
   pictosOn: Pictograma[];
 
@@ -25,6 +26,7 @@ interface Props {
 }
 
 const PictoOnBoardItem = ({
+  pictoKey,
   picto,
   editMode,
   setEditMode,
@@ -93,7 +95,7 @@ const PictoOnBoardItem = ({
         </Pressable>
         {editMode && (
           <Animated.View entering={FadeIn.springify().delay(500).duration(800)}>
-            <Pressable onPress={() => handleRemovePicto(picto.id!)}>
+            <Pressable onPress={() => handleRemovePicto(pictoKey!)}>
               <SimpleLineIcons
                 name="trash"
                 size={20}

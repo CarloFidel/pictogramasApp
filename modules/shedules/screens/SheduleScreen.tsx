@@ -107,9 +107,9 @@ export default function SheduleScreen() {
     setfullToolBar,
   } = useSetSelectedPictos(error);
 
-  /* ----------------------------------------------------------
-Carga de horario. ///////////////////////////////////////////
- ------------------------------------------------------------*/
+  /* -----------------------------------------------------------
+Carga de horario. ////////////////////////////////////////////
+------------------------------------------------------------*/
   const loadPictosContext = use(LoadPictosContext);
   const { pictosLoaded, setPictosLoaded } = loadPictosContext!;
 
@@ -120,9 +120,9 @@ Carga de horario. ///////////////////////////////////////////
     pictosLoaded.forEach((picto) => handleSetPictos(picto));
     setPictosLoaded([]);
   }, [pictosLoaded, handleSetPictos, setPictosLoaded, setPictosOn]);
-  /* ----------------------------------------------------------
-////////////////////////////////////////////////////////////////
- ------------------------------------------------------------*/
+  /* -----------------------------------------------------------
+//////////////////////////////////////////////////////////////
+------------------------------------------------------------*/
 
   return (
     <>
@@ -177,6 +177,7 @@ Carga de horario. ///////////////////////////////////////////
                 key={`${item.id}-${pictosOn.indexOf(item)}`}
               >
                 <PictoOnBoardItem
+                  pictoKey={`${item.id}-${pictosOn.indexOf(item)}`}
                   picto={item}
                   editMode={editMode}
                   setEditMode={setEditMode}
