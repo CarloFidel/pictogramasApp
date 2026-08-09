@@ -4,7 +4,6 @@ import { LoadPictosContext } from "@/modules/dashboard/context/LoadPictosContext
 import { router } from "expo-router";
 import { use, useEffect, useState } from "react";
 import {
-  FlatList,
   Modal,
   StatusBar,
   Text,
@@ -24,6 +23,12 @@ import { SheduleItems } from "../interfaces/save-schedules.interfaces";
 import { prepareDataSaveSchedules } from "../utility/prepareDatatoSaveSchedules";
 import ModalPictosList from "./ModalPictosList";
 
+import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
+import DraggableFlatList, {
+  RenderItemParams,
+  ScaleDecorator,
+} from "react-native-draggable-flatlist";
+
 export default function SheduleScreen() {
   const [error, setError] = useState<boolean>(false);
   const [saveSchedluPopUp, setSaveSchedluPopUp] = useState<boolean>(false);
@@ -42,6 +47,36 @@ export default function SheduleScreen() {
 
   const editContext = use(EditModeContext);
   const { setIsEditMode } = editContext!;
+
+  const renderItem = ({
+    item,
+    drag,
+    isActive,
+  }: RenderItemParams<Pictograma>) => {
+    return (
+      <ScaleDecorator>
+        <Animated.View
+          entering={
+            !editMode ? FadeInUp.delay(80 * pictosOn.indexOf(item)) : undefined
+          }
+          key={item.instanceId}
+        >
+          <PictoOnBoardItem
+            picto={item}
+            editMode={editMode}
+            setEditMode={setEditMode}
+            pictosOn={pictosOn}
+            handleRemovePicto={handleRemovePicto}
+            handleIsInDeleteZone={handleIsInDeleteZone}
+            dragable={item.id === pictosOn[0].id && playMode ? true : false}
+
+            editDrag={drag}
+            disabled={isActive}
+          />
+        </Animated.View>
+      </ScaleDecorator>
+    );
+  };
 
   const handlePlayMode = () => {
     setEditMode(false);
@@ -151,46 +186,37 @@ Carga de horario. ////////////////////////////////////////////
             </Animated.View>
           )}
           <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 "></View>
-          <FlatList
-            showsVerticalScrollIndicator={false}
+          <View
             style={{
               position: "absolute",
               top: 0,
               left: 0,
-              // backgroundColor: "red",
               width: width,
               height: height * 0.9,
             }}
-            contentContainerStyle={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingTop: 100,
-              paddingBottom: 40,
-            }}
-            ItemSeparatorComponent={() => <View style={{ height: 35 }} />}
-            data={pictosOn}
-            renderItem={({ item, index }) => (
-              <Animated.View
-                entering={FadeInUp.delay(80 * index)}
-                key={`${item.id}-${pictosOn.indexOf(item)}`}
-              >
-                <PictoOnBoardItem
-                  pictoKey={`${item.id}-${pictosOn.indexOf(item)}`}
-                  picto={item}
-                  editMode={editMode}
-                  setEditMode={setEditMode}
-                  pictosOn={pictosOn}
-                  handleRemovePicto={handleRemovePicto}
-                  dragable={
-                    item.id === pictosOn[0].id && playMode ? true : false
-                  }
-                  handleIsInDeleteZone={handleIsInDeleteZone}
-                />
-              </Animated.View>
-            )}
-          />
+          >
+            <DraggableFlatList
+              data={pictosOn}
+              onDragEnd={({ data }) => setPictosOn(data)}
+              renderItem={renderItem}
+
+              keyExtractor={(item) => item.id!.toString()}
+              style={{
+                width: width,
+                height: height * 0.9,
+              }}
+              contentContainerStyle={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                paddingTop: 100,
+                paddingBottom: 40,
+              }}
+              //ItemSeparatorComponent={() => <View style={{ height: 35 }} />}
+            />
+          </View>
+
           {modalVisible && (
             <Modal animationType="slide" transparent>
               <ModalPictosList
