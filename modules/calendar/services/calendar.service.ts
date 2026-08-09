@@ -4,15 +4,16 @@ import { CalendarMapper } from "@/infrastructure/calendar/mapper/calendar.mapper
 import { SheduleEventes } from "../interface/scheduleEventData.interface";
 
 export const saveScheduleClendar = async (
-  { date, shceduleId }: SheduleEventes,
+  { date, shceduleIds }: SheduleEventes,
   token: string,
 ) => {
+  console.log(shceduleIds);
   try {
     const res = await pictoApi.post(
       "/calendar/create",
       {
         date: date,
-        sheduleId: shceduleId,
+        sheduleId: shceduleIds,
       },
       {
         headers: {

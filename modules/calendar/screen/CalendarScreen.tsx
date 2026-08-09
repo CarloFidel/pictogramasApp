@@ -7,16 +7,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Backbutton from "@/common/components/Backbutton";
 import BlurComponent from "@/common/components/BlurComponent";
 import Loading from "@/common/components/loading";
-import PrimaryButton from "@/common/components/PrimaryButton";
 import { globalStyles } from "@/global-style";
 import { useAuthState } from "@/modules/auth/store/authState";
 import { useSchedules } from "@/modules/dashboard/hooks/useSchedules";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useState } from "react";
-import { Pressable, Text, useWindowDimensions, View } from "react-native";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
-import FleatListUserShedules from "../components/FleatListUserShedules";
+import { use, useEffect, useState } from "react";
+import { Pressable, Text, useWindowDimensions } from "react-native";
 import SchedulesOnDay from "../components/SchedulesOnDay";
+import SetSchedulesToCalendar from "../components/SetSchedulesToCalendar";
+import { SchedulesInEventContext } from "../context/SchedulesInEvent.context";
 import { useCalendarQuery } from "../hook/useCalendarQuery";
 import { useSaveEvents } from "../hook/useSaveEvents";
 import { todayDate } from "../utility/todayDate";
@@ -32,14 +31,26 @@ const CalendarScreen = () => {
   const { getAllSchedulesQuery } = useSchedules(token);
   const schedulesResponse = getAllSchedulesQuery.data;
 
-  const { isLoading, handleOKPress, handleSwitchChange } = useSaveEvents({
-    setIsVisibleSchedules,
-  });
   const { getAllCalendarEventsQuery } = useCalendarQuery(token);
 
-  const calendarEventsResponse = getAllCalendarEventsQuery.data?.events;
   const calendarResponse = getAllCalendarEventsQuery.data?.response;
+  const calendarEventsResponse = getAllCalendarEventsQuery.data?.events;
 
+  const schedulesInEvent = use(SchedulesInEventContext);
+  const { schedulesIds, setSchedulesIds } = schedulesInEvent!;
+
+  useEffect(() => {
+    if (!calendarResponse) return;
+    const event =
+      calendarResponse?.filter((event) => event.date === selected) ?? [];
+    setSchedulesIds(event.length > 0 ? event[0].sheduleId : []);
+  }, [selected]);
+
+  const { isLoading, handleOKPress } = useSaveEvents({
+    setIsVisibleSchedules,
+    schedulesIds,
+    setSchedulesIds,
+  });
   const handleSaveandRefetch = async (selected: string) => {
     await handleOKPress(selected);
     await getAllCalendarEventsQuery.refetch();
@@ -79,6 +90,7 @@ const CalendarScreen = () => {
         )}
         <CalendarProvider
           date={new Date().toISOString().split("T")[0]}
+
           style={{
             flex: 1,
             marginTop: height * 0.01,
@@ -86,32 +98,40 @@ const CalendarScreen = () => {
         >
           {!getAllCalendarEventsQuery.isLoading && (
             <ExpandableCalendar
-              hideArrows={true}
-              closeOnDayPress={true}
               markedDates={
                 calendarEventsResponse
                   ? Object.assign({}, ...calendarEventsResponse)
                   : null
               }
+              monthFormat={"MMMM yyyy"}
+              firstDay={1}
+              allowShadow={true}
               theme={{
+                todayBackgroundColor: globalStyles.colors.backGroundLight,
+                todayTextColor: globalStyles.colors.textColor,
+                textMonthFontSize: 20,
+                arrowColor: globalStyles.colors.textColor,
+                arrowHeight: 30,
+                textDayFontSize: 16,
+                textDayHeaderFontSize: 16,
                 selectedDayBackgroundColor: globalStyles.colors.primary[400],
-                selectedDayTextColor: "#FFFFFF",
-                todayTextColor: globalStyles.colors.primary[600],
-                arrowColor: globalStyles.colors.primary[400],
+                selectedDayTextColor: "white",
+                todayButtonTextColor: globalStyles.colors.primary[400],
               }}
               onDayPress={(day) => {
                 setSelected(day.dateString);
               }}
             />
           )}
+          <SchedulesOnDay
+            date={selected}
+            schedulesId={
+              calendarResponse?.find((event) => event.date === selected)
+                ?.sheduleId ?? []
+            }
+          />
         </CalendarProvider>
-        <SchedulesOnDay
-          date={selected}
-          schedulesId={
-            calendarResponse?.find((event) => event.date === selected)
-              ?.sheduleId ?? []
-          }
-        />
+
         {getAllCalendarEventsQuery.isLoading && (
           <>
             <BlurComponent />
@@ -123,58 +143,15 @@ const CalendarScreen = () => {
       {isVisibleSchedules && (
         <>
           <BlurComponent />
-
-          <Animated.View
-            entering={FadeIn.duration(300).delay(100)}
-            exiting={FadeOut.duration(200)}
-            className="flex flex-1 items-start bg-white"
-            style={{
-              width: width * 0.9,
-              height: height * 0.7,
-              borderRadius: 20,
-              position: "absolute",
-              top: height * 0.12,
-              right: width * 0.05,
-              paddingHorizontal: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              paddingBottom: 20,
-              gap: 10,
-            }}
-          >
-            <Text className="text-3xl text-center mt-10 w-full">
-              Mis horarios
-            </Text>
-            {isLoading && <Loading />}
-            {schedulesResponse?.schedule.length! > 0 ? (
-              <FleatListUserShedules
-                selected={selected}
-                handleSwitchChange={handleSwitchChange}
-              />
-            ) : (
-              !isLoading && (
-                <View className="flex-1 items-center mb-30">
-                  <Text className="mt-10 text-xl">
-                    No tienes horarios para mostrar
-                  </Text>
-                </View>
-              )
-            )}
-            {schedulesResponse?.schedule.length! > 0 && (
-              <PrimaryButton
-                onPress={() => handleSaveandRefetch(selected)}
-                text="Ok"
-                textColor="white"
-                backGroundColor={globalStyles.colors.primary[500]}
-              />
-            )}
-            <PrimaryButton
-              onPress={() => setIsVisibleSchedules(false)}
-              text="Cancelar"
-              textColor="black"
-              backGroundColor={globalStyles.colors.gray16}
-            />
-          </Animated.View>
+          <SetSchedulesToCalendar
+            height={height}
+            width={width}
+            isLoading={isLoading}
+            schedulesResponse={schedulesResponse}
+            selected={selected}
+            setIsVisibleSchedules={setIsVisibleSchedules}
+            handleSaveandRefetch={handleSaveandRefetch}
+          />
         </>
       )}
       {isLoading && (

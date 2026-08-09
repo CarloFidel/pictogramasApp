@@ -20,7 +20,8 @@ const FlatListInSaveModal = ({ handlePlay, data, refreching }: Props) => {
     <View
       style={{
         width: width,
-        height: height * 0.42,
+        height: height * 0.5,
+        marginTop: 10,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -93,9 +94,8 @@ const FlatListInSaveModal = ({ handlePlay, data, refreching }: Props) => {
         )}
         keyExtractor={(item) => item.id.toString()}
         style={{
-          marginVertical: 5,
+          marginBottom: 25,
           width: width * 0.93,
-          height: height * 0.4,
           borderRadius: 10,
         }}
         contentContainerStyle={{

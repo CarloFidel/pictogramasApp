@@ -4,18 +4,23 @@ import { saveScheduleClendar } from "../services/calendar.service";
 import { useCalendarQuery } from "./useCalendarQuery";
 
 interface Props {
+  schedulesIds: string[];
+  setSchedulesIds: React.Dispatch<React.SetStateAction<string[]>>;
+
   setIsVisibleSchedules: (isVisible: boolean) => void;
 }
 
-export const useSaveEvents = ({ setIsVisibleSchedules }: Props) => {
-  const [schedulesEvents, setSchedulesEvents] = useState<string[]>([]);
+export const useSaveEvents = ({
+  setIsVisibleSchedules,
+  schedulesIds,
+}: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { token } = useAuthState();
 
   const { getAllCalendarEventsQuery } = useCalendarQuery(token);
 
   const handleOKPress = async (selected: string) => {
-    const data = { date: selected, shceduleId: schedulesEvents };
+    const data = { date: selected, shceduleIds: schedulesIds };
     try {
       setIsLoading(true);
       await saveScheduleClendar(data, token);
@@ -23,25 +28,13 @@ export const useSaveEvents = ({ setIsVisibleSchedules }: Props) => {
     } catch (error) {
     } finally {
       setIsLoading(false);
-      setSchedulesEvents([]);
+      //setSchedulesIds([]);
       getAllCalendarEventsQuery.refetch();
     }
   };
-
-  const handleSwitchChange = (isSwitchOn: boolean, scheduleId: string) => {
-    if (isSwitchOn) {
-      setSchedulesEvents((prev) => [...prev, scheduleId]);
-    } else {
-      setSchedulesEvents((prev) =>
-        prev.filter((event) => event !== scheduleId),
-      );
-    }
-  };
-
   return {
     isLoading,
     setIsLoading,
     handleOKPress,
-    handleSwitchChange,
   };
 };

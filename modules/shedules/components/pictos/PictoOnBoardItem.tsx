@@ -10,6 +10,7 @@ import { useDragDrop } from "../../animations/drag_drop/useDragDrop";
 import ItemPictos from "./ItemPictos";
 
 interface Props {
+  pictoKey?: string;
   picto: Pictograma;
   pictosOn: Pictograma[];
 
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const PictoOnBoardItem = ({
+  pictoKey,
   picto,
   editMode,
   setEditMode,

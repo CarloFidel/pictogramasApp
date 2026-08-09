@@ -29,16 +29,19 @@ const SchedulesOnDay = ({ date, schedulesId }: Props) => {
   );
   return (
     <View
-      className="items-center justify-center bg-white"
+      className="items-center justify-start bg-white overflow-hidden"
       style={{
-        marginTop: 20,
-        height: height * 0.5,
+        marginTop: 10,
+        height: height * 0.6,
         width: "100%",
       }}
     >
-      <Text className="text-xl font-bold text-gray-500 w-full text-start px-5">
-        {transformCapitalize(dayName)}, {date}
-      </Text>
+      <View className="px-16 flex flex-row justify-between items-center">
+        <Text className="text-xl w-full text-start">
+          {transformCapitalize(dayName)}
+        </Text>
+        <Text className="text-base text-gray-500">{date}</Text>
+      </View>
       <FlatListInSaveModal
         data={schedulesForDay}
         handlePlay={handleSetPictosOn}
