@@ -1,4 +1,5 @@
 import { useAuthState } from "@/modules/auth/store/authState";
+import { buildInstanceId } from "@/modules/shedules/utility/buildInstanceId";
 import { router } from "expo-router";
 import { use } from "react";
 import { LoadPictosContext } from "../context/LoadPictosContext";
@@ -20,7 +21,7 @@ const useLoadSchedule = () => {
 
     const pictos = scheduleTarget?.scheduleItems.map((item) => ({
       id: item.id,
-      instanceId: `${item.id}-${Date.now()}`,
+      instanceId: buildInstanceId(item.id),
       keyword: item.visualItem.word,
       isPhoto: item.visualItem.type === "photo",
       imageUrl: item.visualItem.url,

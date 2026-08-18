@@ -28,6 +28,7 @@ const PopUp = ({
         top: height * 0.35,
         right: width - width * 0.92,
         opacity: 0.8,
+        zIndex: 11,
       }}
     >
       {warning ? (

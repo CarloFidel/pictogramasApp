@@ -30,8 +30,6 @@ const Register = () => {
 
   const { width, height } = useWindowDimensions();
 
-  //console.log(router.canGoBack());
-
   const handleToRegister = () => {
     router.push("/register");
   };

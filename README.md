@@ -187,7 +187,7 @@ La app está configurada con Jest y `jest-expo`.
 - Evitar remounts innecesarios al cambiar orden de lista
 - Separar lógica de UI en hooks y componentes reutilizables
 
-## 10. Capturas de pantalla sugeridas
+## 10. Capturas de pantalla
 
 Es conveniente colocar capturas de pantalla en los siguientes apartados:
 

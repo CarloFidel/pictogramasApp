@@ -82,7 +82,7 @@ const Layout = () => {
               left: width * 0.105,
               borderRadius: 20,
               zIndex: 10,
-              backgroundColor: "white",
+              backgroundColor: "rgba(255,255,255,0.45)",
             },
           ]}
         >
@@ -130,10 +130,10 @@ const Layout = () => {
             width: width * 0.825,
             height: height * 0.101,
             borderWidth: 1,
-            borderColor: "#CECECE",
+            borderColor: globalStyles.colors.gray16,
             borderRadius: 25,
-            backgroundColor: "#E6F2FF",
-            opacity: isPlayMode || isEditMode ? 0 : 0.4,
+            backgroundColor: "rgba(255,255,255,0.6)",
+            opacity: isPlayMode || isEditMode ? 0 : 1,
           },
           globalStyles.shadow_lg,
         ]}
@@ -145,28 +145,34 @@ const Layout = () => {
             bottom: height * 0.06,
             width: width * 0.18,
             height: height * 0.075,
-            opacity: isPlayMode || isEditMode ? 0 : 0.15,
+            opacity: isPlayMode || isEditMode ? 0 : 0.2,
           },
           globalStyles.shadow_md_up,
           movementStyle,
         ]}
         className="bg-primary-500 z-20 rounded-3xl"
       />
-      {/* {sessionExpired && <SessionExpired />} */}
-      <BlurView
-        intensity={40}
-        tint="light"
-        experimentalBlurMethod="dimezisBlurView"
+      <View
         style={{
-          opacity: isPlayMode || isEditMode ? 0 : 0.95,
           position: "absolute",
-          bottom: height * 0.055,
-          left: width * 0.13,
-          width: width * 0.75,
+          bottom: height * 0.053,
+          left: width * 0.105,
+          width: width * 0.8,
           height: height * 0.09,
-          borderRadius: 25,
+          borderRadius: 20,
+          overflow: "hidden",
+          opacity: isPlayMode || isEditMode ? 0 : 1,
         }}
-      />
+      >
+        <BlurView
+          intensity={20}
+          tint="light"
+          experimentalBlurMethod="dimezisBlurView"
+          style={{
+            flex: 1,
+          }}
+        />
+      </View>
     </>
   );
 };

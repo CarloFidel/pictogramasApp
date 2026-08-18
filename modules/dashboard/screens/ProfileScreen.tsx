@@ -83,7 +83,7 @@ const ProfileScreen = () => {
               </View>
               <Feather name="chevron-right" size={15} />
             </Pressable>
-            <Pressable
+            {/*             <Pressable
               className="flex-row justify-between gap-5 items-center"
               onPress={() => router.push("/calendar")}
             >
@@ -95,6 +95,7 @@ const ProfileScreen = () => {
               </View>
               <Feather name="chevron-right" size={15} />
             </Pressable>
+ */}
             <Pressable
               className="flex-row justify-between gap-5 items-center"
               onPress={() => router.push("/schedules")}
@@ -111,8 +112,8 @@ const ProfileScreen = () => {
               </View>
               <Feather name="chevron-right" size={15} />
             </Pressable>
-
-            {roles.includes("therapist") && (
+            {/*  DESIDIR SI HAY FUNCIONALIDADES PARA EL THERAPIST */}
+            {/*             {roles.includes("therapist") && (
               <Pressable
                 className="flex-row justify-between gap-5 items-center"
                 onPress={() => router.push("/create_articles")}
@@ -126,6 +127,7 @@ const ProfileScreen = () => {
                 <Feather name="chevron-right" size={15} />
               </Pressable>
             )}
+ */}
           </View>
 
           <View

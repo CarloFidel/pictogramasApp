@@ -11,10 +11,9 @@ interface Props {
 }
 
 export const useLoadScheduleAnimation = ({ savedVissible }: Props) => {
-  console.log(Platform.OS);
   const { height } = useWindowDimensions();
 
-  const initialValue = Platform.OS === "ios" ? 0.83 : 0.77;
+  const initialValue = Platform.OS === "ios" ? 0.81 : 0.83;
   const modifyValue = Platform.OS === "ios" ? 0.45 : 0.4;
   const heigthView = useSharedValue(initialValue);
 

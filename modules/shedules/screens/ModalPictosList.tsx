@@ -93,8 +93,9 @@ const ModalPictosList = ({
             width: width * 0.93,
             height: height * 0.06,
             flexDirection: "row",
-            justifyContent: "space-between",
+            justifyContent: "center",
             alignItems: "center",
+            gap: 10,
           }}
         >
           <SelectPictosFrom
@@ -111,7 +112,7 @@ const ModalPictosList = ({
             title="Fotos"
             selected={pictoLibrary === "Fotos"}
           />
-          <SelectPictosFrom
+          {/*           <SelectPictosFrom
             onPress={() => {
               handleShowPictoLibrary(3);
             }}
@@ -119,6 +120,7 @@ const ModalPictosList = ({
             selected={pictoLibrary === "ia"}
             icon
           />
+ */}
         </View>
         {pictoLibrary === "Arasaac" && (
           <SearchBar

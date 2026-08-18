@@ -85,7 +85,7 @@ const SaveSchedulePopUp = ({ items, onCanselPress }: Props) => {
       style={{
         top: "20%",
         right: width - width * 0.94,
-        opacity: 0.8,
+        zIndex: 10,
       }}
     >
       <Text className="text-center text-xl" style={{ width: width * 0.5 }}>

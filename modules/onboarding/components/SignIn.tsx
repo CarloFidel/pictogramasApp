@@ -29,6 +29,7 @@ const SignIn = ({ onGoogle, onMail, onClose }: Props) => {
         width: width * 0.9,
         borderRadius: 10,
         padding: 10,
+        zIndex: 11,
       }}
     >
       <Pressable

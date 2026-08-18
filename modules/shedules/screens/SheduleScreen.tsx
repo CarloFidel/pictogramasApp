@@ -5,13 +5,13 @@ import { router } from "expo-router";
 import { use, useEffect, useState } from "react";
 import {
   Modal,
+  Pressable,
   StatusBar,
   Text,
   useWindowDimensions,
   View,
 } from "react-native";
 import Animated, { FadeIn, FadeInUp, FadeOut } from "react-native-reanimated";
-import { SafeAreaView } from "react-native-safe-area-context";
 import PictoOnBoardItem from "../components/pictos/PictoOnBoardItem";
 import SaveMenuModal from "../components/pictos/SaveMenuModal";
 import SaveSchedulePopUp from "../components/pictos/SaveSchedulePopUp";
@@ -42,6 +42,8 @@ export default function SheduleScreen() {
 
   const [deleteZoneActive, setDeleteZoneActive] = useState<boolean>(false);
 
+  const [putPictosblur, setPutPictosBlur] = useState<boolean>(false);
+
   const playContext = use(PlayModeContext);
   const { setIsPlayMode } = playContext!;
 
@@ -61,18 +63,25 @@ export default function SheduleScreen() {
           }
           key={item.instanceId}
         >
-          <PictoOnBoardItem
-            picto={item}
-            editMode={editMode}
-            setEditMode={setEditMode}
-            pictosOn={pictosOn}
-            handleRemovePicto={handleRemovePicto}
-            handleIsInDeleteZone={handleIsInDeleteZone}
-            dragable={item.id === pictosOn[0].id && playMode ? true : false}
+          <Pressable onPress={() => handleEnphasize}>
+            <PictoOnBoardItem
+              picto={item}
+              editMode={editMode}
+              setEditMode={setEditMode}
+              pictosOn={pictosOn}
+              handleRemovePicto={handleRemovePicto}
+              handleIsInDeleteZone={handleIsInDeleteZone}
+              dragable={
+                item.instanceId === pictosOn[0].instanceId && playMode
+                  ? true
+                  : false
+              }
 
-            editDrag={drag}
-            disabled={isActive}
-          />
+              editDrag={drag}
+              disabled={isActive}
+              putPictosblur={putPictosblur}
+            />
+          </Pressable>
         </Animated.View>
       </ScaleDecorator>
     );
@@ -92,8 +101,10 @@ export default function SheduleScreen() {
     setfullToolBar((prev) => !prev);
   };
 
-  const handleRemovePicto = (id: number | string) => {
-    const pictosFiltered = pictosOn.filter((picto) => picto.id !== id);
+  const handleRemovePicto = (instanceId: number | string) => {
+    const pictosFiltered = pictosOn.filter(
+      (picto) => picto.instanceId !== instanceId,
+    );
     setPictosOn(pictosFiltered);
     if (editMode && pictosOn.length === 1) {
       setEditMode(false);
@@ -125,6 +136,11 @@ export default function SheduleScreen() {
     setModalVisible(false);
   };
 
+  const handleEnphasize = (instanceId: string) => {
+    console.log(instanceId);
+    setPutPictosBlur(true);
+  };
+
   const { width, height } = useWindowDimensions();
 
   const {
@@ -141,6 +157,8 @@ export default function SheduleScreen() {
     handleSaveMenuVisibility,
     setfullToolBar,
   } = useSetSelectedPictos(error);
+
+  //console.log(JSON.stringify(pictosOn, null, 2));
 
   /* -----------------------------------------------------------
 Carga de horario. ////////////////////////////////////////////
@@ -161,75 +179,77 @@ Carga de horario. ////////////////////////////////////////////
 
   return (
     <>
-      <SafeAreaView className="flex-1 bg-primary">
-        <StatusBar barStyle="light-content" />
-        <View className="relative bg-primary h-screen flex items-center p-5">
-          <ToolBar
-            playMode={playMode}
-            editMode={editMode}
-            pictosOn={pictosOn}
-            fullToolBar={fullToolBar}
-            deleteZone={deleteZoneActive}
-            handleEditMode={handleEditMode}
-            handlePlayMode={handlePlayMode}
-            handleSaveMenuVisibility={handleSaveMenuVisibility}
-            handleModalListVisibility={handleModalListVisibility}
-          />
-          {!renderButtonsFlag && (
-            <Animated.View
-              entering={FadeIn.springify().delay(500).duration(800)}
-              exiting={FadeOut.springify().duration(200)}
-            >
-              <Text className="text-white text-md font-hank-regular w-30 py-5 text-center">
-                Empieza añadiendo un pictograma
-              </Text>
-            </Animated.View>
-          )}
-          <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 "></View>
-          <View
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: width,
-              height: height * 0.9,
-            }}
+      <StatusBar barStyle="light-content" />
+      <View className="relative bg-primary h-screen flex items-center py-20 mt">
+        <ToolBar
+          playMode={playMode}
+          editMode={editMode}
+          pictosOn={pictosOn}
+          fullToolBar={fullToolBar}
+          deleteZone={deleteZoneActive}
+          handleEditMode={handleEditMode}
+          handlePlayMode={handlePlayMode}
+          handleSaveMenuVisibility={handleSaveMenuVisibility}
+          handleModalListVisibility={handleModalListVisibility}
+        />
+
+        {!renderButtonsFlag && (
+          <Animated.View
+            entering={FadeIn.springify().delay(500).duration(800)}
+            exiting={FadeOut.springify().duration(200)}
           >
-            <DraggableFlatList
-              data={pictosOn}
-              onDragEnd={({ data }) => setPictosOn(data)}
-              renderItem={renderItem}
+            <Text className="text-white text-md font-hank-regular w-30 py-5 text-center">
+              Empieza añadiendo un pictograma
+            </Text>
+          </Animated.View>
+        )}
+        <View className="relative w-8 h-5/6 items-center bg-primary-400 rounded-lg mt-5 py-5 "></View>
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: width,
+            height: height * 0.9,
+          }}
+        >
+          <DraggableFlatList
+            data={pictosOn}
+            onDragEnd={({ data }) => setPictosOn(data)}
+            renderItem={renderItem}
 
-              keyExtractor={(item) => item.id!.toString()}
-              style={{
-                width: width,
-                height: height * 0.9,
-              }}
-              contentContainerStyle={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                paddingTop: 100,
-                paddingBottom: 40,
-              }}
-              //ItemSeparatorComponent={() => <View style={{ height: 35 }} />}
-            />
-          </View>
-
-          {modalVisible && (
-            <Modal animationType="slide" transparent>
-              <ModalPictosList
-                visible={modalVisible}
-                onVisibleModal={handleModalListVisibility}
-                onSetPictos={handleSetPictos}
-                handleOnError={(term) => setError(term)}
-                handleOnSaveIA={handleOnSaveIA}
-              />
-            </Modal>
-          )}
+            keyExtractor={(item) => item.instanceId!}
+            style={{
+              width: width,
+              height: height,
+            }}
+            contentContainerStyle={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              paddingTop: 140,
+              paddingBottom: 40,
+            }}
+          />
         </View>
-      </SafeAreaView>
+
+        {modalVisible && (
+          <Modal animationType="slide" transparent>
+            <ModalPictosList
+              visible={modalVisible}
+              onVisibleModal={handleModalListVisibility}
+              onSetPictos={handleSetPictos}
+              handleOnError={(term) => setError(term)}
+              handleOnSaveIA={handleOnSaveIA}
+            />
+          </Modal>
+        )}
+      </View>
+      {(modalVisible ||
+        saveModalVisible ||
+        openSaveSchedule ||
+        saveSchedluPopUp) && <BlurComponent />}
 
       {saveModalVisible && (
         <SaveMenuModal
@@ -239,9 +259,6 @@ Carga de horario. ////////////////////////////////////////////
         />
       )}
 
-      {(modalVisible || saveModalVisible || openSaveSchedule) && (
-        <BlurComponent />
-      )}
       {openSaveSchedule && (
         <SaveSchedulePopUp
           items={schedulesItems}
@@ -260,7 +277,6 @@ Carga de horario. ////////////////////////////////////////////
       )}
       {saveSchedluPopUp && (
         <>
-          <BlurComponent />
           <SaveSchedulePopUp
             onCanselPress={() => setSaveSchedluPopUp(false)}
             items={itemsForSave}

@@ -9,7 +9,6 @@ export interface AuthResponse {
 }
 
 export const register = async (data: UserRegister) => {
-  console.log(data.roles);
   try {
     const response = await pictoApi.post("/auth/register", {
       ...data,

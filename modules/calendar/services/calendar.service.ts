@@ -7,7 +7,6 @@ export const saveScheduleClendar = async (
   { date, shceduleIds }: SheduleEventes,
   token: string,
 ) => {
-  console.log(shceduleIds);
   try {
     const res = await pictoApi.post(
       "/calendar/create",

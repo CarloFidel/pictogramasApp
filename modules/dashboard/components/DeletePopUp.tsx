@@ -24,6 +24,7 @@ const DeletePopUp = ({ text, onOkPress, onCanselPress }: Props) => {
         top: height * 0.3,
         right: width - width * 0.94,
         opacity: 0.9,
+        zIndex: 11,
       }}
     >
       <Ionicons name="warning-outline" size={30} color="black" />

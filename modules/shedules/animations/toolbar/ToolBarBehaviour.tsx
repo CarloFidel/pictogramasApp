@@ -27,11 +27,11 @@ export const useToolBarBehaviour = (
 
   useEffect(() => {
     if (playMode) {
-      translate.value = withDelay(200, withSpring(160, DAMPING_TOOLBAR_CONFIG));
+      translate.value = withDelay(200, withSpring(140, DAMPING_TOOLBAR_CONFIG));
     } else if (editMode) {
       translate.value = withDelay(
         200,
-        withSpring(-160, DAMPING_TOOLBAR_CONFIG),
+        withSpring(-140, DAMPING_TOOLBAR_CONFIG),
       );
     } else {
       translate.value = withDelay(200, withSpring(0, DAMPING_TOOLBAR_CONFIG));
@@ -75,7 +75,7 @@ export const useToolBarBehaviour = (
     return {
       transform: [
         {
-          scale: withSpring(flagToScale.value ? 2 : 1, {
+          scale: withSpring(flagToScale.value ? 1.8 : 1, {
             damping: 10,
             stiffness: 180,
             mass: 0.5,

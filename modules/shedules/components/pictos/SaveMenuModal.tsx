@@ -49,7 +49,7 @@ const SaveMenuModal = ({
   return (
     <Modal animationType="slide" transparent>
       <Animated.View
-        className="bg-white items-center px-4 relative gap-8 py-10"
+        className="bg-white items-center px-4 relative gap-8 pt-10"
         style={[
           {
             borderTopRightRadius: 30,

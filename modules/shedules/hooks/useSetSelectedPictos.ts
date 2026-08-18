@@ -1,5 +1,6 @@
 import { Pictograma } from "@/infrastructure/picto/interfaces/picto.interface";
 import { useEffect, useState } from "react";
+import { buildInstanceId } from "../utility/buildInstanceId";
 
 export const useSetSelectedPictos = (error: boolean) => {
   const [pictosOn, setPictosOn] = useState<Pictograma[]>([]);
@@ -23,6 +24,7 @@ export const useSetSelectedPictos = (error: boolean) => {
       ...prev,
       {
         id: data.id,
+        instanceId: buildInstanceId(data.id!),
         keyword: data.keyword,
         isPhoto: data.isPhoto,
         imageUrl: data.imageUrl,
